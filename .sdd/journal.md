@@ -101,3 +101,7 @@
 ## 2026-10-11 · 001-migracion-aws · prueba de creación de reporte (MS-002)
 - A petición del usuario: formulario del sitio real rellenado (Vías y andenes / Grietas en la vía, descripción, punto 4.67719,-74.07171 en el mapa). El panel del navegador no permite adjuntar el archivo (fetch público→127.0.0.1 bloqueado por Local Network Access), así que se envió la misma petición multipart con curl al gateway con la imagen original (test-user).
 - Resultado: 503 de Reportes «No fue posible subir la imagen del reporte»: Multimedia responde 503 «Service unavailable» incluso en GET /api/v1/multimedia/images/{id}/metadata (backend DocumentDB caído, ya anotado en el repo de Reportes). No se creó el reporte. Fuera de este repo; MS-002 sigue pendiente de un reporte real.
+
+## 2026-10-11 · 001-migracion-aws · MS-002 verificado
+- Con Multimedia de nuevo en línea (el usuario había apagado su DocumentDB), POST /api/v1/reportes por el gateway → 201, reporte 01a12d63-bfea-7d70-bf04-053bd5c41f32 (test-user, Grietas en la vía, 4.67719,-74.07171, imagen en urban-alert-multimedia-images). La descripción quedó cortada en el «;»: lo interpreta curl -F como separador de parámetros (fallo de la prueba, no de la app).
+- En site_url: el histórico lista el reporte con enlace /historial/detalle/?id=…; el detalle abre directamente y muestra datos, usuario, mapa (Geoespacial coordinates 200), imagen de S3, línea de tiempo (Auditoría 200) e integridad «Válida». MS-001 y MS-002 cumplidos.

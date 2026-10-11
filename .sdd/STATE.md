@@ -12,7 +12,7 @@ estado_tarea: -
 
 ## Siguiente paso
 
-Sitio en línea: https://etucvhblj4uubyhdwctdaqx3ye0kzriq.lambda-url.us-east-2.on.aws (origen Lambda, D-012). Pendiente: /sdd-verify (MS-002 con un reporte real cuando exista); T015 (Deprovision + Provision) solo con autorización expresa; cuando AWS Support verifique la cuenta, cdn_habilitado = true en un commit (la URL cambia).
+Sitio en línea: https://etucvhblj4uubyhdwctdaqx3ye0kzriq.lambda-url.us-east-2.on.aws (origen Lambda, D-012). MS-001, MS-002 y MS-003 verificados (journal). Pendiente: /sdd-verify para el informe verify.md; T015 (Deprovision + Provision) solo con autorización expresa; cuando AWS Support verifique la cuenta, cdn_habilitado = true en un commit (la URL cambia).
 
 ## Contexto de trabajo
 
