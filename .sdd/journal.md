@@ -42,3 +42,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T008 hecha
 - web.tftest.hcl: 5 runs en verde (bucket privado, solo la distribución lee con AWS:SourceArn + deny sin TLS, HTTPS/OAC/certificado/cabeceras, función viewer-request y 403/404 → /404.html, prefijo). Gotchas: list == tuple siempre es false en HCL (usar toset); effect sin fijar es null con mock (se fija Allow en main.tf).
+
+## 2026-10-11 · 001-migracion-aws · T009 hecha
+- scripts check-platform.sh (imprime api-endpoint de SSM o falla), publicar-sitio.sh (2 sync + invalidación con wait), smoke-web.sh (páginas 200, ruta inexistente 404, URL del gateway en el JS, cabeceras de caché; --sin-cabeceras en local). shellcheck OK. Verificado con un emulador local de CloudFront (función indice + 404.html, en el scratchpad) sobre out/ con NEXT_PUBLIC_API_URL=https://ejemplo.invalid: smoke en verde y en rojo con otra URL; en el navegador las llamadas van a https://ejemplo.invalid/api/v1/..., la navegación de cliente (RSC .txt) funciona y el detalle sin id muestra no encontrado.

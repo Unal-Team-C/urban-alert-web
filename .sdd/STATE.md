@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T009
+tarea_actual: T010
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T009: scripts/check-platform.sh (api-endpoint en SSM), scripts/publicar-sitio.sh <dir> <bucket> <distribution> (sync _next/static immutable sin --delete; resto max-age=0 con --delete; invalidación /* y wait), scripts/smoke-web.sh <site_url> <api_url> (200 en /, /mapa/, /historial/, /historial/detalle/?id=x, /reportes/nuevo/; 404 en ruta inexistente; JS contiene api_url; cabeceras de caché). Verifica: shellcheck y smoke contra servidor local de out/.
+T010: .github/workflows/provision.yml (job test: Node 24 npm ci/lint/test/build, node --test funciones, terraform fmt/validate/test, actionlint, shellcheck; job provision: OIDC, check-platform → apply infra/web → build con NEXT_PUBLIC_API_URL → publicar-sitio → smoke → resumen; concurrency urban-alert-web-aws). Verifica: actionlint.
 
 ## Contexto de trabajo
 
