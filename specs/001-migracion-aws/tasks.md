@@ -29,8 +29,8 @@ Dependencias explícitas: añadir `— depende: T00X`.
 ## Fase 3: Infraestructura
 
 - [x] T005 [P] Documentar el arranque (recursos reutilizados, política nueva `github-actions-urban-alert-web`, secreto y variable de GitHub) — archivos: infra/bootstrap/README.md, infra/bootstrap/github-web-policy.json — cubre: RF-012, RF-014 — verifica: JSON válido (`node -e 'JSON.parse(...)'`) y cada acción de CloudFront que usa el stack aparece en la política
-- [~] T006 [P] Escribir la CloudFront Function de índice y su prueba — archivos: infra/web/funciones/indice.js, infra/web/funciones/indice.test.mjs — cubre: RF-005 — verifica: `node --test infra/web/funciones/` en verde
-- [ ] T007 Crear el stack `infra/web` (bucket privado, OAC, política del bucket, función, distribución, salidas) y su lock con 3 plataformas — archivos: infra/web/*.tf, infra/web/terraform.tfvars, infra/web/.terraform.lock.hcl — cubre: RF-006, RF-007, RNF-001, RNF-002 — verifica: `$TF fmt -check -recursive infra` y `$TF -chdir=infra/web validate` — depende: T006
+- [x] T006 [P] Escribir la CloudFront Function de índice y su prueba — archivos: infra/web/funciones/indice.js, infra/web/funciones/indice.test.mjs — cubre: RF-005 — verifica: `node --test infra/web/funciones/` en verde
+- [~] T007 Crear el stack `infra/web` (bucket privado, OAC, política del bucket, función, distribución, salidas) y su lock con 3 plataformas — archivos: infra/web/*.tf, infra/web/terraform.tfvars, infra/web/.terraform.lock.hcl — cubre: RF-006, RF-007, RNF-001, RNF-002 — verifica: `$TF fmt -check -recursive infra` y `$TF -chdir=infra/web validate` — depende: T006
 - [ ] T008 Escribir las pruebas de Terraform de las garantías (P7) — archivos: infra/web/tests/web.tftest.hcl — cubre: RF-005, RF-006, RF-007, RNF-002 — verifica: `$TF -chdir=infra/web test` en verde — depende: T007
 
 ## Fase 4: Integración

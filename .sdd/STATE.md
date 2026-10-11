@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T006
+tarea_actual: T007
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T006: infra/web/funciones/indice.js (cloudfront-js-2.0, viewer-request: /x/ → /x/index.html; último segmento sin extensión → /index.html) + indice.test.mjs con node:test. Verifica: node --test infra/web/funciones/.
+T007: stack infra/web (versions, providers con tags Service=web, backend web/terraform.tfstate, variables, main.tf bucket privado + política OAC, cloudfront.tf OAC/función/distribución, outputs) + lock con 3 plataformas. Verifica: $TF fmt -check -recursive infra y validate.
 
 ## Contexto de trabajo
 

@@ -33,3 +33,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T005 hecha
 - infra/bootstrap: README (reutiliza OIDC, rol, políticas deploy/platform y bucket de estado; clave web/terraform.tfstate) y github-web-policy.json (CloudFront sobre arn:aws:cloudfront::348364742283:*; List*/políticas gestionadas sobre *). JSON válido. Falta que un administrador la aplique antes de T013.
+
+## 2026-10-11 · 001-migracion-aws · T006 hecha
+- Función de índice (cloudfront-js-2.0) y 5 pruebas node:test en verde; eslint limpio (disable puntual: CloudFront invoca handler por nombre).
