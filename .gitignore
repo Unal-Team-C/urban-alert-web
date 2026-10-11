@@ -147,3 +147,17 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Arnés SDD
+.sdd/activity.log
+.claude/settings.local.json
+.claude/settings.json.bak-sdd
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+
+.DS_Store
