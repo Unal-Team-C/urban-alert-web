@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T008
+tarea_actual: T009
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T008: infra/web/tests/web.tftest.hcl con mock_provider (override_data de caller identity, cache/response policies; ARN realista de la distribución): BPA, ownership, política del bucket, redirect-to-https, OAC, función viewer-request, error 404, etiquetas. Verifica: $TF -chdir=infra/web test.
+T009: scripts/check-platform.sh (api-endpoint en SSM), scripts/publicar-sitio.sh <dir> <bucket> <distribution> (sync _next/static immutable sin --delete; resto max-age=0 con --delete; invalidación /* y wait), scripts/smoke-web.sh <site_url> <api_url> (200 en /, /mapa/, /historial/, /historial/detalle/?id=x, /reportes/nuevo/; 404 en ruta inexistente; JS contiene api_url; cabeceras de caché). Verifica: shellcheck y smoke contra servidor local de out/.
 
 ## Contexto de trabajo
 

@@ -39,3 +39,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T007 hecha
 - Stack infra/web: bucket urban-alert-web-<cuenta> privado (BPA, BucketOwnerEnforced, AES256, force_destroy), política solo cloudfront.amazonaws.com con AWS:SourceArn + deny sin TLS, OAC sigv4/always, función indice, distribución (PriceClass_100, http2and3, redirect-to-https, CachingOptimized, SecurityHeadersPolicy, 403/404 → /404.html 404). Lock aws 6.68.0 con 3 plataformas; validate y fmt OK (Podman, caché ~/.cache/tf-plugins).
+
+## 2026-10-11 · 001-migracion-aws · T008 hecha
+- web.tftest.hcl: 5 runs en verde (bucket privado, solo la distribución lee con AWS:SourceArn + deny sin TLS, HTTPS/OAC/certificado/cabeceras, función viewer-request y 403/404 → /404.html, prefijo). Gotchas: list == tuple siempre es false en HCL (usar toset); effect sin fijar es null con mock (se fija Allow en main.tf).

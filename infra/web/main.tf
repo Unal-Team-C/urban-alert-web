@@ -40,6 +40,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "sitio" {
 data "aws_iam_policy_document" "sitio" {
   statement {
     sid       = "CloudFrontReadOnly"
+    effect    = "Allow"
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.sitio.arn}/*"]
 
