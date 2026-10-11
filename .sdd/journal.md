@@ -36,3 +36,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T006 hecha
 - Función de índice (cloudfront-js-2.0) y 5 pruebas node:test en verde; eslint limpio (disable puntual: CloudFront invoca handler por nombre).
+
+## 2026-10-11 · 001-migracion-aws · T007 hecha
+- Stack infra/web: bucket urban-alert-web-<cuenta> privado (BPA, BucketOwnerEnforced, AES256, force_destroy), política solo cloudfront.amazonaws.com con AWS:SourceArn + deny sin TLS, OAC sigv4/always, función indice, distribución (PriceClass_100, http2and3, redirect-to-https, CachingOptimized, SecurityHeadersPolicy, 403/404 → /404.html 404). Lock aws 6.68.0 con 3 plataformas; validate y fmt OK (Podman, caché ~/.cache/tf-plugins).

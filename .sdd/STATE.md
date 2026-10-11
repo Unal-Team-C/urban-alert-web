@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T007
+tarea_actual: T008
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T007: stack infra/web (versions, providers con tags Service=web, backend web/terraform.tfstate, variables, main.tf bucket privado + política OAC, cloudfront.tf OAC/función/distribución, outputs) + lock con 3 plataformas. Verifica: $TF fmt -check -recursive infra y validate.
+T008: infra/web/tests/web.tftest.hcl con mock_provider (override_data de caller identity, cache/response policies; ARN realista de la distribución): BPA, ownership, política del bucket, redirect-to-https, OAC, función viewer-request, error 404, etiquetas. Verifica: $TF -chdir=infra/web test.
 
 ## Contexto de trabajo
 
