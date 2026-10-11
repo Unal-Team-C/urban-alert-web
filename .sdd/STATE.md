@@ -6,13 +6,13 @@
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
 feature_activa: 001-migracion-aws
-fase: implement
-tarea_actual: T013
-estado_tarea: en_progreso
+fase: verify
+tarea_actual: -
+estado_tarea: -
 
 ## Siguiente paso
 
-Corrección (verificación de T013 en el sitio real): /localidades.geojson se pide al gateway porque obtenerJson aplica urlApi a todo; urlApi solo debe anteponer la base a rutas /api/. Arreglar app/lib/api.ts + prueba, commit, push (pedir permiso) y reverificar el mapa en site_url.
+Sitio en línea: https://etucvhblj4uubyhdwctdaqx3ye0kzriq.lambda-url.us-east-2.on.aws (origen Lambda, D-012). Pendiente: /sdd-verify (MS-002 con un reporte real cuando exista); T015 (Deprovision + Provision) solo con autorización expresa; cuando AWS Support verifique la cuenta, cdn_habilitado = true en un commit (la URL cambia).
 
 ## Contexto de trabajo
 
