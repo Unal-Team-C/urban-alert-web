@@ -63,3 +63,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T013 corrección
 - Run 38180467808 falló en el job test: `node --test infra/web/funciones/` en Node 24 trata la carpeta como módulo (MODULE_NOT_FOUND); local (Node 26) pasaba. Se pasa el archivo indice.test.mjs en workflow, README, CLAUDE.md y plan. Nada se tocó en AWS.
+
+## 2026-10-11 · 001-migracion-aws · T013 bloqueada en permisos
+- Run 38180550392: tests en verde (incluido Terraform, actionlint, shellcheck en CI), OIDC y check-platform OK; terraform apply falla al leer data.aws_cloudfront_response_headers_policy: AccessDenied en ListResponseHeadersPolicies. La política de infra/bootstrap aún no está adjunta. Sin recursos creados.

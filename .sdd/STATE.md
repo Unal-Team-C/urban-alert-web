@@ -8,11 +8,11 @@
 feature_activa: 001-migracion-aws
 fase: implement
 tarea_actual: T013
-estado_tarea: en_progreso
+estado_tarea: bloqueada
 
 ## Siguiente paso
 
-T013: push a main hecho (e4c350d, autorizado por el usuario); Provision run 38180467808 en curso. Revisar el resultado: si falla en configure-aws-credentials faltan AWS_ROLE_ARN/AWS_REGION (gh secret/variable list salieron vacíos); si falla con AccessDenied de CloudFront falta la política de infra/bootstrap. Si pasa: comprobar MS-001/MS-002 en site_url.
+T013 bloqueada: run 38180550392 pasó tests, OIDC y plataforma, y falló en terraform apply con AccessDenied en cloudfront:ListResponseHeadersPolicies (la política github-actions-urban-alert-web no está adjunta al rol). Nada se creó. Cuando un administrador aplique infra/bootstrap/github-web-policy.json: `gh run rerun 38180550392 --repo Unal-Team-C/urban-alert-web` y verificar MS-001/MS-002 en site_url.
 
 ## Contexto de trabajo
 
@@ -23,5 +23,5 @@ T013: push a main hecho (e4c350d, autorizado por el usuario); Provision run 3818
 
 ## Bloqueos / preguntas abiertas
 
-- T013: necesita política de CloudFront aplicada por un administrador, secreto/variable de GitHub y permiso de push.
+- T013: falta adjuntar la política de CloudFront al rol de GitHub (administrador). Secreto/variable de GitHub ya funcionan.
 - T015 (Deprovision + Provision) solo con autorización expresa.
