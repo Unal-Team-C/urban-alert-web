@@ -15,7 +15,9 @@ export class ApiError extends Error {
 // En AWS la base se lee del contrato SSM de la plataforma en el build (NEXT_PUBLIC_API_URL, spec 001 D-002);
 // sin base (npm run dev) la ruta queda relativa y los rewrites de next.config.ts la reenvían.
 // process.env.NEXT_PUBLIC_API_URL debe escribirse literal: Next.js lo sustituye en el build.
+// Los archivos del propio sitio (p. ej. /localidades.geojson) se quedan en el mismo origen.
 export function urlApi(ruta: string): string {
+  if (!ruta.startsWith("/api/")) return ruta;
   const base = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
   return `${base}${ruta}`;
 }

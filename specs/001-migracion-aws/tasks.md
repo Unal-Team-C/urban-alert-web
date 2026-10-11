@@ -59,6 +59,8 @@ Aprobada por el usuario el 2026-10-11 («Let's use the lambda only»).
 
 <!-- /sdd-verify añade aquí tareas si detecta fallos -->
 
+- [x] T020 Corregir `urlApi()` para que solo anteponga la URL del gateway a rutas `/api/` (el mapa pedía `/localidades.geojson` al gateway: detectado en el sitio real, run 38183970177) — archivos: app/lib/api.ts, app/lib/api.test.ts — cubre: RF-002 — verifica: `npm test` (104) y el mapa carga las localidades en site_url tras el siguiente Provision
+
 ## Cobertura
 
 | Requisito | Tareas |

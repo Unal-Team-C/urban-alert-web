@@ -26,6 +26,11 @@ describe("urlApi", () => {
     );
   });
 
+  it("deja en el mismo origen los archivos del sitio", () => {
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://abc.execute-api.us-east-2.amazonaws.com");
+    expect(urlApi("/localidades.geojson")).toBe("/localidades.geojson");
+  });
+
   it("ignora las barras finales de la URL del gateway", () => {
     vi.stubEnv("NEXT_PUBLIC_API_URL", "https://abc.execute-api.us-east-2.amazonaws.com//");
     expect(urlApi("/api/v1/usuarios")).toBe("https://abc.execute-api.us-east-2.amazonaws.com/api/v1/usuarios");

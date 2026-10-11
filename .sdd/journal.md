@@ -87,3 +87,7 @@
 
 ## 2026-10-11 · 001-migracion-aws · T013 push con origen Lambda
 - Usuario: «push it». Push de main con T013 (estado) y T016–T019.
+
+## 2026-10-11 · 001-migracion-aws · T013 sitio en línea + T020
+- Run 38183970177 en verde: Lambda creada (8 recursos), OAC y función de CloudFront eliminadas, smoke completo. site_url https://etucvhblj4uubyhdwctdaqx3ye0kzriq.lambda-url.us-east-2.on.aws. En el navegador: histórico, catálogo, usuarios y consulta geoespacial responden 200 por el gateway (CORS OK, contexto seguro). Base sin reportes: MS-002 (detalle de un reporte existente) pendiente de que haya datos.
+- Fallo: /localidades.geojson se pedía al gateway (obtenerJson aplicaba urlApi a todo). T020: urlApi solo para rutas /api/; 104 tests.

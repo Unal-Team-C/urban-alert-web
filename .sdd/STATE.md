@@ -12,7 +12,7 @@ estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T013 con el origen Lambda (D-012): push a main (autorizado por el usuario) → Provision crea la Lambda y su URL y elimina OAC y función de CloudFront; revisar log, smoke, y verificar MS-001/MS-002 en site_url (function URL) con el navegador.
+Corrección (verificación de T013 en el sitio real): /localidades.geojson se pide al gateway porque obtenerJson aplica urlApi a todo; urlApi solo debe anteponer la base a rutas /api/. Arreglar app/lib/api.ts + prueba, commit, push (pedir permiso) y reverificar el mapa en site_url.
 
 ## Contexto de trabajo
 
