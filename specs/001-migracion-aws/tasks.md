@@ -41,8 +41,8 @@ Dependencias explícitas: añadir `— depende: T00X`.
 
 ## Fase 5: Pulido
 
-- [~] T012 Reescribir el README (URL, arquitectura, costes, arranque, flujos, desarrollo local) y completar CLAUDE.md — archivos: README.md, CLAUDE.md — cubre: RF-014, RNF-003 — verifica: revisión; enlaces relativos existen
-- [ ] T013 Primer Provision en `main` (requiere: política aplicada por un administrador, secreto `AWS_ROLE_ARN` y variable `AWS_REGION` en el repo, y push autorizado por el usuario) — archivos: — — cubre: MS-001, MS-002 — verifica: workflow en verde; páginas cargan datos del gateway desde `site_url`
+- [x] T012 Reescribir el README (URL, arquitectura, costes, arranque, flujos, desarrollo local) y completar CLAUDE.md — archivos: README.md, CLAUDE.md — cubre: RF-014, RNF-003 — verifica: revisión; enlaces relativos existen
+- [!] T013 Primer Provision en `main` (requiere: política aplicada por un administrador, secreto `AWS_ROLE_ARN` y variable `AWS_REGION` en el repo, y push autorizado por el usuario) — archivos: — — cubre: MS-001, MS-002 — verifica: workflow en verde; páginas cargan datos del gateway desde `site_url` — bloqueada: espera al usuario (política aplicada por un administrador, secreto/variable en GitHub y push a main)
 - [ ] T014 Segundo Provision sin cambios — cubre: MS-003 — verifica: `apply` informa 0 cambios — depende: T013
 - [ ] T015 Deprovision + Provision (solo con autorización expresa del usuario) — cubre: MS-004, HU-4 — verifica: sin recursos `urban-alert-web` tras Deprovision; plataforma intacta — depende: T014
 

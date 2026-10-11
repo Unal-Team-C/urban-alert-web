@@ -51,3 +51,9 @@
 
 ## 2026-10-11 · 001-migracion-aws · T011 hecha
 - deprovision.yml: confirmación urban-alert-web, solo main, destroy de infra/web (omite si el estado está vacío), comparte concurrency con Provision. actionlint OK.
+
+## 2026-10-11 · 001-migracion-aws · T012 hecha
+- README reescrito (arquitectura, URL desde site_url, workflows, caché, costes ~0 USD, arranque, desarrollo y validación local, limitaciones POST usuarios/CORS) y CLAUDE.md con estructura y gotchas. Enlaces relativos comprobados. Validación completa: lint, 103 tests, build, 5 pruebas de la función.
+
+## 2026-10-11 · 001-migracion-aws · T013 bloqueada
+- T001–T012 hechas y commiteadas en local (sin push). T013 espera al usuario: política de CloudFront (administrador), AWS_ROLE_ARN/AWS_REGION en GitHub y push a main.

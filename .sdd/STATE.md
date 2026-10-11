@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T012
-estado_tarea: en_progreso
+tarea_actual: T013
+estado_tarea: bloqueada
 
 ## Siguiente paso
 
-T012: reescribir README.md (URL pública desde la salida site_url, arquitectura, tabla de costes, arranque → infra/bootstrap/README.md, workflows, desarrollo local, validación local con Podman, limitaciones: POST usuarios 403 y CORS) y completar CLAUDE.md (estructura, gotchas). Verifica: revisión y enlaces relativos existen.
+T013 bloqueada en el usuario: (1) un administrador aplica infra/bootstrap/github-web-policy.json al rol de GitHub; (2) secreto AWS_ROLE_ARN y variable AWS_REGION en Unal-Team-C/urban-alert-web; (3) push a main autorizado por el usuario (git push origin main). Después revisar el run de Provision, comprobar MS-001/MS-002 en site_url y seguir con T014 (segundo Provision, 0 cambios).
 
 ## Contexto de trabajo
 
@@ -23,4 +23,5 @@ T012: reescribir README.md (URL pública desde la salida site_url, arquitectura,
 
 ## Bloqueos / preguntas abiertas
 
-- ninguno
+- T013: necesita política de CloudFront aplicada por un administrador, secreto/variable de GitHub y permiso de push.
+- T015 (Deprovision + Provision) solo con autorización expresa.
