@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiError, obtenerJson } from "./api";
+import { ApiError, obtenerJson, urlApi } from "./api";
 
 function responder(status: number, cuerpo: unknown) {
   vi.stubGlobal(
@@ -8,12 +8,41 @@ function responder(status: number, cuerpo: unknown) {
   );
 }
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
+});
+
+describe("urlApi", () => {
+  it("deja la ruta relativa sin URL del gateway (desarrollo local)", () => {
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "");
+    expect(urlApi("/api/v1/reportes")).toBe("/api/v1/reportes");
+  });
+
+  it("antepone la URL del gateway", () => {
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://abc.execute-api.us-east-2.amazonaws.com");
+    expect(urlApi("/api/v1/reportes?pagina=1")).toBe(
+      "https://abc.execute-api.us-east-2.amazonaws.com/api/v1/reportes?pagina=1"
+    );
+  });
+
+  it("ignora las barras finales de la URL del gateway", () => {
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://abc.execute-api.us-east-2.amazonaws.com//");
+    expect(urlApi("/api/v1/usuarios")).toBe("https://abc.execute-api.us-east-2.amazonaws.com/api/v1/usuarios");
+  });
+});
 
 describe("obtenerJson", () => {
   it("devuelve el JSON cuando la respuesta es correcta", async () => {
     responder(200, { a: 1 });
     expect(await obtenerJson("/x")).toEqual({ a: 1 });
+  });
+
+  it("llama al API Gateway cuando hay URL configurada", async () => {
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://gw.example");
+    responder(200, []);
+    await obtenerJson("/api/v1/reportes");
+    expect(fetch).toHaveBeenCalledWith("https://gw.example/api/v1/reportes", { signal: undefined });
   });
 
   it("usa message del middleware", async () => {

@@ -1,3 +1,5 @@
+import { urlApi } from "./api";
+
 // Forma de GET /api/v1/users (servicio de Usuarios).
 export type Usuario = { id: string; name: string; email: string; role: "USER" | "ADMIN" };
 
@@ -32,7 +34,7 @@ export function guardarUsuario(id: string) {
 
 // POST /api/v1/users. El rol queda en USER (valor por defecto del servicio).
 export async function crearUsuario(name: string, email: string): Promise<Usuario> {
-  const response = await fetch("/api/v1/usuarios", {
+  const response = await fetch(urlApi("/api/v1/usuarios"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email }),
@@ -59,7 +61,7 @@ export async function crearUsuario(name: string, email: string): Promise<Usuario
 
 // GET /api/v1/users. Lista completa, para mostrar nombres en lugar de ids.
 export async function listarUsuarios(signal?: AbortSignal): Promise<Usuario[]> {
-  const response = await fetch("/api/v1/usuarios", { signal });
+  const response = await fetch(urlApi("/api/v1/usuarios"), { signal });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return (await response.json()) as Usuario[];
 }

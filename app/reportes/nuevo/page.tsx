@@ -6,6 +6,7 @@ import { IconoCamara, IconoMapa, IconoUbicacion, IconoUsuario } from "../../comp
 import ReporteCreadoModal from "../../components/ReporteCreadoModal";
 import SeleccionUbicacionModal from "../../components/SeleccionUbicacionModal";
 import UsuarioModal from "../../components/UsuarioModal";
+import { urlApi } from "../../lib/api";
 import { TIPOS_IMAGEN, formatearTamano, validarImagen } from "../../lib/imagen";
 import {
   dentroDeBogota,
@@ -77,7 +78,7 @@ export default function Home() {
   const [usuarioModalOpen, setUsuarioModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch("/api/v1/reportes/catalogo")
+    fetch(urlApi("/api/v1/reportes/catalogo"))
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
@@ -94,7 +95,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/usuarios")
+    fetch(urlApi("/api/v1/usuarios"))
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
@@ -241,7 +242,7 @@ export default function Home() {
     reportData.append("imagen", image);
 
     try {
-      const response = await fetch("/api/v1/reportes", {
+      const response = await fetch(urlApi("/api/v1/reportes"), {
         method: "POST",
         body: reportData,
       });

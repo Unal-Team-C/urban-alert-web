@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T002
+tarea_actual: T003
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T002: añadir urlApi() en app/lib/api.ts (base NEXT_PUBLIC_API_URL sin barra final; vacía → ruta relativa), usarla en obtenerJson, usuarios.ts y reportes/nuevo/page.tsx; pruebas con vi.stubEnv. Verifica: npm test.
+T003: mover app/historial/[id]/page.tsx a app/historial/detalle/page.tsx con useSearchParams dentro de <Suspense>; sin id → «Reporte no encontrado»; enlace en TablaReportes.tsx a /historial/detalle/?id=; adaptar page.test.tsx. Verifica: npm test.
 
 ## Contexto de trabajo
 
