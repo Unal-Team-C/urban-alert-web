@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T010
+tarea_actual: T011
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T010: .github/workflows/provision.yml (job test: Node 24 npm ci/lint/test/build, node --test funciones, terraform fmt/validate/test, actionlint, shellcheck; job provision: OIDC, check-platform → apply infra/web → build con NEXT_PUBLIC_API_URL → publicar-sitio → smoke → resumen; concurrency urban-alert-web-aws). Verifica: actionlint.
+T011: deprovision.yml con confirmación urban-alert-web y solo en main; destroy de infra/web (omitir si el estado está vacío). Verifica: actionlint.
 
 ## Contexto de trabajo
 

@@ -1,0 +1,149 @@
+# Provisioning (spec 001-migracion-aws, RF-008): every push to main tests, provisions and publishes the site.
+# Order: tests → platform check → infrastructure (S3 + CloudFront) → build with the gateway URL from SSM → upload and
+# invalidation → smoke test. The browser calls the shared API Gateway of Unal-Team-C/urban-alert-plataforma directly.
+name: Provision
+
+on:
+  push:
+    branches: [main]
+
+# Shared with deprovision.yml: runs touching the same infrastructure queue up instead of overlapping (RF-011).
+concurrency:
+  group: urban-alert-web-aws
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  TF_VERSION: 1.16.5
+  TF_IN_AUTOMATION: "true"
+  NODE_VERSION: "24"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  test:
+    name: Tests and static checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build (static export, without gateway URL)
+        run: npm run build
+
+      - name: CloudFront Function tests
+        run: node --test infra/web/funciones/
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform format
+        run: terraform fmt -check -recursive infra
+
+      - name: Terraform validate and test (mocked provider)
+        run: |
+          terraform -chdir=infra/web init -backend=false -input=false -lockfile=readonly
+          terraform -chdir=infra/web validate
+          terraform -chdir=infra/web test
+
+      - name: Lint workflows
+        run: docker run --rm -v "$PWD:/repo" -w /repo docker.io/rhysd/actionlint:1.7.7 -color
+
+      - name: Lint scripts
+        run: docker run --rm -v "$PWD:/mnt" -w /mnt docker.io/koalaman/shellcheck:v0.10.0 scripts/*.sh
+
+  provision:
+    name: Provision and publish
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC: temporary AWS credentials, no stored keys (RF-012)
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Check the shared platform and read the gateway URL (nothing is changed before this)
+        id: platform
+        run: |
+          # Assigning first makes the step fail when the script fails (a failing $(...) inside echo would not).
+          api_url="$(scripts/check-platform.sh)"
+          echo "Gateway: $api_url"
+          echo "api_url=$api_url" >> "$GITHUB_OUTPUT"
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Apply infrastructure (private bucket, CloudFront)
+        id: infra
+        run: |
+          terraform -chdir=infra/web init -input=false
+          terraform -chdir=infra/web apply -input=false -auto-approve
+          {
+            echo "bucket=$(terraform -chdir=infra/web output -raw bucket_name)"
+            echo "distribution=$(terraform -chdir=infra/web output -raw distribution_id)"
+            echo "site_url=$(terraform -chdir=infra/web output -raw site_url)"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Build the site with the gateway URL (RF-003)
+        env:
+          NEXT_PUBLIC_API_URL: ${{ steps.platform.outputs.api_url }}
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+
+      - name: Publish (upload and cache invalidation)
+        env:
+          BUCKET: ${{ steps.infra.outputs.bucket }}
+          DISTRIBUTION: ${{ steps.infra.outputs.distribution }}
+        run: scripts/publicar-sitio.sh out "$BUCKET" "$DISTRIBUTION"
+
+      - name: Smoke test of the public site (read-only)
+        env:
+          SITE_URL: ${{ steps.infra.outputs.site_url }}
+          API_URL: ${{ steps.platform.outputs.api_url }}
+        run: scripts/smoke-web.sh "$SITE_URL" "$API_URL"
+
+      - name: Summary
+        if: always()
+        env:
+          SITE_URL: ${{ steps.infra.outputs.site_url }}
+          API_URL: ${{ steps.platform.outputs.api_url }}
+        run: |
+          {
+            echo "### Frontend web"
+            echo "- Commit: \`$GITHUB_SHA\`"
+            if [ -n "$SITE_URL" ]; then
+              echo "- Sitio: $SITE_URL"
+            else
+              echo "- Sitio: (no disponible)"
+            fi
+            echo "- API Gateway: ${API_URL:-(no disponible)}"
+          } >> "$GITHUB_STEP_SUMMARY"
