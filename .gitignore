@@ -161,3 +161,6 @@ vite.config.ts.timestamp-*
 tfplan
 
 .DS_Store
+
+# Zip de la Lambda de origen (terraform, plan D-012)
+infra/web/.build/

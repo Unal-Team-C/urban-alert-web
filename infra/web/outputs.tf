@@ -4,11 +4,14 @@ output "bucket_name" {
 }
 
 output "distribution_id" {
-  description = "CloudFront distribution ID (cache invalidations)."
-  value       = aws_cloudfront_distribution.sitio.id
+  description = "CloudFront distribution ID for cache invalidations; empty with the Lambda origin (plan D-012)."
+  value       = var.cdn_habilitado ? aws_cloudfront_distribution.sitio[0].id : ""
 }
 
 output "site_url" {
-  description = "Public HTTPS URL of the site."
-  value       = "https://${aws_cloudfront_distribution.sitio.domain_name}"
+  description = "Public HTTPS URL of the site (CloudFront, or the Lambda function URL while CloudFront is blocked)."
+  value = (var.cdn_habilitado
+    ? "https://${aws_cloudfront_distribution.sitio[0].domain_name}"
+    : trimsuffix(aws_lambda_function_url.origen[0].function_url, "/")
+  )
 }

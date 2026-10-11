@@ -1,5 +1,18 @@
 # CloudFront in front of the private bucket (spec RF-005, RF-006, RNF-001, RNF-002; plan D-006).
+# Only with cdn_habilitado = true: the account must be verified by AWS Support first (plan D-012).
+moved {
+  from = aws_cloudfront_origin_access_control.sitio
+  to   = aws_cloudfront_origin_access_control.sitio[0]
+}
+
+moved {
+  from = aws_cloudfront_function.indice
+  to   = aws_cloudfront_function.indice[0]
+}
+
 resource "aws_cloudfront_origin_access_control" "sitio" {
+  count = var.cdn_habilitado ? 1 : 0
+
   name                              = var.nombre
   description                       = "UrbanAlert web: CloudFront reads the private site bucket"
   origin_access_control_origin_type = "s3"
@@ -9,6 +22,8 @@ resource "aws_cloudfront_origin_access_control" "sitio" {
 
 # /mapa/ -> /mapa/index.html: S3 behind OAC does not resolve folder indexes (funciones/indice.js has its tests).
 resource "aws_cloudfront_function" "indice" {
+  count = var.cdn_habilitado ? 1 : 0
+
   name    = "${var.nombre}-indice"
   runtime = "cloudfront-js-2.0"
   comment = "Folder index for the Next.js static export"
@@ -19,10 +34,14 @@ resource "aws_cloudfront_function" "indice" {
 # Managed policies: caching that honours the Cache-Control of each object (set by scripts/publicar-sitio.sh)
 # and the standard security headers (HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy).
 data "aws_cloudfront_cache_policy" "caching_optimized" {
+  count = var.cdn_habilitado ? 1 : 0
+
   name = "Managed-CachingOptimized"
 }
 
 data "aws_cloudfront_response_headers_policy" "security_headers" {
+  count = var.cdn_habilitado ? 1 : 0
+
   name = "Managed-SecurityHeadersPolicy"
 }
 
@@ -31,6 +50,8 @@ locals {
 }
 
 resource "aws_cloudfront_distribution" "sitio" {
+  count = var.cdn_habilitado ? 1 : 0
+
   enabled             = true
   comment             = "UrbanAlert web frontend"
   default_root_object = "index.html"
@@ -41,7 +62,7 @@ resource "aws_cloudfront_distribution" "sitio" {
   origin {
     origin_id                = local.origen_s3
     domain_name              = aws_s3_bucket.sitio.bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.sitio.id
+    origin_access_control_id = aws_cloudfront_origin_access_control.sitio[0].id
   }
 
   default_cache_behavior {
@@ -50,12 +71,12 @@ resource "aws_cloudfront_distribution" "sitio" {
     allowed_methods            = ["GET", "HEAD", "OPTIONS"]
     cached_methods             = ["GET", "HEAD"]
     compress                   = true
-    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_optimized.id
-    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.security_headers.id
+    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_optimized[0].id
+    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.security_headers[0].id
 
     function_association {
       event_type   = "viewer-request"
-      function_arn = aws_cloudfront_function.indice.arn
+      function_arn = aws_cloudfront_function.indice[0].arn
     }
   }
 

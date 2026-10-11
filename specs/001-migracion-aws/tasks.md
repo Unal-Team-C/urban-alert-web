@@ -52,8 +52,8 @@ Aprobada por el usuario el 2026-10-11 («Let's use the lambda only»).
 
 - [x] T016 Registrar la enmienda (spec §11, plan D-012, tareas) — archivos: specs/001-migracion-aws/* — cubre: — — verifica: revisión
 - [x] T017 Escribir la función de origen y sus pruebas con un S3 falso — archivos: infra/web/origen/index.mjs, infra/web/origen/index.test.mjs — cubre: RF-005, RF-006, RNF-001, RNF-002 — verifica: `node --test infra/web/origen/index.test.mjs` en verde
-- [~] T018 Añadir `cdn_habilitado` y los recursos de la Lambda (rol, logs, función, URL, permisos) a `infra/web`, salidas comunes y pruebas de ambas variantes; lock con el proveedor archive — archivos: infra/web/*.tf, infra/web/terraform.tfvars, infra/web/tests/web.tftest.hcl, infra/web/.terraform.lock.hcl — cubre: RF-005, RF-006, RF-007 — verifica: `$TF fmt -check`, `validate`, `test` — depende: T017
-- [ ] T019 Invalidación opcional en `publicar-sitio.sh`, pruebas del origen en el job test y documentación (README, CLAUDE.md, bootstrap, costes) — archivos: scripts/publicar-sitio.sh, .github/workflows/provision.yml, README.md, CLAUDE.md, infra/bootstrap/README.md — cubre: RF-008, RF-014 — verifica: shellcheck, actionlint, enlaces — depende: T018
+- [x] T018 Añadir `cdn_habilitado` y los recursos de la Lambda (rol, logs, función, URL, permisos) a `infra/web`, salidas comunes y pruebas de ambas variantes; lock con el proveedor archive — archivos: infra/web/*.tf, infra/web/terraform.tfvars, infra/web/tests/web.tftest.hcl, infra/web/.terraform.lock.hcl — cubre: RF-005, RF-006, RF-007 — verifica: `$TF fmt -check`, `validate`, `test` — depende: T017
+- [~] T019 Invalidación opcional en `publicar-sitio.sh`, pruebas del origen en el job test y documentación (README, CLAUDE.md, bootstrap, costes) — archivos: scripts/publicar-sitio.sh, .github/workflows/provision.yml, README.md, CLAUDE.md, infra/bootstrap/README.md — cubre: RF-008, RF-014 — verifica: shellcheck, actionlint, enlaces — depende: T018
 
 ## Correcciones de verificación
 

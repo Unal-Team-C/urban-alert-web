@@ -78,3 +78,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T017 hecha
 - Origen Lambda (infra/web/origen/index.mjs): crearHandler(leer) con índices, tipos (corrige binary/octet-stream), caché, ETag/304, 404.html, 405, HEAD, cabeceras de seguridad; adaptador S3 con import dinámico del SDK del runtime (403/404 → 404). 10 pruebas node:test en verde, eslint limpio.
+
+## 2026-10-11 · 001-migracion-aws · T018 hecha
+- infra/web: cdn_habilitado=false y concurrencia_reservada=-1 en tfvars; CloudFront con count y moved (OAC y función existentes se eliminarán en el próximo apply); lambda.tf (rol con políticas en línea, log group 30 días, archive_file → .build/origen.zip ignorado, nodejs22.x arm64 256 MB, function URL NONE, permisos InvokeFunctionUrl + InvokeFunction con invoked_via_function_url); salidas según variante. Lock con archive 2.8.1. 8 runs de terraform test en verde, fmt/validate OK.

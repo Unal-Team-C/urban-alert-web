@@ -36,23 +36,28 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "sitio" {
   }
 }
 
-# Read access only for this distribution (AWS:SourceArn), over HTTPS.
+# Read access only for this distribution (AWS:SourceArn), over HTTPS. With the Lambda origin (plan D-012) no
+# principal is allowed here: the function reads with its own role (lambda.tf).
 data "aws_iam_policy_document" "sitio" {
-  statement {
-    sid       = "CloudFrontReadOnly"
-    effect    = "Allow"
-    actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.sitio.arn}/*"]
+  dynamic "statement" {
+    for_each = aws_cloudfront_distribution.sitio
 
-    principals {
-      type        = "Service"
-      identifiers = ["cloudfront.amazonaws.com"]
-    }
+    content {
+      sid       = "CloudFrontReadOnly"
+      effect    = "Allow"
+      actions   = ["s3:GetObject"]
+      resources = ["${aws_s3_bucket.sitio.arn}/*"]
 
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-      values   = [aws_cloudfront_distribution.sitio.arn]
+      principals {
+        type        = "Service"
+        identifiers = ["cloudfront.amazonaws.com"]
+      }
+
+      condition {
+        test     = "StringEquals"
+        variable = "AWS:SourceArn"
+        values   = [statement.value.arn]
+      }
     }
   }
 
