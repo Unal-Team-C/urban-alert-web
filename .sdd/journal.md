@@ -81,3 +81,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T018 hecha
 - infra/web: cdn_habilitado=false y concurrencia_reservada=-1 en tfvars; CloudFront con count y moved (OAC y función existentes se eliminarán en el próximo apply); lambda.tf (rol con políticas en línea, log group 30 días, archive_file → .build/origen.zip ignorado, nodejs22.x arm64 256 MB, function URL NONE, permisos InvokeFunctionUrl + InvokeFunction con invoked_via_function_url); salidas según variante. Lock con archive 2.8.1. 8 runs de terraform test en verde, fmt/validate OK.
+
+## 2026-10-11 · 001-migracion-aws · T019 hecha
+- publicar-sitio.sh sin invalidación con distribución vacía; job test ejecuta las pruebas del origen; README (estado temporal, arquitectura Lambda, costes, cómo volver a CloudFront), CLAUDE.md (gotchas de function URL y políticas en línea), bootstrap (política multimedia verificada en su README: mismo rol; Multimedia ya sufrió el mismo bloqueo de CloudFront, su D-015). shellcheck, actionlint, 15 pruebas node y enlaces OK.

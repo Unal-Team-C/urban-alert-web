@@ -42,7 +42,7 @@ Dependencias explícitas: añadir `— depende: T00X`.
 ## Fase 5: Pulido
 
 - [x] T012 Reescribir el README (URL, arquitectura, costes, arranque, flujos, desarrollo local) y completar CLAUDE.md — archivos: README.md, CLAUDE.md — cubre: RF-014, RNF-003 — verifica: revisión; enlaces relativos existen
-- [!] T013 Primer Provision en `main` (requiere: política aplicada por un administrador, secreto `AWS_ROLE_ARN` y variable `AWS_REGION` en el repo, y push autorizado por el usuario) — archivos: — — cubre: MS-001, MS-002 — verifica: workflow en verde; páginas cargan datos del gateway desde `site_url` — bloqueada: la cuenta debe ser verificada por AWS Support para crear distribuciones de CloudFront (rerun del run 38180550392)
+- [~] T013 Primer Provision en `main` (requiere: política aplicada por un administrador, secreto `AWS_ROLE_ARN` y variable `AWS_REGION` en el repo, y push autorizado por el usuario) — archivos: — — cubre: MS-001, MS-002 — verifica: workflow en verde; páginas cargan datos del gateway desde `site_url`
 - [ ] T014 Segundo Provision sin cambios — cubre: MS-003 — verifica: `apply` informa 0 cambios — depende: T013
 - [ ] T015 Deprovision + Provision (solo con autorización expresa del usuario) — cubre: MS-004, HU-4 — verifica: sin recursos `urban-alert-web` tras Deprovision; plataforma intacta — depende: T014
 
@@ -53,7 +53,7 @@ Aprobada por el usuario el 2026-10-11 («Let's use the lambda only»).
 - [x] T016 Registrar la enmienda (spec §11, plan D-012, tareas) — archivos: specs/001-migracion-aws/* — cubre: — — verifica: revisión
 - [x] T017 Escribir la función de origen y sus pruebas con un S3 falso — archivos: infra/web/origen/index.mjs, infra/web/origen/index.test.mjs — cubre: RF-005, RF-006, RNF-001, RNF-002 — verifica: `node --test infra/web/origen/index.test.mjs` en verde
 - [x] T018 Añadir `cdn_habilitado` y los recursos de la Lambda (rol, logs, función, URL, permisos) a `infra/web`, salidas comunes y pruebas de ambas variantes; lock con el proveedor archive — archivos: infra/web/*.tf, infra/web/terraform.tfvars, infra/web/tests/web.tftest.hcl, infra/web/.terraform.lock.hcl — cubre: RF-005, RF-006, RF-007 — verifica: `$TF fmt -check`, `validate`, `test` — depende: T017
-- [~] T019 Invalidación opcional en `publicar-sitio.sh`, pruebas del origen en el job test y documentación (README, CLAUDE.md, bootstrap, costes) — archivos: scripts/publicar-sitio.sh, .github/workflows/provision.yml, README.md, CLAUDE.md, infra/bootstrap/README.md — cubre: RF-008, RF-014 — verifica: shellcheck, actionlint, enlaces — depende: T018
+- [x] T019 Invalidación opcional en `publicar-sitio.sh`, pruebas del origen en el job test y documentación (README, CLAUDE.md, bootstrap, costes) — archivos: scripts/publicar-sitio.sh, .github/workflows/provision.yml, README.md, CLAUDE.md, infra/bootstrap/README.md — cubre: RF-008, RF-014 — verifica: shellcheck, actionlint, enlaces — depende: T018
 
 ## Correcciones de verificación
 

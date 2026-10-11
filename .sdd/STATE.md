@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T019
+tarea_actual: T013
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T019: publicar-sitio.sh con distribución opcional (vacía → sin invalidación), job test con node --test infra/web/origen/index.test.mjs, README (arquitectura temporal, costes Lambda, volver a CloudFront), CLAUDE.md, bootstrap README (políticas multimedia/terraform reutilizadas). Verifica: shellcheck, actionlint, enlaces.
+T013 con el origen Lambda (D-012): push a main (autorizado por el usuario) → Provision crea la Lambda y su URL y elimina OAC y función de CloudFront; revisar log, smoke, y verificar MS-001/MS-002 en site_url (function URL) con el navegador.
 
 ## Contexto de trabajo
 
@@ -23,6 +23,5 @@ T019: publicar-sitio.sh con distribución opcional (vacía → sin invalidación
 
 ## Bloqueos / preguntas abiertas
 
-- T013: verificación de la cuenta por AWS Support para CloudFront. Ya creados (en el estado): bucket urban-alert-web-348364742283 con BPA/ownership/SSE, OAC EXJOOM023J37H, función urban-alert-web-indice. Falta distribución y política del bucket.
-- Alternativa sin CloudFront (S3 website, HTTP y bucket público) incumple RF-006/RF-007: solo con cambio de spec.
+- CloudFront: caso en AWS Support (verificación de cuenta). Al resolverse: cdn_habilitado = true.
 - T015 (Deprovision + Provision) solo con autorización expresa.

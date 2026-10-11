@@ -2,9 +2,24 @@
 
 Portal web de UrbanAlert: creación de reportes, mapa de daños e histórico para el administrador. Next.js 16 (App Router), React 19, Tailwind 4 y Leaflet. Toda la aplicación se ejecuta en el navegador y llama a los microservicios a través del API Gateway compartido.
 
-En AWS se publica como **sitio estático** en S3 detrás de CloudFront (cuenta `348364742283`). Spec, plan y decisiones en [specs/001-migracion-aws](specs/001-migracion-aws/).
+En AWS se publica como **sitio estático** en un bucket S3 privado (cuenta `348364742283`). Spec, plan y decisiones en [specs/001-migracion-aws](specs/001-migracion-aws/).
 
-## Arquitectura en AWS
+> **Estado actual: origen temporal con Lambda.** AWS no deja crear distribuciones de CloudFront hasta verificar la cuenta (caso abierto en AWS Support). Mientras tanto el sitio lo sirve una función Lambda con URL HTTPS que lee el bucket privado (`cdn_habilitado = false` en [`infra/web/terraform.tfvars`](infra/web/terraform.tfvars), plan D-012). Cuando la cuenta esté verificada: poner `cdn_habilitado = true` en un commit a `main`; Provision crea CloudFront y elimina la Lambda. La URL del sitio cambia.
+
+### Origen temporal (Lambda function URL)
+
+```text
+ Navegador ──HTTPS──► Lambda function URL (https://<id>.lambda-url.us-east-2.on.aws)
+   │                    urban-alert-web-origen: /mapa/ → mapa/index.html, 404.html con 404, solo GET/HEAD,
+   │                    Cache-Control y ETag del objeto (304), cabeceras de seguridad
+   │                    └─ rol propio (solo s3:GetObject) ──► S3 urban-alert-web-348364742283 (privado)
+   │
+   └──HTTPS (CORS)──► API Gateway compartido (urban-alert-plataforma)
+```
+
+Sin caché de borde ni WAF (AWS WAF no admite function URLs). Código y pruebas: [`infra/web/origen/`](infra/web/origen/), [`infra/web/lambda.tf`](infra/web/lambda.tf).
+
+## Arquitectura en AWS (con CloudFront, `cdn_habilitado = true`)
 
 ```text
  Navegador ──HTTPS──► CloudFront (https://<id>.cloudfront.net)
@@ -24,6 +39,7 @@ En AWS se publica como **sitio estático** en S3 detrás de CloudFront (cuenta `
 | Pieza | Dónde |
 |---|---|
 | Bucket privado, política solo para la distribución | [`infra/web/main.tf`](infra/web/main.tf) |
+| Origen temporal Lambda (plan D-012) | [`infra/web/lambda.tf`](infra/web/lambda.tf), [`infra/web/origen/index.mjs`](infra/web/origen/index.mjs) |
 | CloudFront, OAC, función de índices | [`infra/web/cloudfront.tf`](infra/web/cloudfront.tf), [`infra/web/funciones/indice.js`](infra/web/funciones/indice.js) |
 | Pruebas de Terraform (`mock_provider`) | [`infra/web/tests/web.tftest.hcl`](infra/web/tests/web.tftest.hcl) |
 | URL del gateway en las llamadas | `urlApi()` en [`app/lib/api.ts`](app/lib/api.ts) |
@@ -35,12 +51,12 @@ La URL pública del sitio aparece en el resumen de cada ejecución de Provision 
 
 | Workflow | Cuándo | Qué hace |
 |---|---|---|
-| [Provision](.github/workflows/provision.yml) | Cada push a `main` | Lint, pruebas, build, pruebas de la función, `fmt`/`validate`/`test` de Terraform, actionlint, shellcheck → [comprueba la plataforma](scripts/check-platform.sh) y lee la URL del gateway → `apply` → build con `NEXT_PUBLIC_API_URL` → [publica](scripts/publicar-sitio.sh) (sync + invalidación) → [prueba de humo](scripts/smoke-web.sh) → resumen |
-| [Deprovision](.github/workflows/deprovision.yml) | Solo a mano | Exige escribir `urban-alert-web` → `destroy` (distribución, función, OAC, bucket y su contenido) |
+| [Provision](.github/workflows/provision.yml) | Cada push a `main` | Lint, pruebas, build, pruebas de la función de CloudFront y del origen Lambda, `fmt`/`validate`/`test` de Terraform, actionlint, shellcheck → [comprueba la plataforma](scripts/check-platform.sh) y lee la URL del gateway → `apply` → build con `NEXT_PUBLIC_API_URL` → [publica](scripts/publicar-sitio.sh) (sync; invalidación solo con CloudFront) → [prueba de humo](scripts/smoke-web.sh) → resumen |
+| [Deprovision](.github/workflows/deprovision.yml) | Solo a mano | Exige escribir `urban-alert-web` → `destroy` (distribución o Lambda, bucket y su contenido) |
 
 Comparten el grupo de `concurrency` `urban-alert-web-aws`: nunca se ejecutan a la vez. Desaprovisionar el frontend no afecta a la plataforma ni a los microservicios.
 
-**Caché**: los archivos de `_next/static/` (con hash en el nombre) se sirven con `max-age=31536000, immutable` y no se borran al publicar, para no romper pestañas abiertas; el HTML y el resto se revalidan en cada visita (`max-age=0`). Cada publicación invalida `/*`.
+**Caché**: los archivos de `_next/static/` (con hash en el nombre) se sirven con `max-age=31536000, immutable` y no se borran al publicar, para no romper pestañas abiertas; el HTML y el resto se revalidan en cada visita (`max-age=0`). Con CloudFront, cada publicación invalida `/*`.
 
 ## Costes
 
@@ -49,16 +65,18 @@ Estimación mensual con tráfico de un proyecto académico:
 | Recurso | Precio | Mes |
 |---|---|---|
 | S3 (≈ 2 MB por publicación) | 0,023 USD/GB-mes + peticiones | ~0 |
-| CloudFront | Capa gratuita permanente: 1 TB de salida y 10 M peticiones al mes | 0 |
-| CloudFront Functions | Capa gratuita: 2 M invocaciones al mes | 0 |
-| Invalidaciones | 1.000 rutas al mes gratis (cada publicación usa 1: `/*`) | 0 |
+| Lambda + function URL (origen temporal) | Capa gratuita: 1 M peticiones y 400.000 GB-s al mes; la URL no tiene coste propio | 0 |
+| CloudWatch Logs del origen (30 días) | 0,50 USD/GB ingerido | ~0 |
+| CloudFront (cuando se habilite) | Capa gratuita permanente: 1 TB de salida y 10 M peticiones al mes | 0 |
+| CloudFront Functions (cuando se habilite) | Capa gratuita: 2 M invocaciones al mes | 0 |
+| Invalidaciones (cuando se habilite) | 1.000 rutas al mes gratis (cada publicación usa 1: `/*`) | 0 |
 | **Total** | | **~0 USD** |
 
 No hay recursos con coste por hora. Los recursos de `_next/static/` de publicaciones anteriores se acumulan en el bucket (unos MB por publicación); un Deprovision los elimina.
 
 ## Arranque (una sola vez)
 
-El rol de GitHub necesita una política nueva para CloudFront, que aplica un administrador, y el repo necesita el secreto `AWS_ROLE_ARN` y la variable `AWS_REGION`. Pasos en **[infra/bootstrap/README.md](infra/bootstrap/README.md)**. Estado de Terraform: `s3://urban-alert-tfstate-348364742283/web/terraform.tfstate`.
+El rol de GitHub necesita una política nueva para CloudFront, que aplica un administrador (el origen Lambda usa políticas que ya existen), y el repo necesita el secreto `AWS_ROLE_ARN` y la variable `AWS_REGION`. Pasos en **[infra/bootstrap/README.md](infra/bootstrap/README.md)**. Estado de Terraform: `s3://urban-alert-tfstate-348364742283/web/terraform.tfstate`.
 
 ## Desarrollo local
 
@@ -73,7 +91,7 @@ Sin `NEXT_PUBLIC_API_URL`, `npm run dev` reenvía `/api/v1/reportes`, `/api/v1/u
 
 ```bash
 npm run lint && npm test && npm run build
-node --test infra/web/funciones/indice.test.mjs
+node --test infra/web/funciones/indice.test.mjs infra/web/origen/index.test.mjs
 ```
 
 Terraform, actionlint y shellcheck con Podman (`podman machine start`), desde la raíz:
@@ -92,7 +110,8 @@ podman run --rm -v "$PWD":/mnt -w /mnt docker.io/koalaman/shellcheck:v0.10.0 scr
 
 - **Crear usuarios** desde el portal responde 403 en AWS: el gateway exige firma de AWS en `POST /api/v1/usuarios` (decisión de la spec 001 de `urban-alert-usuarios`). El portal muestra el error.
 - **CORS**: el gateway admite cualquier origen (`cors_origenes = ["*"]` en `urban-alert-plataforma`). Se recomienda restringirlo a la URL del sitio desde ese repo.
-- Sin dominio propio: se usa la URL `*.cloudfront.net`.
+- Sin dominio propio: se usa la URL de la function URL (o `*.cloudfront.net` cuando se habilite CloudFront).
+- Mientras dure el origen Lambda: sin caché de borde, sin WAF y un arranque en frío de unos cientos de ms en la primera petición.
 
 ## Desarrollo con SDD
 

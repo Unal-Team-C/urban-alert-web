@@ -45,8 +45,8 @@ jobs:
       - name: Build (static export, without gateway URL)
         run: npm run build
 
-      - name: CloudFront Function tests
-        run: node --test infra/web/funciones/indice.test.mjs
+      - name: CloudFront Function and Lambda origin tests
+        run: node --test infra/web/funciones/indice.test.mjs infra/web/origen/index.test.mjs
 
       - uses: hashicorp/setup-terraform@v3
         with:
@@ -96,7 +96,7 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
           terraform_wrapper: false
 
-      - name: Apply infrastructure (private bucket, CloudFront)
+      - name: Apply infrastructure (private bucket; CloudFront or the temporary Lambda origin, plan D-012)
         id: infra
         run: |
           terraform -chdir=infra/web init -input=false
@@ -119,7 +119,7 @@ jobs:
           npm ci --no-audit --no-fund
           npm run build
 
-      - name: Publish (upload and cache invalidation)
+      - name: Publish (upload and, with CloudFront, cache invalidation)
         env:
           BUCKET: ${{ steps.infra.outputs.bucket }}
           DISTRIBUTION: ${{ steps.infra.outputs.distribution }}
