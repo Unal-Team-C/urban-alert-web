@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T017
+tarea_actual: T018
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T017: infra/web/origen/index.mjs (crearHandler(s3, bucket) + handler con S3Client del runtime; GET/HEAD, índices, 304, 404.html, cabeceras de seguridad, base64) e index.test.mjs con S3 falso. Verifica: node --test infra/web/origen/index.test.mjs.
+T018: infra/web: variable cdn_habilitado (false) y concurrencia_reservada (-1); count en recursos de CloudFront; rol urban-alert-web-origen (políticas en línea: s3:GetObject del bucket, logs), log group /aws/lambda/urban-alert-web-origen 30 días, archive_file + aws_lambda_function nodejs22.x, function URL NONE, permisos InvokeFunctionUrl e InvokeFunction (invoked_via_function_url); salidas site_url/distribution_id según la variante; tests de ambas variantes; lock con hashicorp/archive. Verifica: $TF fmt/validate/test.
 
 ## Contexto de trabajo
 

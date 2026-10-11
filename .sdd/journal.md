@@ -75,3 +75,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T016 hecha
 - Enmienda D-012 registrada: CloudFront bloqueado por verificación de cuenta → Lambda function URL sobre el bucket privado, sin WAF, conmutada por cdn_habilitado. Aprobada por el usuario («Let's use the lambda only»). WAF descartado (no admite function URLs ni HTTP APIs).
+
+## 2026-10-11 · 001-migracion-aws · T017 hecha
+- Origen Lambda (infra/web/origen/index.mjs): crearHandler(leer) con índices, tipos (corrige binary/octet-stream), caché, ETag/304, 404.html, 405, HEAD, cabeceras de seguridad; adaptador S3 con import dinámico del SDK del runtime (403/404 → 404). 10 pruebas node:test en verde, eslint limpio.
