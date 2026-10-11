@@ -16,7 +16,7 @@ AWS (cuenta 348364742283): `infra/web` (S3 privado + CloudFront con OAC y funci�
 
 ## Validación local (Podman para lo que no está instalado)
 
-- `npm run lint && npm test && npm run build` y `node --test infra/web/funciones/`.
+- `npm run lint && npm test && npm run build` y `node --test infra/web/funciones/indice.test.mjs`.
 - Terraform, actionlint y shellcheck: comandos en el README («Validación local»).
 
 ## Gotchas
@@ -25,6 +25,7 @@ AWS (cuenta 348364742283): `infra/web` (S3 privado + CloudFront con OAC y funci�
 - `tsc --noEmit` sin un `next build` previo falla por `PageProps`/`LayoutProps` (tipos generados en `.next/types`).
 - `next/link` añade la barra final (`trailingSlash`) solo en el build: en las pruebas los `href` salen sin ella.
 - En `terraform test`, comparar `list == tuple` siempre da false: usar `toset(...)` a ambos lados.
+- `node --test <carpeta>` funciona en Node 26 pero en Node 24 (CI) trata la carpeta como un módulo: pasar el archivo `.test.mjs`.
 - macOS trae bash 3.2: los scripts no usan funciones de bash 4.
 
 ## Desarrollo guiado por especificaciones (SDD)

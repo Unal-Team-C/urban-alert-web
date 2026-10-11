@@ -73,7 +73,7 @@ Sin `NEXT_PUBLIC_API_URL`, `npm run dev` reenvía `/api/v1/reportes`, `/api/v1/u
 
 ```bash
 npm run lint && npm test && npm run build
-node --test infra/web/funciones/
+node --test infra/web/funciones/indice.test.mjs
 ```
 
 Terraform, actionlint y shellcheck con Podman (`podman machine start`), desde la raíz:

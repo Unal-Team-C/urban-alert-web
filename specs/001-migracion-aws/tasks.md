@@ -29,7 +29,7 @@ Dependencias explícitas: añadir `— depende: T00X`.
 ## Fase 3: Infraestructura
 
 - [x] T005 [P] Documentar el arranque (recursos reutilizados, política nueva `github-actions-urban-alert-web`, secreto y variable de GitHub) — archivos: infra/bootstrap/README.md, infra/bootstrap/github-web-policy.json — cubre: RF-012, RF-014 — verifica: JSON válido (`node -e 'JSON.parse(...)'`) y cada acción de CloudFront que usa el stack aparece en la política
-- [x] T006 [P] Escribir la CloudFront Function de índice y su prueba — archivos: infra/web/funciones/indice.js, infra/web/funciones/indice.test.mjs — cubre: RF-005 — verifica: `node --test infra/web/funciones/` en verde
+- [x] T006 [P] Escribir la CloudFront Function de índice y su prueba — archivos: infra/web/funciones/indice.js, infra/web/funciones/indice.test.mjs — cubre: RF-005 — verifica: `node --test infra/web/funciones/indice.test.mjs` en verde
 - [x] T007 Crear el stack `infra/web` (bucket privado, OAC, política del bucket, función, distribución, salidas) y su lock con 3 plataformas — archivos: infra/web/*.tf, infra/web/terraform.tfvars, infra/web/.terraform.lock.hcl — cubre: RF-006, RF-007, RNF-001, RNF-002 — verifica: `$TF fmt -check -recursive infra` y `$TF -chdir=infra/web validate` — depende: T006
 - [x] T008 Escribir las pruebas de Terraform de las garantías (P7) — archivos: infra/web/tests/web.tftest.hcl — cubre: RF-005, RF-006, RF-007, RNF-002 — verifica: `$TF -chdir=infra/web test` en verde — depende: T007
 
@@ -42,7 +42,7 @@ Dependencias explícitas: añadir `— depende: T00X`.
 ## Fase 5: Pulido
 
 - [x] T012 Reescribir el README (URL, arquitectura, costes, arranque, flujos, desarrollo local) y completar CLAUDE.md — archivos: README.md, CLAUDE.md — cubre: RF-014, RNF-003 — verifica: revisión; enlaces relativos existen
-- [!] T013 Primer Provision en `main` (requiere: política aplicada por un administrador, secreto `AWS_ROLE_ARN` y variable `AWS_REGION` en el repo, y push autorizado por el usuario) — archivos: — — cubre: MS-001, MS-002 — verifica: workflow en verde; páginas cargan datos del gateway desde `site_url` — bloqueada: espera al usuario (política aplicada por un administrador, secreto/variable en GitHub y push a main)
+- [~] T013 Primer Provision en `main` (requiere: política aplicada por un administrador, secreto `AWS_ROLE_ARN` y variable `AWS_REGION` en el repo, y push autorizado por el usuario) — archivos: — — cubre: MS-001, MS-002 — verifica: workflow en verde; páginas cargan datos del gateway desde `site_url`
 - [ ] T014 Segundo Provision sin cambios — cubre: MS-003 — verifica: `apply` informa 0 cambios — depende: T013
 - [ ] T015 Deprovision + Provision (solo con autorización expresa del usuario) — cubre: MS-004, HU-4 — verifica: sin recursos `urban-alert-web` tras Deprovision; plataforma intacta — depende: T014
 

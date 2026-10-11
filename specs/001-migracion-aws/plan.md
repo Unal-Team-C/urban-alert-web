@@ -138,7 +138,7 @@ No aplica.
 
 - **Unitarias (Vitest)**: `urlApi` sin base, con base, con barra final (`vi.stubEnv`); llamadas existentes siguen usando rutas relativas en pruebas; detalle con `?id=`, sin `id`, 404.
 - **Build**: `npm run build` genera `out/index.html`, `out/mapa/index.html`, `out/historial/index.html`, `out/historial/detalle/index.html`, `out/reportes/nuevo/index.html`, `out/404.html`; con `NEXT_PUBLIC_API_URL=https://ejemplo.invalid` la cadena aparece en `out/_next/static/**.js`.
-- **Función CloudFront**: `node --test infra/web/funciones/` (URIs `/`, `/mapa/`, `/mapa`, `/_next/x.js`, `/historial/detalle/?id` → la query va aparte).
+- **Función CloudFront**: `node --test infra/web/funciones/indice.test.mjs` (URIs `/`, `/mapa/`, `/mapa`, `/_next/x.js`, `/historial/detalle/?id` → la query va aparte).
 - **Terraform**: `terraform test` con `mock_provider` (bloqueo público, propiedad, política solo `cloudfront.amazonaws.com` con `AWS:SourceArn`, `redirect-to-https`, OAC `sigv4/always`, función asociada, error 404, etiquetas).
 - **Smoke (Provision)**: `smoke-web.sh <site_url> <api_url>`.
 

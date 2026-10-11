@@ -1,4 +1,4 @@
-// node --test infra/web/funciones/ : la función no es un módulo (así la exige CloudFront), se evalúa su texto.
+// node --test infra/web/funciones/indice.test.mjs : la función no es un módulo (así la exige CloudFront), se evalúa su texto.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";

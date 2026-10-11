@@ -46,7 +46,7 @@ jobs:
         run: npm run build
 
       - name: CloudFront Function tests
-        run: node --test infra/web/funciones/
+        run: node --test infra/web/funciones/indice.test.mjs
 
       - uses: hashicorp/setup-terraform@v3
         with:

@@ -57,3 +57,9 @@
 
 ## 2026-10-11 · 001-migracion-aws · T013 bloqueada
 - T001–T012 hechas y commiteadas en local (sin push). T013 espera al usuario: política de CloudFront (administrador), AWS_ROLE_ARN/AWS_REGION en GitHub y push a main.
+
+## 2026-10-11 · 001-migracion-aws · T013 push
+- Push de main (66679bb..e4c350d) autorizado por el usuario. Provision run 38180467808.
+
+## 2026-10-11 · 001-migracion-aws · T013 corrección
+- Run 38180467808 falló en el job test: `node --test infra/web/funciones/` en Node 24 trata la carpeta como módulo (MODULE_NOT_FOUND); local (Node 26) pasaba. Se pasa el archivo indice.test.mjs en workflow, README, CLAUDE.md y plan. Nada se tocó en AWS.

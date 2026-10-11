@@ -8,11 +8,11 @@
 feature_activa: 001-migracion-aws
 fase: implement
 tarea_actual: T013
-estado_tarea: bloqueada
+estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T013 bloqueada en el usuario: (1) un administrador aplica infra/bootstrap/github-web-policy.json al rol de GitHub; (2) secreto AWS_ROLE_ARN y variable AWS_REGION en Unal-Team-C/urban-alert-web; (3) push a main autorizado por el usuario (git push origin main). Después revisar el run de Provision, comprobar MS-001/MS-002 en site_url y seguir con T014 (segundo Provision, 0 cambios).
+T013: push a main hecho (e4c350d, autorizado por el usuario); Provision run 38180467808 en curso. Revisar el resultado: si falla en configure-aws-credentials faltan AWS_ROLE_ARN/AWS_REGION (gh secret/variable list salieron vacíos); si falla con AccessDenied de CloudFront falta la política de infra/bootstrap. Si pasa: comprobar MS-001/MS-002 en site_url.
 
 ## Contexto de trabajo
 
