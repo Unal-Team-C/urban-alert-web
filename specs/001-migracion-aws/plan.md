@@ -134,6 +134,15 @@ No aplica.
 ### D-011: CORS sin cambios en la plataforma
 - **Decisión**: no tocar `cors_origenes` (`*`). Recomendación documentada: restringirlo a `site_url` desde el repo de la plataforma cuando el sitio exista.
 
+### D-012: Origen temporal con Lambda function URL mientras CloudFront está bloqueado (enmienda 2026-10-11)
+- **Contexto**: el primer Provision creó bucket, OAC y función de CloudFront, pero `CreateDistribution` respondió 403 «Your account must be verified before you can add new CloudFront resources». Lo resuelve AWS Support (caso abierto por el usuario); no hay cambio de IAM ni de código que lo evite.
+- **Decisión**: variable `cdn_habilitado` (en `terraform.tfvars`, `false` mientras dure el bloqueo). Con `false`, el sitio lo sirve la función `urban-alert-web-origen` (Node.js 22, 256 MB) con una function URL pública (`authorization_type = NONE`, solo HTTPS): resuelve índices de carpeta como `funciones/indice.js`, lee el objeto del bucket privado con su rol (solo `s3:GetObject`), devuelve su `Content-Type` y `Cache-Control` (los pone `publicar-sitio.sh`), responde 304 con `If-None-Match`, sirve `404.html` con 404 ante objetos inexistentes, acepta solo `GET`/`HEAD` (405 en otro caso) y añade las mismas cabeceras de seguridad que la política gestionada de CloudFront. Con `true`, vuelve la distribución (D-006) y la Lambda se elimina. La invalidación de caché se omite sin distribución.
+- **Alternativas consideradas**: S3 website (solo HTTP: el GPS del formulario exige contexto seguro, y bucket público: incumple RF-006/RF-007); REST API o ALB para poder poner WAF (WAF no admite function URLs ni HTTP APIs; coste y trabajo excesivos para algo temporal; el usuario descarta el WAF); Amplify Hosting (incierto que evite el bloqueo).
+- **Permisos**: los da la política `github-actions-urban-alert-multimedia` del rol compartido (`lambda:*` sobre `urban-alert-*`, `iam:PassRole` a Lambda, grupos `/aws/lambda/urban-alert-*`) y la de Terraform (roles `urban-alert-*` con políticas en línea). Sin pasos de arranque nuevos.
+- **Concurrencia reservada**: variable `concurrencia_reservada` (por defecto `-1`, sin reserva). Una cuenta con cuota de 10 ejecuciones concurrentes rechaza cualquier reserva (deben quedar 10 sin reservar); si la cuota es mayor, poner 10 en `terraform.tfvars`.
+- **Coste**: capa gratuita de Lambda (1 M peticiones y 400.000 GB-s al mes); logs 30 días. ≈ 0 USD (P5).
+- **Riesgos aceptados**: sin caché de borde (cada petición invoca la función en us-east-2); sin WAF; arranque en frío de ~200 ms en la primera petición.
+
 ## 9. Estrategia de pruebas
 
 - **Unitarias (Vitest)**: `urlApi` sin base, con base, con barra final (`vi.stubEnv`); llamadas existentes siguen usando rutas relativas en pruebas; detalle con `?id=`, sin `id`, 404.
@@ -141,6 +150,7 @@ No aplica.
 - **Función CloudFront**: `node --test infra/web/funciones/indice.test.mjs` (URIs `/`, `/mapa/`, `/mapa`, `/_next/x.js`, `/historial/detalle/?id` → la query va aparte).
 - **Terraform**: `terraform test` con `mock_provider` (bloqueo público, propiedad, política solo `cloudfront.amazonaws.com` con `AWS:SourceArn`, `redirect-to-https`, OAC `sigv4/always`, función asociada, error 404, etiquetas).
 - **Smoke (Provision)**: `smoke-web.sh <site_url> <api_url>`.
+- **Origen Lambda (D-012)**: `node --test infra/web/origen/index.test.mjs` con un cliente S3 falso (índices, tipos, caché, 304, 404, 405, HEAD, cabeceras de seguridad); `terraform test` de las dos variantes de `cdn_habilitado`.
 
 ## 10. Riesgos y mitigaciones
 

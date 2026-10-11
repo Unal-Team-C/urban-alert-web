@@ -72,3 +72,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T013 bloqueada por verificación de cuenta
 - Rerun del run 38180550392 con la política adjunta: IAM correcto; se crearon bucket (+BPA, ownership, SSE), OAC y función. CreateDistributionWithTags → 403 «Your account must be verified before you can add new CloudFront resources» (RequestID ddf2a519-094f-49a5-88c6-8f196c739737). Requiere caso en AWS Support; no hay cambio de IAM ni de código que lo resuelva.
+
+## 2026-10-11 · 001-migracion-aws · T016 hecha
+- Enmienda D-012 registrada: CloudFront bloqueado por verificación de cuenta → Lambda function URL sobre el bucket privado, sin WAF, conmutada por cdn_habilitado. Aprobada por el usuario («Let's use the lambda only»). WAF descartado (no admite function URLs ni HTTP APIs).

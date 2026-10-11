@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T013
-estado_tarea: bloqueada
+tarea_actual: T017
+estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T013 bloqueada por AWS: la cuenta debe verificarse para crear recursos de CloudFront (AccessDenied en CreateDistributionWithTags, RequestID ddf2a519-094f-49a5-88c6-8f196c739737). El usuario abre caso en AWS Support. Después: `gh run rerun 38180550392 --repo Unal-Team-C/urban-alert-web --failed` (o un push), revisar log y verificar MS-001/MS-002 en site_url.
+T017: infra/web/origen/index.mjs (crearHandler(s3, bucket) + handler con S3Client del runtime; GET/HEAD, índices, 304, 404.html, cabeceras de seguridad, base64) e index.test.mjs con S3 falso. Verifica: node --test infra/web/origen/index.test.mjs.
 
 ## Contexto de trabajo
 

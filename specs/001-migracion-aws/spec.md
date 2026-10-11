@@ -129,6 +129,7 @@ No aplica: el frontend no almacena datos.
 ### Sesión 2026-10-11
 - P: ¿Servidor Next.js o sitio estático? → R: sitio estático en S3 + CloudFront (recomendación aceptada por el usuario).
 - P: ¿Cómo apunta el frontend al gateway «dinámicamente»? → R: la URL se lee del contrato SSM de la plataforma en cada despliegue y se incrusta en el build (ver plan D-002).
+- P: AWS bloquea la creación de distribuciones de CloudFront hasta verificar la cuenta (caso abierto en AWS Support); ¿cómo se publica mientras tanto? → R: «Let's use the lambda only»: el sitio se sirve con una función Lambda con URL HTTPS que lee el bucket privado, sin WAF; CloudFront vuelve cuando la cuenta esté verificada (plan D-012). RF-006 y RF-007 se mantienen; RNF-001 se cumple con las cabeceras de caché del navegador (sin caché de borde).
 
 ---
 
