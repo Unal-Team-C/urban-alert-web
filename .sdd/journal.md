@@ -66,3 +66,9 @@
 
 ## 2026-10-11 · 001-migracion-aws · T013 bloqueada en permisos
 - Run 38180550392: tests en verde (incluido Terraform, actionlint, shellcheck en CI), OIDC y check-platform OK; terraform apply falla al leer data.aws_cloudfront_response_headers_policy: AccessDenied en ListResponseHeadersPolicies. La política de infra/bootstrap aún no está adjunta. Sin recursos creados.
+
+## 2026-10-11 · 001-migracion-aws · T013 rerun
+- Usuario: política github-actions-urban-alert-web adjunta. Rerun del job fallido del run 38180550392.
+
+## 2026-10-11 · 001-migracion-aws · T013 bloqueada por verificación de cuenta
+- Rerun del run 38180550392 con la política adjunta: IAM correcto; se crearon bucket (+BPA, ownership, SSE), OAC y función. CreateDistributionWithTags → 403 «Your account must be verified before you can add new CloudFront resources» (RequestID ddf2a519-094f-49a5-88c6-8f196c739737). Requiere caso en AWS Support; no hay cambio de IAM ni de código que lo resuelva.

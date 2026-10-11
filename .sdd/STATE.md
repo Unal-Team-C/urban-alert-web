@@ -12,7 +12,7 @@ estado_tarea: bloqueada
 
 ## Siguiente paso
 
-T013 bloqueada: run 38180550392 pasó tests, OIDC y plataforma, y falló en terraform apply con AccessDenied en cloudfront:ListResponseHeadersPolicies (la política github-actions-urban-alert-web no está adjunta al rol). Nada se creó. Cuando un administrador aplique infra/bootstrap/github-web-policy.json: `gh run rerun 38180550392 --repo Unal-Team-C/urban-alert-web` y verificar MS-001/MS-002 en site_url.
+T013 bloqueada por AWS: la cuenta debe verificarse para crear recursos de CloudFront (AccessDenied en CreateDistributionWithTags, RequestID ddf2a519-094f-49a5-88c6-8f196c739737). El usuario abre caso en AWS Support. Después: `gh run rerun 38180550392 --repo Unal-Team-C/urban-alert-web --failed` (o un push), revisar log y verificar MS-001/MS-002 en site_url.
 
 ## Contexto de trabajo
 
@@ -23,5 +23,6 @@ T013 bloqueada: run 38180550392 pasó tests, OIDC y plataforma, y falló en terr
 
 ## Bloqueos / preguntas abiertas
 
-- T013: falta adjuntar la política de CloudFront al rol de GitHub (administrador). Secreto/variable de GitHub ya funcionan.
+- T013: verificación de la cuenta por AWS Support para CloudFront. Ya creados (en el estado): bucket urban-alert-web-348364742283 con BPA/ownership/SSE, OAC EXJOOM023J37H, función urban-alert-web-indice. Falta distribución y política del bucket.
+- Alternativa sin CloudFront (S3 website, HTTP y bucket público) incumple RF-006/RF-007: solo con cambio de spec.
 - T015 (Deprovision + Provision) solo con autorización expresa.
