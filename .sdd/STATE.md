@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T005
+tarea_actual: T006
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T005: infra/bootstrap/README.md + github-web-policy.json (CloudFront: distribución, OAC, funciones, invalidaciones, etiquetas, Get/List de políticas gestionadas). Verifica: JSON válido y cubre las acciones del stack.
+T006: infra/web/funciones/indice.js (cloudfront-js-2.0, viewer-request: /x/ → /x/index.html; último segmento sin extensión → /index.html) + indice.test.mjs con node:test. Verifica: node --test infra/web/funciones/.
 
 ## Contexto de trabajo
 
