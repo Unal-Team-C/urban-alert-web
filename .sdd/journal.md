@@ -97,3 +97,7 @@
 
 ## 2026-10-11 · 001-migracion-aws · T014 hecha
 - Run 38185133312 (solo cambios de código): terraform apply «No changes. Your infrastructure matches the configuration» → MS-003.
+
+## 2026-10-11 · 001-migracion-aws · prueba de creación de reporte (MS-002)
+- A petición del usuario: formulario del sitio real rellenado (Vías y andenes / Grietas en la vía, descripción, punto 4.67719,-74.07171 en el mapa). El panel del navegador no permite adjuntar el archivo (fetch público→127.0.0.1 bloqueado por Local Network Access), así que se envió la misma petición multipart con curl al gateway con la imagen original (test-user).
+- Resultado: 503 de Reportes «No fue posible subir la imagen del reporte»: Multimedia responde 503 «Service unavailable» incluso en GET /api/v1/multimedia/images/{id}/metadata (backend DocumentDB caído, ya anotado en el repo de Reportes). No se creó el reporte. Fuera de este repo; MS-002 sigue pendiente de un reporte real.
