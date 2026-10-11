@@ -84,3 +84,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T019 hecha
 - publicar-sitio.sh sin invalidación con distribución vacía; job test ejecuta las pruebas del origen; README (estado temporal, arquitectura Lambda, costes, cómo volver a CloudFront), CLAUDE.md (gotchas de function URL y políticas en línea), bootstrap (política multimedia verificada en su README: mismo rol; Multimedia ya sufrió el mismo bloqueo de CloudFront, su D-015). shellcheck, actionlint, 15 pruebas node y enlaces OK.
+
+## 2026-10-11 · 001-migracion-aws · T013 push con origen Lambda
+- Usuario: «push it». Push de main con T013 (estado) y T016–T019.
