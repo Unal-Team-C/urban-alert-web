@@ -27,3 +27,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T003 hecha
 - Detalle movido a app/historial/detalle (useSearchParams en Suspense; sin id → no encontrado sin llamar a la API). Enlace /historial/detalle?id= (next/link añade la barra con trailingSlash). 103 tests en verde. Las specs antiguas (historico-*) siguen citando /historial/[id]: son historia, no se tocan.
+
+## 2026-10-11 · 001-migracion-aws · T004 hecha
+- next.config.ts por fase: build → output export + trailingSlash (out/ con index.html por ruta y 404.html, 1,5 MB); dev → rewrites sin trailingSlash (comprobado con next dev: proxy a localhost:5039). NEXT_PUBLIC_API_URL aparece en out/_next/static. Dockerfile eliminado; .env.example. Gotcha: node no importa next.config.ts directamente (next/constants sin .js); next dev reescribe next-env.d.ts (revertir).
