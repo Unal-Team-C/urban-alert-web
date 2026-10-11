@@ -52,6 +52,11 @@ describe("/historial", () => {
     render(<HistorialPage />);
     expect(await screen.findByText("Descripción 1")).toBeInTheDocument();
     expect(screen.getByText(/Página 1 de 3 · 45 reportes/)).toBeInTheDocument();
+    // Detalle por query (spec 001-migracion-aws, plan D-003); next/link añade la barra final en el build.
+    expect(screen.getAllByRole("link", { name: "Ver detalle" })[0]).toHaveAttribute(
+      "href",
+      "/historial/detalle?id=id-1"
+    );
   });
 
   it("muestra el estado vacío", async () => {

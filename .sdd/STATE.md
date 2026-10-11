@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T003
+tarea_actual: T004
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T003: mover app/historial/[id]/page.tsx a app/historial/detalle/page.tsx con useSearchParams dentro de <Suspense>; sin id → «Reporte no encontrado»; enlace en TablaReportes.tsx a /historial/detalle/?id=; adaptar page.test.tsx. Verifica: npm test.
+T004: next.config.ts por fase (PHASE_DEVELOPMENT_SERVER → rewrites; build → output export + trailingSlash), borrar Dockerfile, añadir .env.example. Verifica: npm run lint && npm run build → out/{index,mapa/index,historial/index,historial/detalle/index,reportes/nuevo/index,404}.html; con NEXT_PUBLIC_API_URL=https://ejemplo.invalid aparece en out/_next/static.
 
 ## Contexto de trabajo
 

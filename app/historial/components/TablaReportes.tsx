@@ -48,7 +48,7 @@ export default function TablaReportes({
                 <td className="p-3">{nombreEstado(reporte.estado)}</td>
                 <td className="p-3">{nombreNivel(reporte.nivelEmergencia)}</td>
                 <td className="p-3">
-                  <Link href={`/historial/${reporte.id}`} className="text-blue-600 hover:underline">
+                  <Link href={`/historial/detalle?id=${encodeURIComponent(reporte.id)}`} className="text-blue-600 hover:underline">
                     Ver detalle
                   </Link>
                 </td>
