@@ -7,12 +7,12 @@
 
 feature_activa: 001-migracion-aws
 fase: implement
-tarea_actual: T011
+tarea_actual: T012
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T011: deprovision.yml con confirmación urban-alert-web y solo en main; destroy de infra/web (omitir si el estado está vacío). Verifica: actionlint.
+T012: reescribir README.md (URL pública desde la salida site_url, arquitectura, tabla de costes, arranque → infra/bootstrap/README.md, workflows, desarrollo local, validación local con Podman, limitaciones: POST usuarios 403 y CORS) y completar CLAUDE.md (estructura, gotchas). Verifica: revisión y enlaces relativos existen.
 
 ## Contexto de trabajo
 

@@ -37,11 +37,11 @@ Dependencias explícitas: añadir `— depende: T00X`.
 
 - [x] T009 Escribir `check-platform.sh` (solo `api-endpoint`), `publicar-sitio.sh` (2 sync + invalidación) y `smoke-web.sh` — archivos: scripts/check-platform.sh, scripts/publicar-sitio.sh, scripts/smoke-web.sh — cubre: RF-008, RF-009, RNF-001 — verifica: shellcheck sin avisos; `smoke-web.sh` contra `npx serve out` local en verde para las rutas
 - [x] T010 Escribir el workflow Provision (test → plataforma → apply → build con SSM → publicar → smoke → resumen) — archivos: .github/workflows/provision.yml — cubre: RF-003, RF-008, RF-011, RF-012 — verifica: actionlint sin avisos
-- [~] T011 [P] Escribir el workflow Deprovision con confirmación `urban-alert-web` — archivos: .github/workflows/deprovision.yml — cubre: RF-010, RF-011, RF-012 — verifica: actionlint sin avisos
+- [x] T011 [P] Escribir el workflow Deprovision con confirmación `urban-alert-web` — archivos: .github/workflows/deprovision.yml — cubre: RF-010, RF-011, RF-012 — verifica: actionlint sin avisos
 
 ## Fase 5: Pulido
 
-- [ ] T012 Reescribir el README (URL, arquitectura, costes, arranque, flujos, desarrollo local) y completar CLAUDE.md — archivos: README.md, CLAUDE.md — cubre: RF-014, RNF-003 — verifica: revisión; enlaces relativos existen
+- [~] T012 Reescribir el README (URL, arquitectura, costes, arranque, flujos, desarrollo local) y completar CLAUDE.md — archivos: README.md, CLAUDE.md — cubre: RF-014, RNF-003 — verifica: revisión; enlaces relativos existen
 - [ ] T013 Primer Provision en `main` (requiere: política aplicada por un administrador, secreto `AWS_ROLE_ARN` y variable `AWS_REGION` en el repo, y push autorizado por el usuario) — archivos: — — cubre: MS-001, MS-002 — verifica: workflow en verde; páginas cargan datos del gateway desde `site_url`
 - [ ] T014 Segundo Provision sin cambios — cubre: MS-003 — verifica: `apply` informa 0 cambios — depende: T013
 - [ ] T015 Deprovision + Provision (solo con autorización expresa del usuario) — cubre: MS-004, HU-4 — verifica: sin recursos `urban-alert-web` tras Deprovision; plataforma intacta — depende: T014

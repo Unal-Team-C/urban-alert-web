@@ -48,3 +48,6 @@
 
 ## 2026-10-11 · 001-migracion-aws · T010 hecha
 - provision.yml: job test (Node 24: npm ci, lint, test, build; node --test; terraform fmt/validate/test; actionlint; shellcheck) y job provision (OIDC → check-platform imprime api_url → apply infra/web → build con NEXT_PUBLIC_API_URL → publicar-sitio → smoke → resumen). concurrency urban-alert-web-aws. actionlint OK.
+
+## 2026-10-11 · 001-migracion-aws · T011 hecha
+- deprovision.yml: confirmación urban-alert-web, solo main, destroy de infra/web (omite si el estado está vacío), comparte concurrency con Provision. actionlint OK.
