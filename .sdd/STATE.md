@@ -12,7 +12,7 @@ estado_tarea: -
 
 ## Siguiente paso
 
-Specs en borrador: specs/002-rediseno-mapa/spec.md (mapa a pantalla completa, barra superior, panel derecho, volver al mapa) y specs/003-identidad-sitio/spec.md (título, descripción, lang es, favicon; separada a petición del usuario). Esperar aprobación de ambas; luego /sdd-plan de 002 (activa) y de 003. 001: T021 commiteada, pendiente de push con permiso (notes.md de 001).
+Esperando al usuario: (a) aprobación de specs/002-rediseno-mapa y specs/003-identidad-sitio; (b) permiso de push para 001 T021 (CloudFront) + T022 (WAF básico D-013, ~9 USD/mes), ambas implementadas y probadas en local (11 runs de terraform test). Tras el push: Provision crea WAF + distribución, elimina la Lambda; verificar smoke, web ACL asociada y el sitio en la nueva URL.
 
 ## Contexto de trabajo
 

@@ -57,6 +57,8 @@ Aprobada por el usuario el 2026-10-11 («Let's use the lambda only»).
 
 - [~] T021 Volver a CloudFront ahora que la cuenta está verificada (usuario, 2026-10-12): `cdn_habilitado = true` en tfvars y por defecto, pruebas de la Lambda con la variable explícita, documentación — archivos: infra/web/terraform.tfvars, infra/web/variables.tf, infra/web/tests/web.tftest.hcl, README.md, CLAUDE.md, infra/bootstrap/README.md — cubre: RF-005, RF-006, RNF-001 (D-006) — verifica: `$TF test`; tras el push (con permiso): Provision crea la distribución, elimina la Lambda y el smoke pasa en la URL de CloudFront
 
+- [~] T022 Añadir el WAF básico (D-013): proveedor `us-east-1`, `aws_wafv2_web_acl` con límite por IP y 3 grupos gestionados, asociado a la distribución; variables `waf_habilitado`, `waf_solo_monitor`, `waf_limite_peticiones`; pruebas; README (coste) — archivos: infra/web/providers.tf, infra/web/waf.tf, infra/web/cloudfront.tf, infra/web/variables.tf, infra/web/terraform.tfvars, infra/web/tests/web.tftest.hcl, README.md — cubre: D-013 — verifica: `$TF fmt/validate/test`; tras el push: la distribución tiene la web ACL y el smoke pasa — depende: T021
+
 ## Correcciones de verificación
 
 <!-- /sdd-verify añade aquí tareas si detecta fallos -->

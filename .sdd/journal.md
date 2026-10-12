@@ -117,3 +117,9 @@
 
 ## 2026-10-12 · 003-identidad-sitio · spec en borrador
 - A petición del usuario, spec aparte para el título del sitio: títulos por página («<página> · UrbanAlert»), descripción, lang es, favicon del pin del logo, quitar recursos de la plantilla. HU-4/RF-014 retirados de 002.
+
+## 2026-10-12 · 001-migracion-aws · D-013 (WAF básico)
+- Usuario: «For cloudfront enable basic security». Enmienda D-013: web ACL en us-east-1 con límite por IP y grupos gestionados IP reputation, Common y Known bad inputs (bloqueo), ~9 USD/mes. T022 en curso.
+
+## 2026-10-12 · 001-migracion-aws · T022 implementada en local
+- waf.tf (web ACL CLOUDFRONT en us-east-1 vía proveedor aws.us_east_1; límite 1000/5 min por IP; IpReputation, CommonRuleSet, KnownBadInputs; bloqueo o monitor), web_acl_id en la distribución, 3 runs nuevos (11 en total) en verde, README con coste ~9 USD/mes. Pendiente de push junto con T021.

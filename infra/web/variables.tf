@@ -42,3 +42,26 @@ variable "concurrencia_reservada" {
     error_message = "concurrencia_reservada must be -1 (unreserved) or at least 1."
   }
 }
+
+variable "waf_habilitado" {
+  description = "Attach the basic AWS WAF web ACL to the distribution (plan D-013; ~9 USD/month). Only with cdn_habilitado = true."
+  type        = bool
+  default     = true
+}
+
+variable "waf_solo_monitor" {
+  description = "true: WAF rules only count matching requests (monitor mode); false: they block them."
+  type        = bool
+  default     = false
+}
+
+variable "waf_limite_peticiones" {
+  description = "Maximum requests per client IP in any 5-minute window before WAF blocks it (a page load is ~20 requests)."
+  type        = number
+  default     = 1000
+
+  validation {
+    condition     = var.waf_limite_peticiones >= 10 && var.waf_limite_peticiones <= 2000000000
+    error_message = "waf_limite_peticiones must be between 10 and 2,000,000,000 (AWS WAF rate-based rule limits)."
+  }
+}

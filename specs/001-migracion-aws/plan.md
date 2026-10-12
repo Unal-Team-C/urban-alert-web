@@ -143,6 +143,13 @@ No aplica.
 - **Coste**: capa gratuita de Lambda (1 M peticiones y 400.000 GB-s al mes); logs 30 días. ≈ 0 USD (P5).
 - **Riesgos aceptados**: sin caché de borde (cada petición invoca la función en us-east-2); sin WAF; arranque en frío de ~200 ms en la primera petición.
 
+### D-013: AWS WAF básico delante de CloudFront (enmienda 2026-10-12)
+- **Contexto**: con la cuenta ya verificada para CloudFront, el usuario pide «enable basic security» (2026-10-12). Revisa la exclusión de WAF de spec §8 y D-012.
+- **Decisión**: web ACL `urban-alert-web` (ámbito `CLOUDFRONT`, por eso en `us-east-1` con un proveedor con alias), acción por defecto *allow*, asociada a la distribución. Reglas, en orden: (0) límite por IP de `waf_limite_peticiones` peticiones en 5 min (por defecto 1.000; una carga de página son ~20); (1) `AWSManagedRulesAmazonIpReputationList`; (2) `AWSManagedRulesCommonRuleSet`; (3) `AWSManagedRulesKnownBadInputsRuleSet`. Bloquean; con `waf_solo_monitor = true` solo cuentan (modo monitor). Métricas de CloudWatch y muestras de peticiones activadas; sin registro completo (coste). Solo existe con `cdn_habilitado = true` y `waf_habilitado = true`.
+- **Alternativas consideradas**: Bot Control o reglas de pago (coste por petición mayor); WAF en el gateway (no admite HTTP APIs, ver conversación de D-012); sin WAF (decisión previa del usuario, revertida ahora).
+- **Permisos**: `wafv2:*` ya está en `github-actions-urban-alertPolicy` (bloque `Waf`); CloudFront `UpdateDistribution` en la política de la web.
+- **Coste** (P5): 5 USD/mes por web ACL + 1 USD/mes por regla (4) + 0,60 USD por millón de peticiones ≈ **9 USD/mes**.
+
 ## 9. Estrategia de pruebas
 
 - **Unitarias (Vitest)**: `urlApi` sin base, con base, con barra final (`vi.stubEnv`); llamadas existentes siguen usando rutas relativas en pruebas; detalle con `?id=`, sin `id`, 404.

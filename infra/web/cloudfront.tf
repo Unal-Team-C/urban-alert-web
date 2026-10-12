@@ -59,6 +59,9 @@ resource "aws_cloudfront_distribution" "sitio" {
   http_version        = "http2and3"
   is_ipv6_enabled     = true
 
+  # Basic AWS WAF (waf.tf, plan D-013); null when disabled.
+  web_acl_id = one(aws_wafv2_web_acl.sitio[*].arn)
+
   origin {
     origin_id                = local.origen_s3
     domain_name              = aws_s3_bucket.sitio.bucket_regional_domain_name

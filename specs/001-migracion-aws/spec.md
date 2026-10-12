@@ -108,7 +108,7 @@ No aplica: el frontend no almacena datos.
 - Dominio propio y certificado propio (se usa la URL de la red de distribución, como el gateway usa la suya).
 - Autenticación de usuarios y firma de peticiones desde el navegador; por tanto, crear usuarios desde el portal por el gateway (aceptado en la spec 001 de `urban-alert-usuarios`).
 - Restringir el CORS del gateway al origen del sitio: pertenece a `urban-alert-plataforma` (`cors_origenes`); se deja como recomendación.
-- WAF, varios entornos, renderizado en servidor.
+- Varios entornos, renderizado en servidor. (El WAF, inicialmente fuera de alcance, se añadió delante de CloudFront a petición del usuario: plan D-013.)
 
 ## 9. Supuestos
 

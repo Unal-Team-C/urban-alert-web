@@ -70,6 +70,17 @@ mock_provider "aws" {
   }
 }
 
+# CLOUDFRONT-scoped WAF lives in us-east-1 (plan D-013).
+mock_provider "aws" {
+  alias = "us_east_1"
+
+  mock_resource "aws_wafv2_web_acl" {
+    defaults = {
+      arn = "arn:aws:wafv2:us-east-1:348364742283:global/webacl/urban-alert-web/11111111-2222-3333-4444-555555555555"
+    }
+  }
+}
+
 run "the_bucket_is_private" {
   command = apply
 
@@ -292,4 +303,67 @@ run "reserved_concurrency_is_unreserved_or_positive" {
   }
 
   expect_failures = [var.concurrencia_reservada]
+}
+
+run "basic_waf_protects_the_distribution" {
+  command = apply
+
+  assert {
+    condition     = aws_cloudfront_distribution.sitio[0].web_acl_id == aws_wafv2_web_acl.sitio[0].arn && aws_wafv2_web_acl.sitio[0].scope == "CLOUDFRONT"
+    error_message = "The distribution must use the CLOUDFRONT-scoped web ACL (plan D-013)."
+  }
+
+  assert {
+    condition = toset([for r in aws_wafv2_web_acl.sitio[0].rule : r.name]) == toset([
+      "limite-por-ip",
+      "AWSManagedRulesAmazonIpReputationList",
+      "AWSManagedRulesCommonRuleSet",
+      "AWSManagedRulesKnownBadInputsRuleSet",
+    ])
+    error_message = "Basic protections: per-IP rate limit plus the three free AWS managed rule groups."
+  }
+
+  assert {
+    condition = alltrue([
+      for r in aws_wafv2_web_acl.sitio[0].rule :
+      r.name == "limite-por-ip"
+      ? (length(one(r.action).block) == 1 && one(one(r.statement).rate_based_statement).limit == 1000 && one(one(r.statement).rate_based_statement).aggregate_key_type == "IP")
+      : length(one(r.override_action).none) == 1
+    ])
+    error_message = "Rules must block (rate limit 1000 per IP in 5 minutes; managed groups keep their own block actions)."
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.sitio[0].default_action[0].allow) == 1
+    error_message = "Requests that match no rule are allowed."
+  }
+}
+
+run "waf_monitor_mode_only_counts" {
+  command = apply
+
+  variables {
+    waf_solo_monitor = true
+  }
+
+  assert {
+    condition = alltrue([
+      for r in aws_wafv2_web_acl.sitio[0].rule :
+      r.name == "limite-por-ip" ? length(one(r.action).count) == 1 : length(one(r.override_action).count) == 1
+    ])
+    error_message = "In monitor mode every rule only counts."
+  }
+}
+
+run "no_waf_without_cloudfront" {
+  command = plan
+
+  variables {
+    cdn_habilitado = false
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.sitio) == 0
+    error_message = "The web ACL only exists in front of CloudFront."
+  }
 }
