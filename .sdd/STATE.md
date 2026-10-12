@@ -6,17 +6,19 @@
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
 feature_activa: 002-rediseno-mapa
-fase: implement
-tarea_actual: T009
-estado_tarea: en_progreso
+fase: done
+tarea_actual: -
+estado_tarea: -
 
 ## Siguiente paso
 
-T009 (y 003 T005): push con permiso del usuario; Provision en verde; en https://dfa8690dowmry.cloudfront.net verificar barra, panel con el reporte 01a12d63, volver al mapa, títulos e icono.
+002 y 003 implementadas y publicadas en https://dfa8690dowmry.cloudfront.net. Pendientes opcionales: /sdd-verify de 001, 002 y 003 (verify.md); 001 T015 (Deprovision + Provision) solo con autorización expresa. Sin trabajo en curso.
 
 ## Contexto de trabajo
 
-- Código actual: `/` = bienvenida con /mapa en iframe; app/mapa/components/MapaDanos.tsx (Leaflet, burbujas por localidad, puntos desde zoom 15, Popup con DetalleDano); app/reportes/nuevo/page.tsx (formulario, botón de usuario arriba a la derecha); specs/mapa-functional-spec.md describe el mapa actual.
+- Sitio: https://dfa8690dowmry.cloudfront.net (CloudFront E30PXSSQODNQGQ, sin WAF). Gateway en SSM /urban-alert/plataforma/api-endpoint.
+- Desarrollo local contra el gateway: `.env.local` con NEXT_PUBLIC_API_URL (ignorado) y `npx next dev -p 3930`.
+- Panel del navegador: con viewports emulados mayores que el panel, los clics usan otro marco que la captura; usar el tamaño nativo o calcular la posición con JS.
 
 ## Bloqueos / preguntas abiertas
 

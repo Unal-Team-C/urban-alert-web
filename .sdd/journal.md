@@ -181,3 +181,12 @@
 
 ## 2026-10-12 · 002/003 · push autorizado
 - Usuario: «push it». Push de 002 (T001–T008, T010) y 003 (T001–T004).
+
+## 2026-10-12 · 002-rediseno-mapa · T009 hecha
+- Run 38319033373 en verde (0 cambios de infraestructura; smoke con título y sin plantilla). En https://dfa8690dowmry.cloudfront.net: título UrbanAlert, lang es, 3 iconos, barra con logo, sin iframe ni scroll; clic en el reporte 01a12d63 → panel derecho con imagen, Reportado por test-user y enlace /historial/detalle/?id=…; formulario «Crear reporte · UrbanAlert» con Volver al mapa a la última vista; /no-existe/ → «Página no encontrada · UrbanAlert». MS-001–MS-003 cumplidas.
+
+## 2026-10-12 · 003-identidad-sitio · T005 hecha, implementada
+- Publicada con el run 38319033373: títulos, lang es, iconos y 404 verificados en el sitio.
+
+## 2026-10-12 · 002-rediseno-mapa · implementada
+- Publicada y verificada en el sitio (ver T009). Specs 002 y 003 en Estado: implementada.

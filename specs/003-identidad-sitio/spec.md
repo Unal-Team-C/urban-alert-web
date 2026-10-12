@@ -1,7 +1,7 @@
 # Especificación: Identidad del sitio (título, idioma e icono)
 
 - **ID**: 003-identidad-sitio
-- **Estado**: aprobada <!-- borrador | aclarada | aprobada | implementada -->
+- **Estado**: implementada <!-- borrador | aclarada | aprobada | implementada -->
 - **Creada**: 2026-10-12
 - **Entrada original**: "Another spec, should be changing the title of the site, replace the default next js one". Logo de referencia: `../002-rediseno-mapa/fuentes/logo-urbanalert.png`.
 

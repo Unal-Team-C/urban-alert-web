@@ -14,7 +14,7 @@ Leyenda: `[ ]` pendiente · `[~]` en progreso · `[x]` hecha · `[!]` bloqueada 
 ## Fase 2: Integración
 
 - [x] T004 Comprobar título y ausencia de la plantilla en `smoke-web.sh` — archivos: scripts/smoke-web.sh — cubre: MS-001 — verifica: shellcheck; smoke local contra `out/`
-- [ ] T005 Publicar (push con permiso) y verificar MS-001/MS-002 en el sitio — cubre: MS-001, MS-002 — verifica: Provision en verde; pestaña con título e icono en `/`, `/reportes/nuevo/`, `/historial/`
+- [x] T005 Publicar (push con permiso) y verificar MS-001/MS-002 en el sitio — cubre: MS-001, MS-002 — verifica: Provision en verde; pestaña con título e icono en `/`, `/reportes/nuevo/`, `/historial/`
 
 ## Cobertura
 
