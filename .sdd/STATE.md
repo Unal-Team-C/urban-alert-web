@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T005
+tarea_actual: T006
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T005: app/components/VistaPrincipal.tsx (barra + mapa + PanelDano responsive; usuarios una vez; seleccionado; foco al mapa al cerrar; guardarUltimaVista + replaceState) usada por app/page.tsx y app/mapa/page.tsx; app/mapa/layout.tsx sin h-screen; app/page.test.tsx (barra, Crear reporte, sin iframe).
+T006: formulario con BarraSuperior (derecha: Volver al mapa con hrefUltimaVista() calculado al montar + botón de usuario), quitar el botón absoluto; ReporteCreadoModal con enlace Volver al mapa; pruebas de ambos (nuevo/page.test.tsx, ReporteCreadoModal.test.tsx).
 
 ## Contexto de trabajo
 

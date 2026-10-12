@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Mapa de daños" };
 
-// Fondo y color de texto propios, igual que el formulario y /historial: el módulo se ve igual
-// con el tema claro u oscuro del sistema (globals.css cambia el color base en modo oscuro).
+// La pantalla pone su propio fondo y alto (components/VistaPrincipal.tsx).
 export default function MapaLayout({ children }: { children: React.ReactNode }) {
-  return <div className="h-screen bg-gray-100 text-gray-900">{children}</div>;
+  return children;
 }

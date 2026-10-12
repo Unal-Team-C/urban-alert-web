@@ -163,3 +163,6 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T004 hecha
 - MapaDanos sin Popup ni catálogo: seleccionado/onSeleccionar, punto activo azul radio 10 dibujado al final, AjustarTamano (ResizeObserver → invalidateSize + panTo del seleccionado). DetalleDano.* borrados (119 tests). app/mapa/page.tsx con cambio mínimo para compilar (T005 la rehace). iCloud: copias « 2» en .next → .next borrado, patrón ignorado en .gitignore, gotcha en CLAUDE.md.
+
+## 2026-10-12 · 002-rediseno-mapa · T005 hecha
+- VistaPrincipal (PantallaMapa): h-dvh, BarraSuperior con Crear reporte, mapa flex-1 + PanelDano (md+: columna 400 px; < md: hoja inferior 60 %, z 1100), usuarios una vez, foco al .leaflet-container al cerrar, replaceState + guardarUltimaVista. / y /mapa la reexportan; mapa/layout sin envoltorio. page.test (3). 120 tests; títulos UrbanAlert y Mapa de daños · UrbanAlert en out/.

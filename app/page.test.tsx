@@ -1,15 +1,28 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams("") }));
+
 import Inicio from "./page";
 
-describe("Página de bienvenida", () => {
-  it("incluye el mapa de daños en un iframe", () => {
+beforeEach(() => vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("[]"))));
+afterEach(() => vi.unstubAllGlobals());
+
+describe("página principal", () => {
+  it("muestra la barra con el logo y el acceso a crear un reporte", () => {
     render(<Inicio />);
-    expect(screen.getByTitle("Mapa de daños reportados")).toHaveAttribute("src", "/mapa");
+    expect(screen.getByRole("link", { name: "UrbanAlert, ir al mapa" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "Crear reporte" })).toHaveAttribute("href", "/reportes/nuevo");
   });
 
-  it("lleva al formulario de crear reporte", () => {
+  it("muestra el mapa directamente, sin iframe", () => {
+    const { container } = render(<Inicio />);
+    expect(container.querySelector("iframe")).toBeNull();
+    expect(screen.getByRole("main")).toBeInTheDocument();
+  });
+
+  it("no abre ningún panel de detalle hasta pulsar un punto", () => {
     render(<Inicio />);
-    expect(screen.getByRole("link", { name: "Crear reporte" })).toHaveAttribute("href", "/reportes/nuevo");
+    expect(screen.queryByRole("complementary", { name: "Detalle del daño" })).toBeNull();
   });
 });
