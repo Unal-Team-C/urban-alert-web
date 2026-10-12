@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T006
+tarea_actual: T007
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T006: formulario con BarraSuperior (derecha: Volver al mapa con hrefUltimaVista() calculado al montar + botón de usuario), quitar el botón absoluto; ReporteCreadoModal con enlace Volver al mapa; pruebas de ambos (nuevo/page.test.tsx, ReporteCreadoModal.test.tsx).
+T007: verificar en el navegador con next dev + NEXT_PUBLIC_API_URL del gateway, en 1440×900 y 375×812: barra y mapa sin scroll; clic en el punto del reporte 01a12d63 → panel derecho con imagen y descripción, resaltado azul; Esc/cerrar; Ver en el histórico; volver al mapa desde el formulario con la última vista.
 
 ## Contexto de trabajo
 

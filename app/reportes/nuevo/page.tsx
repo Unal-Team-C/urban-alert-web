@@ -1,13 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
+import BarraSuperior from "../../components/BarraSuperior";
 import { IconoCamara, IconoMapa, IconoUbicacion, IconoUsuario } from "../../components/Iconos";
 import ReporteCreadoModal from "../../components/ReporteCreadoModal";
 import SeleccionUbicacionModal from "../../components/SeleccionUbicacionModal";
 import UsuarioModal from "../../components/UsuarioModal";
 import { urlApi } from "../../lib/api";
 import { TIPOS_IMAGEN, formatearTamano, validarImagen } from "../../lib/imagen";
+import { hrefUltimaVista } from "../../lib/vistaMapa";
 import {
   dentroDeBogota,
   formatearCoordenada,
@@ -49,6 +52,9 @@ async function leerError(response: Response): Promise<string> {
   return error?.message ?? detalle ?? error?.title ?? `Error inesperado (HTTP ${response.status}).`;
 }
 
+// La última vista solo cambia en otra pantalla (el mapa): no hace falta suscribirse a cambios.
+const sinSuscripcion = () => () => {};
+
 export default function Home() {
   const [form, setForm] = useState(FORMULARIO_VACIO);
 
@@ -76,6 +82,10 @@ export default function Home() {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [usuarioError, setUsuarioError] = useState("");
   const [usuarioModalOpen, setUsuarioModalOpen] = useState(false);
+
+  // «Volver al mapa» abre la última vista del mapa (spec 002, RF-012). El HTML exportado se genera sin
+  // navegador y lleva "/"; en el navegador se lee la vista guardada.
+  const volverAlMapa = useSyncExternalStore(sinSuscripcion, hrefUltimaVista, () => "/");
 
   useEffect(() => {
     fetch(urlApi("/api/v1/reportes/catalogo"))
@@ -285,270 +295,280 @@ export default function Home() {
   }
 
   return (
-    <main className="relative min-h-screen bg-gray-100 flex items-center justify-center p-6 pt-20 sm:pt-6">
-      <button
-        type="button"
-        onClick={() => setUsuarioModalOpen(true)}
-        title="Cambiar o agregar usuario"
-        className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-white py-2 pl-2 pr-4 text-sm font-medium text-gray-700 shadow hover:bg-gray-50"
-      >
-        <IconoUsuario className="h-7 w-7 text-gray-600" />
-        <span className="max-w-[10rem] truncate">{usuario?.name ?? "Usuario"}</span>
-      </button>
+    <div className="flex min-h-dvh flex-col bg-gray-100">
+      <BarraSuperior>
+        <Link
+          href={volverAlMapa}
+          className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+        >
+          ← Volver al mapa
+        </Link>
+        <button
+          type="button"
+          onClick={() => setUsuarioModalOpen(true)}
+          title="Cambiar o agregar usuario"
+          className="flex items-center gap-2 rounded-full border border-gray-200 bg-white py-1.5 pl-1.5 pr-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          <IconoUsuario className="h-6 w-6 text-gray-600" />
+          <span className="max-w-[6rem] truncate sm:max-w-[10rem]">{usuario?.name ?? "Usuario"}</span>
+        </button>
+      </BarraSuperior>
+      <main className="flex flex-1 items-center justify-center p-6">
 
-      <div className="w-full max-w-xl rounded-xl bg-white p-8 shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Crear reporte
-        </h1>
+        <div className="w-full max-w-xl rounded-xl bg-white p-8 shadow-lg">
+          <h1 className="text-3xl font-bold text-gray-900">
+            Crear reporte
+          </h1>
 
-        <p className="mt-2 mb-6 text-gray-500">
-          Complete la información del daño reportado.
-        </p>
-
-        {usuario && (
-          <p className="-mt-4 mb-6 text-sm text-gray-500">
-            Reportando como <span className="font-medium text-gray-700">{usuario.name}</span>
+          <p className="mt-2 mb-6 text-gray-500">
+            Complete la información del daño reportado.
           </p>
-        )}
 
-        {usuarioError && (
-          <p className="-mt-4 mb-6 text-sm text-amber-700">{usuarioError}</p>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-
-          {catalogError && (
-            <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
-              {catalogError}
+          {usuario && (
+            <p className="-mt-4 mb-6 text-sm text-gray-500">
+              Reportando como <span className="font-medium text-gray-700">{usuario.name}</span>
             </p>
           )}
 
-          {/* Categoría */}
-          <div>
-            <label className="mb-1 block font-medium text-gray-700">
-              Categoría
-            </label>
+          {usuarioError && (
+            <p className="-mt-4 mb-6 text-sm text-amber-700">{usuarioError}</p>
+          )}
 
-            <select
-              name="category"
-              value={form.category}
-              onChange={handleCategoryChange}
-              required
-              disabled={loadingCatalog || categories.length === 0}
-              className="w-full rounded-lg border border-gray-300 p-3 text-gray-900 disabled:bg-gray-100"
-            >
-              <option value="">
-                {loadingCatalog ? "Cargando categorías..." : "Seleccione una categoría"}
-              </option>
+          <form onSubmit={handleSubmit} className="space-y-5">
 
-              {categories.length > 0 && <option disabled>{SEPARADOR}</option>}
+            {catalogError && (
+              <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+                {catalogError}
+              </p>
+            )}
 
-              {categories.map((category) => (
-                <option key={category.codigo} value={category.codigo}>
-                  {category.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Categoría */}
+            <div>
+              <label className="mb-1 block font-medium text-gray-700">
+                Categoría
+              </label>
 
-          {/* Tipo de reporte (depende de la categoría) */}
-          <div>
-            <label className="mb-1 block font-medium text-gray-700">
-              Tipo de reporte
-            </label>
-
-            <select
-              name="reportType"
-              value={form.reportType}
-              onChange={handleChange}
-              required
-              disabled={!selectedCategory}
-              className="w-full rounded-lg border border-gray-300 p-3 text-gray-900 disabled:bg-gray-100"
-            >
-              <option value="">
-                {selectedCategory ? "Seleccione un tipo de reporte" : "Primero seleccione una categoría"}
-              </option>
-
-              {selectedCategory && <option disabled>{SEPARADOR}</option>}
-
-              {selectedCategory?.tipos.map((type) => (
-                <option key={type.codigo} value={type.codigo}>
-                  {type.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Descripción */}
-          <div>
-            <label className="mb-1 block font-medium text-gray-700">
-              Descripción
-            </label>
-
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              required
-              rows={4}
-              placeholder="Describa el daño..."
-              className="w-full rounded-lg border border-gray-300 p-3 text-gray-900"
-            />
-          </div>
-
-          {/* Ubicación: en el mapa o con el GPS del dispositivo */}
-          <div>
-            <p className="mb-2 font-medium text-gray-700">
-              Ubicación
-            </p>
-
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => setMapOpen(true)}
-                className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-3 font-medium text-gray-800 hover:bg-gray-50"
+              <select
+                name="category"
+                value={form.category}
+                onChange={handleCategoryChange}
+                required
+                disabled={loadingCatalog || categories.length === 0}
+                className="w-full rounded-lg border border-gray-300 p-3 text-gray-900 disabled:bg-gray-100"
               >
-                <IconoMapa />
-                Seleccionar en el mapa
-              </button>
+                <option value="">
+                  {loadingCatalog ? "Cargando categorías..." : "Seleccione una categoría"}
+                </option>
 
-              <button
-                type="button"
-                onClick={locateWithGps}
-                disabled={locatingGps}
-                className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-3 font-medium text-gray-800 hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-500"
-              >
-                <IconoUbicacion className={`h-5 w-5 ${locatingGps ? "animate-pulse" : ""}`} />
-                {locatingGps ? "Obteniendo ubicación..." : "Usar mi ubicación"}
-              </button>
+                {categories.length > 0 && <option disabled>{SEPARADOR}</option>}
+
+                {categories.map((category) => (
+                  <option key={category.codigo} value={category.codigo}>
+                    {category.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            {location ? (
-              <p className="mt-3 rounded-lg bg-gray-50 p-3 text-sm text-gray-700">
-                <span className="font-medium">
-                  {location.origen === "gps" ? "Ubicación del dispositivo" : "Punto seleccionado en el mapa"}:
-                </span>{" "}
-                <span className="font-mono">{formatearCoordenada(location)}</span>
-                {location.precisionMetros !== undefined && (
-                  <span className="text-gray-500"> (precisión ±{Math.round(location.precisionMetros)} m)</span>
-                )}
+            {/* Tipo de reporte (depende de la categoría) */}
+            <div>
+              <label className="mb-1 block font-medium text-gray-700">
+                Tipo de reporte
+              </label>
+
+              <select
+                name="reportType"
+                value={form.reportType}
+                onChange={handleChange}
+                required
+                disabled={!selectedCategory}
+                className="w-full rounded-lg border border-gray-300 p-3 text-gray-900 disabled:bg-gray-100"
+              >
+                <option value="">
+                  {selectedCategory ? "Seleccione un tipo de reporte" : "Primero seleccione una categoría"}
+                </option>
+
+                {selectedCategory && <option disabled>{SEPARADOR}</option>}
+
+                {selectedCategory?.tipos.map((type) => (
+                  <option key={type.codigo} value={type.codigo}>
+                    {type.nombre}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Descripción */}
+            <div>
+              <label className="mb-1 block font-medium text-gray-700">
+                Descripción
+              </label>
+
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                required
+                rows={4}
+                placeholder="Describa el daño..."
+                className="w-full rounded-lg border border-gray-300 p-3 text-gray-900"
+              />
+            </div>
+
+            {/* Ubicación: en el mapa o con el GPS del dispositivo */}
+            <div>
+              <p className="mb-2 font-medium text-gray-700">
+                Ubicación
               </p>
-            ) : (
-              <p className="mt-3 text-sm text-gray-500">Aún no se ha indicado la ubicación.</p>
-            )}
 
-            {locationError && (
-              <p role="alert" className="mt-2 text-sm text-red-600">
-                {locationError}
-              </p>
-            )}
-          </div>
-
-          {/* Imagen: desde la cámara o la galería del dispositivo */}
-          <div>
-            <p className="mb-2 font-medium text-gray-700">
-              Imagen
-            </p>
-
-            <input
-              ref={imageInputRef}
-              type="file"
-              accept={TIPOS_IMAGEN.join(",")}
-              onChange={handleImageChange}
-              className="hidden"
-              aria-label="Imagen del reporte (galería)"
-            />
-            {/* capture="environment" abre directamente la cámara trasera en móviles compatibles;
-                en escritorio, donde no aplica, el navegador la ignora y abre el selector de archivos. */}
-            <input
-              ref={cameraInputRef}
-              type="file"
-              accept={TIPOS_IMAGEN.join(",")}
-              capture="environment"
-              onChange={handleImageChange}
-              className="hidden"
-              aria-label="Imagen del reporte (cámara)"
-            />
-
-            {image && imagePreview ? (
-              <div className="flex items-center gap-4 rounded-lg border border-gray-200 p-3">
-                {/* eslint-disable-next-line @next/next/no-img-element -- vista previa local (blob:) */}
-                <img src={imagePreview} alt="Vista previa de la imagen" className="h-20 w-20 rounded-md object-cover" />
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-gray-800">{image.name}</p>
-                  <p className="text-sm text-gray-500">{formatearTamano(image.size)}</p>
-                </div>
-                <div className="flex flex-col gap-1 text-sm">
-                  <button type="button" onClick={() => imageInputRef.current?.click()} className="font-medium text-gray-700 hover:underline">
-                    Cambiar
-                  </button>
-                  <button type="button" onClick={removeImage} className="font-medium text-red-600 hover:underline">
-                    Quitar
-                  </button>
-                </div>
-              </div>
-            ) : (
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <button
                   type="button"
-                  onClick={() => cameraInputRef.current?.click()}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-gray-400 px-4 py-6 font-medium text-gray-700 hover:bg-gray-50"
+                  onClick={() => setMapOpen(true)}
+                  className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-3 font-medium text-gray-800 hover:bg-gray-50"
                 >
-                  <IconoCamara />
-                  Activar cámara
+                  <IconoMapa />
+                  Seleccionar en el mapa
                 </button>
+
                 <button
                   type="button"
-                  onClick={() => imageInputRef.current?.click()}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-gray-400 px-4 py-6 font-medium text-gray-700 hover:bg-gray-50"
+                  onClick={locateWithGps}
+                  disabled={locatingGps}
+                  className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-3 font-medium text-gray-800 hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-500"
                 >
-                  Elegir de la galería
+                  <IconoUbicacion className={`h-5 w-5 ${locatingGps ? "animate-pulse" : ""}`} />
+                  {locatingGps ? "Obteniendo ubicación..." : "Usar mi ubicación"}
                 </button>
               </div>
-            )}
 
-            <p className="mt-2 text-xs text-gray-500">JPEG, PNG o WebP, hasta 10 MB.</p>
+              {location ? (
+                <p className="mt-3 rounded-lg bg-gray-50 p-3 text-sm text-gray-700">
+                  <span className="font-medium">
+                    {location.origen === "gps" ? "Ubicación del dispositivo" : "Punto seleccionado en el mapa"}:
+                  </span>{" "}
+                  <span className="font-mono">{formatearCoordenada(location)}</span>
+                  {location.precisionMetros !== undefined && (
+                    <span className="text-gray-500"> (precisión ±{Math.round(location.precisionMetros)} m)</span>
+                  )}
+                </p>
+              ) : (
+                <p className="mt-3 text-sm text-gray-500">Aún no se ha indicado la ubicación.</p>
+              )}
 
-            {imageError && (
-              <p role="alert" className="mt-2 text-sm text-red-600">
-                {imageError}
+              {locationError && (
+                <p role="alert" className="mt-2 text-sm text-red-600">
+                  {locationError}
+                </p>
+              )}
+            </div>
+
+            {/* Imagen: desde la cámara o la galería del dispositivo */}
+            <div>
+              <p className="mb-2 font-medium text-gray-700">
+                Imagen
               </p>
-            )}
-          </div>
 
-          {/* Botón */}
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full rounded-lg bg-black py-3 font-medium text-white hover:bg-gray-800 disabled:bg-gray-400"
-          >
-            {submitting ? "Enviando..." : "Enviar reporte"}
-          </button>
-        </form>
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept={TIPOS_IMAGEN.join(",")}
+                onChange={handleImageChange}
+                className="hidden"
+                aria-label="Imagen del reporte (galería)"
+              />
+              {/* capture="environment" abre directamente la cámara trasera en móviles compatibles;
+                  en escritorio, donde no aplica, el navegador la ignora y abre el selector de archivos. */}
+              <input
+                ref={cameraInputRef}
+                type="file"
+                accept={TIPOS_IMAGEN.join(",")}
+                capture="environment"
+                onChange={handleImageChange}
+                className="hidden"
+                aria-label="Imagen del reporte (cámara)"
+              />
 
-        {submitError && (
-          <p role="alert" className="mt-5 font-medium text-red-600">
-            {submitError}
-          </p>
+              {image && imagePreview ? (
+                <div className="flex items-center gap-4 rounded-lg border border-gray-200 p-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- vista previa local (blob:) */}
+                  <img src={imagePreview} alt="Vista previa de la imagen" className="h-20 w-20 rounded-md object-cover" />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-gray-800">{image.name}</p>
+                    <p className="text-sm text-gray-500">{formatearTamano(image.size)}</p>
+                  </div>
+                  <div className="flex flex-col gap-1 text-sm">
+                    <button type="button" onClick={() => imageInputRef.current?.click()} className="font-medium text-gray-700 hover:underline">
+                      Cambiar
+                    </button>
+                    <button type="button" onClick={removeImage} className="font-medium text-red-600 hover:underline">
+                      Quitar
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => cameraInputRef.current?.click()}
+                    className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-gray-400 px-4 py-6 font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    <IconoCamara />
+                    Activar cámara
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => imageInputRef.current?.click()}
+                    className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-gray-400 px-4 py-6 font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    Elegir de la galería
+                  </button>
+                </div>
+              )}
+
+              <p className="mt-2 text-xs text-gray-500">JPEG, PNG o WebP, hasta 10 MB.</p>
+
+              {imageError && (
+                <p role="alert" className="mt-2 text-sm text-red-600">
+                  {imageError}
+                </p>
+              )}
+            </div>
+
+            {/* Botón */}
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full rounded-lg bg-black py-3 font-medium text-white hover:bg-gray-800 disabled:bg-gray-400"
+            >
+              {submitting ? "Enviando..." : "Enviar reporte"}
+            </button>
+          </form>
+
+          {submitError && (
+            <p role="alert" className="mt-5 font-medium text-red-600">
+              {submitError}
+            </p>
+          )}
+        </div>
+
+        {createdId && <ReporteCreadoModal idReporte={createdId} onClose={closeModal} />}
+
+        {usuarioModalOpen && (
+          <UsuarioModal
+            usuarios={usuarios}
+            actual={usuario}
+            error={usuarios.length === 0 ? "No fue posible cargar los usuarios." : ""}
+            onSeleccionar={seleccionarUsuario}
+            onCrear={agregarUsuario}
+            onCerrar={closeUsuarioModal}
+          />
         )}
-      </div>
 
-      {createdId && <ReporteCreadoModal idReporte={createdId} onClose={closeModal} />}
-
-      {usuarioModalOpen && (
-        <UsuarioModal
-          usuarios={usuarios}
-          actual={usuario}
-          error={usuarios.length === 0 ? "No fue posible cargar los usuarios." : ""}
-          onSeleccionar={seleccionarUsuario}
-          onCrear={agregarUsuario}
-          onCerrar={closeUsuarioModal}
-        />
-      )}
-
-      {mapOpen && (
-        <SeleccionUbicacionModal inicial={location} onGuardar={saveMapLocation} onCerrar={closeMap} />
-      )}
-    </main>
+        {mapOpen && (
+          <SeleccionUbicacionModal inicial={location} onGuardar={saveMapLocation} onCerrar={closeMap} />
+        )}
+      </main>
+    </div>
   );
 }

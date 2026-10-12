@@ -166,3 +166,6 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T005 hecha
 - VistaPrincipal (PantallaMapa): h-dvh, BarraSuperior con Crear reporte, mapa flex-1 + PanelDano (md+: columna 400 px; < md: hoja inferior 60 %, z 1100), usuarios una vez, foco al .leaflet-container al cerrar, replaceState + guardarUltimaVista. / y /mapa la reexportan; mapa/layout sin envoltorio. page.test (3). 120 tests; títulos UrbanAlert y Mapa de daños · UrbanAlert en out/.
+
+## 2026-10-12 · 002-rediseno-mapa · T006 hecha
+- Formulario con BarraSuperior: «← Volver al mapa» (useSyncExternalStore con hrefUltimaVista; snapshot de servidor «/», porque la regla react-hooks prohíbe setState en efectos) y el botón de usuario en la barra; ReporteCreadoModal con enlace «Volver al mapa». 5 pruebas nuevas (125).

@@ -20,11 +20,11 @@ Verificación de cada tarea: `npm run lint && npm test && npm run build` además
 
 ## Fase 3: Formulario
 
-- [~] T006 Barra con «Volver al mapa» (última vista) y botón de usuario en el formulario; enlace «Volver al mapa» en la confirmación — archivos: app/reportes/nuevo/page.tsx, app/reportes/nuevo/page.test.tsx, app/components/ReporteCreadoModal.tsx, app/components/ReporteCreadoModal.test.tsx — cubre: RF-011, RF-012, RF-013 — verifica: pruebas de ambos enlaces — depende: T001, T002
+- [x] T006 Barra con «Volver al mapa» (última vista) y botón de usuario en el formulario; enlace «Volver al mapa» en la confirmación — archivos: app/reportes/nuevo/page.tsx, app/reportes/nuevo/page.test.tsx, app/components/ReporteCreadoModal.tsx, app/components/ReporteCreadoModal.test.tsx — cubre: RF-011, RF-012, RF-013 — verifica: pruebas de ambos enlaces — depende: T001, T002
 
 ## Fase 4: Verificación y publicación
 
-- [ ] T007 Verificar en navegador con `next dev` contra el gateway, en 1440 × 900 y 375 × 812, la lista del plan §9 — cubre: MS-001, MS-002, MS-003, RF-002, RF-006, RF-010 — verifica: capturas y notas en el journal
+- [~] T007 Verificar en navegador con `next dev` contra el gateway, en 1440 × 900 y 375 × 812, la lista del plan §9 — cubre: MS-001, MS-002, MS-003, RF-002, RF-006, RF-010 — verifica: capturas y notas en el journal
 - [ ] T008 [P] Documentación: nota en `specs/mapa-functional-spec.md` (US-M04 y US-M06 sustituidas) y README — archivos: specs/mapa-functional-spec.md, README.md — cubre: — — verifica: revisión
 - [ ] T009 Publicar (push con permiso) y repetir MS-001/MS-002/MS-003 en el sitio — verifica: Provision en verde y comprobación en el navegador
 

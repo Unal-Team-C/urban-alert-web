@@ -1,6 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
+
+import { hrefUltimaVista } from "../lib/vistaMapa";
 
 type Props = {
   idReporte: string;
@@ -8,7 +11,7 @@ type Props = {
 };
 
 // Confirmación de reporte creado. Se cierra con "Aceptar", con Escape o con
-// un clic fuera del cuadro.
+// un clic fuera del cuadro; "Volver al mapa" lleva a la última vista del mapa (spec 002, RF-013).
 export default function ReporteCreadoModal({ idReporte, onClose }: Props) {
   const botonRef = useRef<HTMLButtonElement>(null);
 
@@ -71,6 +74,13 @@ export default function ReporteCreadoModal({ idReporte, onClose }: Props) {
         >
           Aceptar
         </button>
+
+        <Link
+          href={hrefUltimaVista()}
+          className="mt-3 block w-full rounded-lg border border-gray-300 py-3 font-medium text-gray-700 hover:bg-gray-50"
+        >
+          Volver al mapa
+        </Link>
       </div>
     </div>
   );
