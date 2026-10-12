@@ -28,6 +28,12 @@ Verificación de cada tarea: `npm run lint && npm test && npm run build` además
 - [x] T008 [P] Documentación: nota en `specs/mapa-functional-spec.md` (US-M04 y US-M06 sustituidas) y README — archivos: specs/mapa-functional-spec.md, README.md — cubre: — — verifica: revisión
 - [x] T009 Publicar (push con permiso) y repetir MS-001/MS-002/MS-003 en el sitio — verifica: Provision en verde y comprobación en el navegador
 
+## Fase 5: Enmienda HU-5 (2026-10-13)
+
+- [x] T011 Vista inicial en Teusaquillo y vistas de la URL fuera de Bogotá — archivos: app/lib/vistaMapa.ts, app/lib/vistaMapa.test.ts — cubre: RF-015, RF-018 — verifica: pruebas de leerVista y VISTA_INICIAL
+- [~] T012 Paneo libre y botón «Reiniciar mapa» como control de Leaflet — archivos: app/mapa/components/MapaDanos.tsx — cubre: RF-016, RF-017 — verifica: lint/test/build; navegador
+- [ ] T013 Verificar en navegador (vista inicial, arrastrar fuera de Bogotá sin errores, reiniciar con el panel abierto) y publicar con permiso — cubre: HU-5 — verifica: capturas y notas en el journal
+
 ## Correcciones de verificación
 
 - [x] T010 En pantallas estrechas la hoja inferior tapaba el punto seleccionado (el mapa no cambia de tamaño, así que la comprobación «fuera de la vista» no saltaba): `desplazamientoParaVer` (40 % superior visible en < 768 px, el punto va al 20 %) usado por `AjustarTamano` al cambiar el tamaño y al seleccionar — archivos: app/lib/vistaMapa.ts, app/lib/vistaMapa.test.ts, app/mapa/components/MapaDanos.tsx — cubre: caso borde «punto tapado por el panel» — verifica: 3 pruebas; en 375 × 812 el punto queda en y = 214 sobre la hoja (y = 363)
@@ -51,3 +57,5 @@ Verificación de cada tarea: `npm run lint && npm test && npm run build` además
 | RF-013 | T006 |
 | RNF-001 | T003 |
 | RNF-002 | T005 |
+| RF-015, RF-018 | T011 |
+| RF-016, RF-017 | T012, T013 |

@@ -190,3 +190,9 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · implementada
 - Publicada y verificada en el sitio (ver T009). Specs 002 y 003 en Estado: implementada.
+
+## 2026-10-13 · 002-rediseno-mapa · enmienda HU-5
+- Usuario: centrar en Teusaquillo, paneo libre, botón «Reiniciar mapa». Spec (HU-5, RF-015–018), plan D-007 y tareas T011–T013; aprobada por la propia petición. Las consultas ya se recortan a Bogotá (celdasVisibles).
+
+## 2026-10-12 · 002-rediseno-mapa · T011 hecha
+- VISTA_INICIAL = CENTRO_TEUSAQUILLO (4.63868, -74.08289) con ZOOM_MIN; leerVista acepta lat [-90, 90] y lon [-180, 180]; pruebas ajustadas y nuevas (130). CENTRO_BOGOTA intacto para el selector del formulario.

@@ -21,8 +21,13 @@ describe("leerVista", () => {
     expect(leer("lat=&lon=-74.06")).toEqual(VISTA_INICIAL);
   });
 
-  it("usa la vista inicial si el centro está fuera de Bogotá", () => {
-    expect(leer("lat=6.25&lon=-75.56&zoom=14")).toEqual(VISTA_INICIAL);
+  it("respeta un centro fuera de Bogotá: el mapa se mueve libremente", () => {
+    expect(leer("lat=6.25&lon=-75.56&zoom=14")).toEqual({ lat: 6.25, lon: -75.56, zoom: 14 });
+  });
+
+  it("usa la vista inicial si el centro no es una coordenada válida", () => {
+    expect(leer("lat=95&lon=-74&zoom=14")).toEqual(VISTA_INICIAL);
+    expect(leer("lat=4.6&lon=-190&zoom=14")).toEqual(VISTA_INICIAL);
   });
 
   it("limita y redondea el zoom", () => {
@@ -70,8 +75,8 @@ describe("última vista del mapa", () => {
     expect(hrefUltimaVista()).toBe("/?lat=4.67719&lon=-74.07171&zoom=16");
   });
 
-  it("ignora una vista guardada inválida o fuera de Bogotá", () => {
-    localStorage.setItem("urbanalert.vistaMapa", "lat=40&lon=-3&zoom=10");
+  it("ignora una vista guardada inválida", () => {
+    localStorage.setItem("urbanalert.vistaMapa", "lat=400&lon=-3&zoom=10");
     expect(hrefUltimaVista()).toBe("/");
     localStorage.setItem("urbanalert.vistaMapa", "basura");
     expect(hrefUltimaVista()).toBe("/");
@@ -84,6 +89,12 @@ describe("última vista del mapa", () => {
     vi.stubGlobal("localStorage", { ...almacenamientoEnMemoria(), getItem: bloqueado, setItem: bloqueado });
     expect(() => guardarUltimaVista({ lat: 4.7, lon: -74.07, zoom: 14 })).not.toThrow();
     expect(hrefUltimaVista()).toBe("/");
+  });
+});
+
+describe("vista inicial", () => {
+  it("está centrada en Teusaquillo con el zoom de ciudad", () => {
+    expect(VISTA_INICIAL).toEqual({ lat: 4.63868, lon: -74.08289, zoom: 12 });
   });
 });
 

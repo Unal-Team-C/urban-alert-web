@@ -6,13 +6,13 @@
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
 feature_activa: 002-rediseno-mapa
-fase: done
-tarea_actual: -
-estado_tarea: -
+fase: implement
+tarea_actual: T012
+estado_tarea: en_progreso
 
 ## Siguiente paso
 
-002 y 003 implementadas y publicadas en https://dfa8690dowmry.cloudfront.net. Pendientes opcionales: /sdd-verify de 001, 002 y 003 (verify.md); 001 T015 (Deprovision + Provision) solo con autorización expresa. Sin trabajo en curso.
+T012: MapaDanos sin maxBounds/maxBoundsViscosity (LIMITES_MAPA fuera); control BotonReiniciar (L.Control topleft, botón «Reiniciar mapa», disableClickPropagation, setView(VISTA_INICIAL)).
 
 ## Contexto de trabajo
 

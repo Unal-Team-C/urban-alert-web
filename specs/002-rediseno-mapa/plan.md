@@ -97,6 +97,11 @@ specs/mapa-functional-spec.md                 # nota: US-M04 y US-M06 sustituida
 - **Decisión**: `VistaPrincipal` guarda la vista en cada movimiento; «Volver al mapa» construye `/?lat&lon&zoom` al montar el formulario. Sin almacenamiento → `/`.
 - **Motivo**: RF-012; la URL ya sabe abrir una vista.
 
+### D-007: Teusaquillo, paneo libre y «Reiniciar mapa» (enmienda 2026-10-13)
+- **Decisión**: `VISTA_INICIAL` = etiqueta de Teusaquillo (4.63868, -74.08289) con `ZOOM_MIN`; `CENTRO_BOGOTA` no cambia (lo usa el selector del formulario). `MapaDanos` sin `maxBounds`/`maxBoundsViscosity`; `celdasVisibles` ya recorta las consultas a Bogotá. `leerVista` acepta cualquier latitud [-90, 90] y longitud [-180, 180]. Botón como control nativo de Leaflet (`L.Control`, esquina superior izquierda, bajo el zoom) que hace `setView(VISTA_INICIAL)`.
+- **Alternativas**: botón en la barra superior (lejos de los controles del mapa); superponer un botón con posición fija (se descuadra con los controles de Leaflet).
+- **Riesgo**: fuera de Bogotá el aviso dice «No hay daños reportados en esta zona», que es cierto.
+
 ## 9. Estrategia de pruebas
 
 - **Vitest**: `BarraSuperior` (logo enlaza a `/`, alt, hijos a la derecha); `PanelDano` (cargando, 404, error y reintento, campos con nombre del usuario y fallback, enlace al histórico, imagen, botón y Esc llaman a `onCerrar`, foco al abrir); `vistaMapa` (guardar/leer, valor inválido o sin almacenamiento → `/`); `/` (barra con «Crear reporte», sin iframe); formulario («Volver al mapa» con la última vista); `ReporteCreadoModal` (enlace «Volver al mapa»). Las pruebas de `useDanosVisibles`, histórico y demás siguen.
