@@ -9,8 +9,8 @@ Verificación de cada tarea: `npm run lint && npm test && npm run build` además
 
 ## Fase 1: Piezas
 
-- [~] T001 [P] Logo en `public/` y `BarraSuperior` con pruebas — archivos: public/logo-urbanalert.png, app/components/BarraSuperior.tsx, app/components/BarraSuperior.test.tsx — cubre: RF-001 — verifica: pruebas del logo enlazado a `/` y de los hijos
-- [ ] T002 [P] Última vista del mapa (`guardarUltimaVista`, `hrefUltimaVista`) con pruebas — archivos: app/lib/vistaMapa.ts, app/lib/vistaMapa.test.ts — cubre: RF-012 — verifica: pruebas con y sin `localStorage` y con valor inválido
+- [x] T001 [P] Logo en `public/` y `BarraSuperior` con pruebas — archivos: public/logo-urbanalert.png, app/components/BarraSuperior.tsx, app/components/BarraSuperior.test.tsx — cubre: RF-001 — verifica: pruebas del logo enlazado a `/` y de los hijos
+- [~] T002 [P] Última vista del mapa (`guardarUltimaVista`, `hrefUltimaVista`) con pruebas — archivos: app/lib/vistaMapa.ts, app/lib/vistaMapa.test.ts — cubre: RF-012 — verifica: pruebas con y sin `localStorage` y con valor inválido
 - [ ] T003 `PanelDano` (sustituye a `DetalleDano`): campos, «Reportado por», «Ver en el histórico», estados, cerrar con botón y Esc, foco — archivos: app/mapa/components/PanelDano.tsx, app/mapa/components/PanelDano.test.tsx, app/mapa/components/DetalleDano.tsx (borrar), app/mapa/components/DetalleDano.test.tsx (borrar) — cubre: RF-005, RF-007, RF-008, RF-009, RNF-001 — verifica: pruebas del panel
 
 ## Fase 2: Mapa

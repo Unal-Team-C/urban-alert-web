@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T001
+tarea_actual: T002
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-002 T001: copiar el logo a public/logo-urbanalert.png y crear app/components/BarraSuperior.tsx (+ test: logo enlazado a /, alt UrbanAlert, hijos a la derecha). 003: solo falta T005 (publicar), con el push conjunto (specs/003-identidad-sitio/notes.md).
+T002: app/lib/vistaMapa.ts guardarUltimaVista(vista) y hrefUltimaVista() con localStorage (clave urbanalert.vistaMapa, validada con leerVista; try/catch) + pruebas.
 
 ## Contexto de trabajo
 

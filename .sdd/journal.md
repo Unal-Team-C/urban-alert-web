@@ -151,3 +151,6 @@
 
 ## 2026-10-12 · 003-identidad-sitio · T004 hecha
 - smoke-web.sh comprueba <title>UrbanAlert</title> y que no haya texto de la plantilla; smoke local contra out/ (emulador de CloudFront) en verde; shellcheck OK. T005 (publicar) se hará con el push conjunto de 002 y 003, con permiso.
+
+## 2026-10-12 · 002-rediseno-mapa · T001 hecha
+- public/logo-urbanalert.png y BarraSuperior (header 64 px blanco, logo 48 px enlazado a / con aria-label, acciones a la derecha); 2 pruebas; 111 tests en total.
