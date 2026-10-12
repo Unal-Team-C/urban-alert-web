@@ -1,7 +1,7 @@
 # Especificación: Rediseño del mapa como vista principal
 
 - **ID**: 002-rediseno-mapa
-- **Estado**: borrador <!-- borrador | aclarada | aprobada | implementada -->
+- **Estado**: aprobada <!-- borrador | aclarada | aprobada | implementada -->
 - **Creada**: 2026-10-12
 - **Entrada original**: "Also i want to change some ui ux , First when you click a point in the map, the description of the case should appear on the right side of the map, something like this: [captura de FixMyStreet] The map should occupy all the viewpoint, let´s have the icon i put in an upper menu at one of the ends and at the oposite the button to create a report. There must be also a button when creating a report that takes you back to the map." Fuentes en `fuentes/`: `referencia-fixmystreet.webp` (detalle de un caso en un panel lateral junto al mapa) y `logo-urbanalert.png` (logo de UrbanAlert).
 

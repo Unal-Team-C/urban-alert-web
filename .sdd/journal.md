@@ -126,3 +126,10 @@
 
 ## 2026-10-12 · 001-migracion-aws · WAF desactivado y push de CloudFront
 - Análisis de riesgo para un prototipo de una semana: el riesgo principal (Reportes acepta escrituras públicas sin autenticación) no lo resuelve ni el WAF ni restringir el gateway a CloudFront. Usuario: «only cloudfront without waf». waf_habilitado = false (código y pruebas conservados, 12 runs en verde). T022 cerrada. Push de T021.
+
+## 2026-10-12 · 002-rediseno-mapa y 003-identidad-sitio · specs aprobadas
+- Usuario: «Approved both specs, go ahead». Siguiente: plan y tareas de 003 y 002.
+
+## 2026-10-12 · 002/003 · planes y tareas en borrador
+- 003: metadatos por layout de sección, lang es, not-found propia, iconos del pin con sips, borrar SVG de la plantilla, smoke con título.
+- 002: VistaPrincipal compartida por / y /mapa, BarraSuperior, PanelDano (sustituye DetalleDano/Popup), selección y ResizeObserver en MapaDanos, última vista en localStorage, Volver al mapa en formulario y confirmación.

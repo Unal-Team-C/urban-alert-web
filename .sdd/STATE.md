@@ -6,13 +6,13 @@
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
 feature_activa: 002-rediseno-mapa
-fase: specify
+fase: tasks
 tarea_actual: -
 estado_tarea: -
 
 ## Siguiente paso
 
-001 T021: push autorizado («let's keep going with only cloudfront without waf»); Provision crea la distribución (sin WAF) y elimina la Lambda. Revisar log/smoke y el sitio en la nueva site_url (*.cloudfront.net). Después: esperar aprobación de specs 002 y 003.
+Plan y tareas en borrador de 003 (5 tareas) y 002 (9 tareas). Esperar aprobación; orden de implementación: 003 primero, luego 002. 001 T021 desplegándose (run 38315937000).
 
 ## Contexto de trabajo
 
