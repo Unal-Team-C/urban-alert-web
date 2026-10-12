@@ -5,22 +5,19 @@
      fase: constitution | specify | clarify | plan | tasks | implement | verify | done
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
-feature_activa: 001-migracion-aws
-fase: implement
-tarea_actual: T021
-estado_tarea: en_progreso
+feature_activa: 002-rediseno-mapa
+fase: specify
+tarea_actual: -
+estado_tarea: -
 
 ## Siguiente paso
 
-T021: cdn_habilitado = true (cuenta verificada para CloudFront, dicho por el usuario 2026-10-12); runs de la Lambda en web.tftest.hcl con cdn_habilitado = false explícito; docs. Commit local; push solo con permiso (cambia la URL). Después: /sdd-new 002 (rediseño UI: mapa a pantalla completa, barra superior con logo y Crear reporte, panel lateral derecho con el detalle, botón volver al mapa en el formulario).
+Specs en borrador: specs/002-rediseno-mapa/spec.md (mapa a pantalla completa, barra superior, panel derecho, volver al mapa) y specs/003-identidad-sitio/spec.md (título, descripción, lang es, favicon; separada a petición del usuario). Esperar aprobación de ambas; luego /sdd-plan de 002 (activa) y de 003. 001: T021 commiteada, pendiente de push con permiso (notes.md de 001).
 
 ## Contexto de trabajo
 
-- Arnés copiado de `../../Plataforma compartida AWS` (hooks en powershell, no instalado en este Mac: protocolo a mano).
-- Referencias: `../../Microservicio usuarios` (workflows, bootstrap, tests con mock_provider), `../../Plataforma compartida AWS` (contrato SSM, docs/integracion.md, CORS `*` en el gateway).
-- Baseline: `npm ci && npx vitest run` → 18 archivos, 97 tests en verde.
-- Next 16: leer `node_modules/next/dist/docs/01-app/02-guides/static-exports.md` (rewrites no se admiten con `output: export`, ni siquiera en `next dev`).
+- Código actual: `/` = bienvenida con /mapa en iframe; app/mapa/components/MapaDanos.tsx (Leaflet, burbujas por localidad, puntos desde zoom 15, Popup con DetalleDano); app/reportes/nuevo/page.tsx (formulario, botón de usuario arriba a la derecha); specs/mapa-functional-spec.md describe el mapa actual.
 
 ## Bloqueos / preguntas abiertas
 
-- T015 (Deprovision + Provision) solo con autorización expresa.
+- ninguno

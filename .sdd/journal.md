@@ -111,3 +111,9 @@
 
 ## 2026-10-12 · 001-migracion-aws · T021 iniciada
 - Usuario: la cuenta ya puede usar CloudFront. Se vuelve a cdn_habilitado = true (D-006/D-012).
+
+## 2026-10-12 · 002-rediseno-mapa · spec en borrador
+- Creada desde la petición del usuario (captura de FixMyStreet y logo en fuentes/). Mapa a pantalla completa con barra superior (logo izquierda, Crear reporte derecha), panel derecho con el detalle (hoja inferior < 768 px), Volver al mapa en el formulario y en la confirmación. 001 aparcada en specs/001-migracion-aws/notes.md.
+
+## 2026-10-12 · 003-identidad-sitio · spec en borrador
+- A petición del usuario, spec aparte para el título del sitio: títulos por página («<página> · UrbanAlert»), descripción, lang es, favicon del pin del logo, quitar recursos de la plantilla. HU-4/RF-014 retirados de 002.
