@@ -8,8 +8,8 @@ Leyenda: `[ ]` pendiente · `[~]` en progreso · `[x]` hecha · `[!]` bloqueada 
 ## Fase 1: Núcleo
 
 - [x] T001 Metadatos raíz (título por defecto y plantilla, descripción), `lang="es"` y títulos por sección; pruebas — archivos: app/layout.tsx, app/layout.test.tsx, app/reportes/nuevo/layout.tsx, app/historial/layout.tsx, app/historial/detalle/layout.tsx, app/mapa/layout.tsx — cubre: RF-001, RF-002, RF-003 — verifica: `npm test`, `npm run build` y `out/*/index.html` con los títulos de HU-1.2
-- [~] T002 Página `not-found` en español con título — archivos: app/not-found.tsx, app/not-found.test.tsx — cubre: RF-001 — verifica: `npm test`; `out/404.html` con «Página no encontrada · UrbanAlert»
-- [ ] T003 [P] Iconos del pin (512, 180, 32 px) y borrar los SVG de la plantilla — archivos: app/icon.png, app/apple-icon.png, app/favicon.ico, public/*.svg — cubre: RF-004, RF-005 — verifica: build con `<link rel="icon">` y `apple-touch-icon`; revisión visual a 32 px; `grep -r "Create Next App" out` vacío
+- [x] T002 Página `not-found` en español con título — archivos: app/not-found.tsx, app/not-found.test.tsx — cubre: RF-001 — verifica: `npm test`; `out/404.html` con «Página no encontrada · UrbanAlert»
+- [~] T003 [P] Iconos del pin (512, 180, 32 px) y borrar los SVG de la plantilla — archivos: app/icon.png, app/apple-icon.png, app/favicon.ico, public/*.svg — cubre: RF-004, RF-005 — verifica: build con `<link rel="icon">` y `apple-touch-icon`; revisión visual a 32 px; `grep -r "Create Next App" out` vacío
 
 ## Fase 2: Integración
 

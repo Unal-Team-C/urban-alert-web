@@ -142,3 +142,6 @@
 
 ## 2026-10-12 · 003-identidad-sitio · T001 hecha
 - Metadata raíz (default UrbanAlert, template «%s · UrbanAlert», descripción), lang es, títulos por layout de sección. Gotcha: un title de texto en historial/layout cortaba la plantilla para historial/detalle: historial lleva {default, template}. out/: títulos correctos en /, nuevo, historial, detalle, mapa. 107 tests.
+
+## 2026-10-12 · 003-identidad-sitio · T002 hecha
+- app/not-found.tsx en español («Página no encontrada», enlace «Ir al mapa») con title; out/404.html «Página no encontrada · UrbanAlert». 109 tests.

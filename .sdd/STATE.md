@@ -7,12 +7,12 @@
 
 feature_activa: 003-identidad-sitio
 fase: implement
-tarea_actual: T002
+tarea_actual: T003
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T002: app/not-found.tsx en español con metadata title «Página no encontrada» y enlace a inicio + prueba. Verifica: out/404.html con «Página no encontrada · UrbanAlert».
+T003: recortar el pin de specs/002-rediseno-mapa/fuentes/logo-urbanalert.png con sips → app/icon.png 512, app/apple-icon.png 180, app/favicon.ico 32; borrar public/{file,globe,next,vercel,window}.svg. Verifica: build con <link rel=icon>/apple-touch-icon; grep -r 'Create Next App' out vacío.
 
 ## Contexto de trabajo
 
