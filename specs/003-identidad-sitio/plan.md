@@ -63,6 +63,7 @@ Títulos (HU-1.2): `/` «UrbanAlert»; `/reportes/nuevo/` «Crear reporte · Urb
 
 ### D-002: Iconos recortados del logo con `sips`
 - **Decisión**: recortar el pin (sin el texto) del PNG de la spec 002, generar 512, 180 y 32 px y versionarlos. Si a 32 px se lee mal, se recorta más ajustado.
+- **Ajuste en la implementación (T003)**: el pin recortado mide 228 px, así que `icon.png` es de 192 px (sin ampliar; 512 habría salido borroso). `apple-icon.png` se aplana sobre blanco (iOS pinta de negro la transparencia). A 32 px el pin verde y la alerta roja se reconocen.
 - **Motivo**: sin dependencias nuevas; las convenciones `icon`/`apple-icon`/`favicon.ico` de Next añaden los `<link>` en el build.
 
 ## 9. Estrategia de pruebas

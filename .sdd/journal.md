@@ -145,3 +145,6 @@
 
 ## 2026-10-12 · 003-identidad-sitio · T002 hecha
 - app/not-found.tsx en español («Página no encontrada», enlace «Ir al mapa») con title; out/404.html «Página no encontrada · UrbanAlert». 109 tests.
+
+## 2026-10-12 · 003-identidad-sitio · T003 hecha
+- Iconos del pin (recorte 228 px con sips): app/icon.png 192, app/apple-icon.png 180 opaco sobre blanco, app/favicon.ico 32; SVG de la plantilla borrados. out/index.html con los 3 <link>; ningún archivo de out/ contiene «create next app». Plan D-002 anotado (192 en vez de 512).
