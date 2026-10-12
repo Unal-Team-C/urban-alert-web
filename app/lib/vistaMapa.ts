@@ -53,3 +53,19 @@ export function hrefUltimaVista(): string {
   const vista = leerVista(new URLSearchParams(guardada));
   return vista === VISTA_INICIAL ? "/" : `/?${escribirVista(vista)}`;
 }
+
+// Cuánto desplazar el mapa (en píxeles) para que el punto seleccionado quede a la vista con el panel abierto
+// (spec 002-rediseno-mapa, casos borde). En pantallas anchas el panel estrecha el mapa: basta con que el punto
+// esté dentro. En estrechas la hoja inferior tapa el 60 % inferior del mapa: el punto debe quedar en el 40 %
+// superior; si no, se lleva al 20 % de la altura. null si no hace falta moverlo.
+export function desplazamientoParaVer(
+  punto: { x: number; y: number },
+  tamano: { x: number; y: number },
+  estrecha: boolean
+): { x: number; y: number } | null {
+  const altoVisible = estrecha ? tamano.y * 0.4 : tamano.y;
+  const dentro = punto.x >= 0 && punto.x <= tamano.x && punto.y >= 0 && punto.y <= altoVisible;
+  if (dentro) return null;
+  const destino = { x: tamano.x / 2, y: estrecha ? tamano.y * 0.2 : tamano.y / 2 };
+  return { x: punto.x - destino.x, y: punto.y - destino.y };
+}

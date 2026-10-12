@@ -1,5 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { VISTA_INICIAL, escribirVista, guardarUltimaVista, hrefUltimaVista, leerVista } from "./vistaMapa";
+import {
+  VISTA_INICIAL,
+  desplazamientoParaVer,
+  escribirVista,
+  guardarUltimaVista,
+  hrefUltimaVista,
+  leerVista,
+} from "./vistaMapa";
 
 const leer = (query: string) => leerVista(new URLSearchParams(query));
 
@@ -77,5 +84,25 @@ describe("última vista del mapa", () => {
     vi.stubGlobal("localStorage", { ...almacenamientoEnMemoria(), getItem: bloqueado, setItem: bloqueado });
     expect(() => guardarUltimaVista({ lat: 4.7, lon: -74.07, zoom: 14 })).not.toThrow();
     expect(hrefUltimaVista()).toBe("/");
+  });
+});
+
+describe("desplazamientoParaVer", () => {
+  const tamano = { x: 375, y: 748 };
+
+  it("no mueve el mapa si el punto ya se ve", () => {
+    expect(desplazamientoParaVer({ x: 1000, y: 400 }, { x: 1040, y: 836 }, false)).toBeNull();
+    expect(desplazamientoParaVer({ x: 180, y: 200 }, tamano, true)).toBeNull();
+  });
+
+  it("en pantalla ancha centra un punto que quedó fuera al estrecharse el mapa", () => {
+    expect(desplazamientoParaVer({ x: 1200, y: 418 }, { x: 1040, y: 836 }, false)).toEqual({ x: 680, y: 0 });
+  });
+
+  it("en pantalla estrecha sube un punto tapado por la hoja inferior al 20 % de la altura", () => {
+    const d = desplazamientoParaVer({ x: 187.5, y: 374 }, tamano, true);
+    expect(d).not.toBeNull();
+    expect(d!.x).toBeCloseTo(0);
+    expect(d!.y).toBeCloseTo(374 - 748 * 0.2);
   });
 });

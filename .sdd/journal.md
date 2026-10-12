@@ -169,3 +169,6 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T006 hecha
 - Formulario con BarraSuperior: «← Volver al mapa» (useSyncExternalStore con hrefUltimaVista; snapshot de servidor «/», porque la regla react-hooks prohíbe setState en efectos) y el botón de usuario en la barra; ReporteCreadoModal con enlace «Volver al mapa». 5 pruebas nuevas (125).
+
+## 2026-10-12 · 002-rediseno-mapa · T007 hecha
+- Navegador (next dev + gateway real). 1440×900: barra 64 px, mapa 1440×836, sin scroll; clic en el reporte 01a12d63 → panel 400 px (x 1041–1440), mapa 1040 px, 25 teselas cargadas, punto azul centrado, foco en el panel; Esc → sin panel, mapa 1440, foco en el mapa. 1100×700: captura con panel (título, Reportado por test-user, imagen, campos, Ver en el histórico) → /historial/detalle con título correcto. 375×812: barra y mapa sin scroll, hoja inferior 449 px (60 %) con scroll propio; fallo: tapaba el punto → T010. Formulario: «← Volver al mapa» con la última vista y vuelve a ella. Gotcha: los clics del panel del navegador usan otro marco que la captura con viewports emulados mayores que el panel.

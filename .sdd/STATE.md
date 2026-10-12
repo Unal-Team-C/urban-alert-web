@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T007
+tarea_actual: T008
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T007: verificar en el navegador con next dev + NEXT_PUBLIC_API_URL del gateway, en 1440×900 y 375×812: barra y mapa sin scroll; clic en el punto del reporte 01a12d63 → panel derecho con imagen y descripción, resaltado azul; Esc/cerrar; Ver en el histórico; volver al mapa desde el formulario con la última vista.
+T008: nota en specs/mapa-functional-spec.md (US-M04 y US-M06 sustituidas por la spec 002) y README (pantalla principal, panel, volver al mapa).
 
 ## Contexto de trabajo
 

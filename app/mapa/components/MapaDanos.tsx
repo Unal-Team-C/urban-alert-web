@@ -5,7 +5,7 @@
 import "leaflet/dist/leaflet.css";
 
 import L from "leaflet";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   CircleMarker,
   MapContainer,
@@ -26,7 +26,7 @@ import {
   type Localidad,
 } from "../../lib/localidades";
 import { LIMITES_BOGOTA, type Coordenada } from "../../lib/ubicacion";
-import { ZOOM_MAX, ZOOM_MIN, ZOOM_PUNTOS, type VistaMapa } from "../../lib/vistaMapa";
+import { ZOOM_MAX, ZOOM_MIN, ZOOM_PUNTOS, desplazamientoParaVer, type VistaMapa } from "../../lib/vistaMapa";
 import { useDanosVisibles, type EstadoArea, type VistaDatos } from "../useDanosVisibles";
 
 type Props = {
@@ -195,30 +195,36 @@ function CapaPuntos({
 
 // Leaflet calcula su tamaño al crearse: al abrir o cerrar el panel, o al redimensionar la ventana, cambia el
 // contenedor y hay que avisarle (si no, quedan teselas grises). Si el punto seleccionado queda fuera de la
-// vista (p. ej. tapado por el panel al abrirse), el mapa se desplaza hasta él.
+// parte visible (tapado por el panel o la hoja inferior), el mapa se desplaza hasta él.
 function AjustarTamano({ seleccionado }: { seleccionado: Coordenada | null }) {
   const map = useMap();
   const actual = useRef(seleccionado);
 
+  const mostrarSeleccionado = useCallback(() => {
+    const punto = actual.current;
+    if (!punto) return;
+    const desplazamiento = desplazamientoParaVer(
+      map.latLngToContainerPoint([punto.lat, punto.lon]),
+      map.getSize(),
+      window.matchMedia("(max-width: 767px)").matches
+    );
+    if (desplazamiento) map.panBy([desplazamiento.x, desplazamiento.y]);
+  }, [map]);
+
   useEffect(() => {
-    function mostrarSeleccionado() {
-      const punto = actual.current;
-      if (punto && !map.getBounds().contains([punto.lat, punto.lon])) map.panTo([punto.lat, punto.lon]);
-    }
     const observador = new ResizeObserver(() => {
       map.invalidateSize();
       mostrarSeleccionado();
     });
     observador.observe(map.getContainer());
     return () => observador.disconnect();
-  }, [map]);
+  }, [map, mostrarSeleccionado]);
 
+  // La hoja inferior aparece sin cambiar el tamaño del mapa: también se comprueba al cambiar la selección.
   useEffect(() => {
     actual.current = seleccionado;
-    if (seleccionado && !map.getBounds().contains([seleccionado.lat, seleccionado.lon])) {
-      map.panTo([seleccionado.lat, seleccionado.lon]);
-    }
-  }, [map, seleccionado]);
+    mostrarSeleccionado();
+  }, [seleccionado, mostrarSeleccionado]);
 
   return null;
 }

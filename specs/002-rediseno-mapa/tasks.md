@@ -24,9 +24,13 @@ Verificación de cada tarea: `npm run lint && npm test && npm run build` además
 
 ## Fase 4: Verificación y publicación
 
-- [~] T007 Verificar en navegador con `next dev` contra el gateway, en 1440 × 900 y 375 × 812, la lista del plan §9 — cubre: MS-001, MS-002, MS-003, RF-002, RF-006, RF-010 — verifica: capturas y notas en el journal
-- [ ] T008 [P] Documentación: nota en `specs/mapa-functional-spec.md` (US-M04 y US-M06 sustituidas) y README — archivos: specs/mapa-functional-spec.md, README.md — cubre: — — verifica: revisión
+- [x] T007 Verificar en navegador con `next dev` contra el gateway, en 1440 × 900 y 375 × 812, la lista del plan §9 — cubre: MS-001, MS-002, MS-003, RF-002, RF-006, RF-010 — verifica: capturas y notas en el journal
+- [~] T008 [P] Documentación: nota en `specs/mapa-functional-spec.md` (US-M04 y US-M06 sustituidas) y README — archivos: specs/mapa-functional-spec.md, README.md — cubre: — — verifica: revisión
 - [ ] T009 Publicar (push con permiso) y repetir MS-001/MS-002/MS-003 en el sitio — verifica: Provision en verde y comprobación en el navegador
+
+## Correcciones de verificación
+
+- [x] T010 En pantallas estrechas la hoja inferior tapaba el punto seleccionado (el mapa no cambia de tamaño, así que la comprobación «fuera de la vista» no saltaba): `desplazamientoParaVer` (40 % superior visible en < 768 px, el punto va al 20 %) usado por `AjustarTamano` al cambiar el tamaño y al seleccionar — archivos: app/lib/vistaMapa.ts, app/lib/vistaMapa.test.ts, app/mapa/components/MapaDanos.tsx — cubre: caso borde «punto tapado por el panel» — verifica: 3 pruebas; en 375 × 812 el punto queda en y = 214 sobre la hoja (y = 363)
 
 ## Cobertura
 
