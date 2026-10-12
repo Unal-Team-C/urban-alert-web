@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T004
+tarea_actual: T005
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T004: MapaDanos: props seleccionado/onSeleccionar, CapaPuntos sin Popup (click → onSeleccionar), seleccionado azul radio 10 dibujado al final, AjustarTamano (ResizeObserver → invalidateSize; panTo si el seleccionado queda fuera); borrar DetalleDano.*. Verifica: lint/test/build (navegador en T007).
+T005: app/components/VistaPrincipal.tsx (barra + mapa + PanelDano responsive; usuarios una vez; seleccionado; foco al mapa al cerrar; guardarUltimaVista + replaceState) usada por app/page.tsx y app/mapa/page.tsx; app/mapa/layout.tsx sin h-screen; app/page.test.tsx (barra, Crear reporte, sin iframe).
 
 ## Contexto de trabajo
 

@@ -160,3 +160,6 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T003 hecha
 - PanelDano: aside con título «Detalle del daño», cerrar con botón/Esc, foco al abrir; tipo, categoría · Reportado por, imagen ancha, descripción, estado, nivel, fecha, ubicación, «Ver en el histórico»; estados cargando/404/error. 8 pruebas (123 en total). DetalleDano se borra en T004 para que cada commit compile.
+
+## 2026-10-12 · 002-rediseno-mapa · T004 hecha
+- MapaDanos sin Popup ni catálogo: seleccionado/onSeleccionar, punto activo azul radio 10 dibujado al final, AjustarTamano (ResizeObserver → invalidateSize + panTo del seleccionado). DetalleDano.* borrados (119 tests). app/mapa/page.tsx con cambio mínimo para compilar (T005 la rehace). iCloud: copias « 2» en .next → .next borrado, patrón ignorado en .gitignore, gotcha en CLAUDE.md.

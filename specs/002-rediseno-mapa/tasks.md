@@ -15,8 +15,8 @@ Verificación de cada tarea: `npm run lint && npm test && npm run build` además
 
 ## Fase 2: Mapa
 
-- [~] T004 `MapaDanos`: `seleccionado`/`onSeleccionar`, punto resaltado dibujado al final, sin `Popup`, `AjustarTamano` (ResizeObserver + invalidateSize + panTo del seleccionado) — archivos: app/mapa/components/MapaDanos.tsx, app/mapa/components/DetalleDano.tsx y .test.tsx (borrar) — cubre: RF-002, RF-006 — verifica: lint/test/build; navegador en T007
-- [ ] T005 `VistaPrincipal` y pantallas `/` y `/mapa` (barra + mapa + panel responsive, foco al cerrar, guardar última vista) — archivos: app/components/VistaPrincipal.tsx, app/page.tsx, app/page.test.tsx, app/mapa/page.tsx, app/mapa/layout.tsx — cubre: RF-001, RF-002, RF-003, RF-004, RF-010, RNF-002 — verifica: page.test (barra, sin iframe) — depende: T001–T004
+- [x] T004 `MapaDanos`: `seleccionado`/`onSeleccionar`, punto resaltado dibujado al final, sin `Popup`, `AjustarTamano` (ResizeObserver + invalidateSize + panTo del seleccionado) — archivos: app/mapa/components/MapaDanos.tsx, app/mapa/components/DetalleDano.tsx y .test.tsx (borrar) — cubre: RF-002, RF-006 — verifica: lint/test/build; navegador en T007
+- [~] T005 `VistaPrincipal` y pantallas `/` y `/mapa` (barra + mapa + panel responsive, foco al cerrar, guardar última vista) — archivos: app/components/VistaPrincipal.tsx, app/page.tsx, app/page.test.tsx, app/mapa/page.tsx, app/mapa/layout.tsx — cubre: RF-001, RF-002, RF-003, RF-004, RF-010, RNF-002 — verifica: page.test (barra, sin iframe) — depende: T001–T004
 
 ## Fase 3: Formulario
 

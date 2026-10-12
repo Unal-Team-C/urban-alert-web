@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useState } from "react";
 
 import { cargarLocalidades } from "../lib/localidades";
-import { obtenerCatalogo } from "../lib/reportes";
 import { useCarga } from "../lib/useCarga";
 import { escribirVista, leerVista, type VistaMapa } from "../lib/vistaMapa";
 
@@ -27,7 +26,6 @@ function Mapa() {
   const parametros = useSearchParams();
   // La URL solo define la vista inicial; luego el mapa la mantiene al día.
   const [vistaInicial] = useState(() => leerVista(new URLSearchParams(parametros.toString())));
-  const catalogo = useCarga(obtenerCatalogo, "catalogo");
   const localidades = useCarga(cargarLocalidades, "localidades");
 
   // replaceState: la URL sigue al mapa sin navegar ni agregar una entrada por movimiento.
@@ -39,11 +37,12 @@ function Mapa() {
     <main className="h-full w-full">
       <MapaDanos
         vistaInicial={vistaInicial}
-        catalogo={catalogo.datos ?? []}
         localidades={localidades.datos ?? null}
         errorLocalidades={localidades.error?.message ?? null}
         onReintentarLocalidades={localidades.reintentar}
         onMover={actualizarUrl}
+        seleccionado={null}
+        onSeleccionar={() => {}}
       />
     </main>
   );

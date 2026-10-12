@@ -164,3 +164,7 @@ tfplan
 
 # Zip de la Lambda de origen (terraform, plan D-012)
 infra/web/.build/
+
+# Copias de conflicto de iCloud Drive ("archivo 2.ext"): la carpeta está en Documents
+* 2.*
+* 3.*

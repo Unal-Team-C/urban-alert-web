@@ -11,14 +11,12 @@ import {
   MapContainer,
   Marker,
   Polygon,
-  Popup,
   TileLayer,
   Tooltip,
   useMap,
   useMapEvents,
 } from "react-leaflet";
 
-import type { CategoriaCatalogo } from "../../lib/catalogo";
 import type { Limites } from "../../lib/celdas";
 import type { DanoCercano } from "../../lib/geoespacial";
 import {
@@ -27,19 +25,20 @@ import {
   seIntersecan,
   type Localidad,
 } from "../../lib/localidades";
-import { LIMITES_BOGOTA } from "../../lib/ubicacion";
+import { LIMITES_BOGOTA, type Coordenada } from "../../lib/ubicacion";
 import { ZOOM_MAX, ZOOM_MIN, ZOOM_PUNTOS, type VistaMapa } from "../../lib/vistaMapa";
 import { useDanosVisibles, type EstadoArea, type VistaDatos } from "../useDanosVisibles";
-import DetalleDano from "./DetalleDano";
 
 type Props = {
   vistaInicial: VistaMapa;
-  catalogo: CategoriaCatalogo[];
   // null mientras cargan (o si fallaron): sin localidades no hay burbujas.
   localidades: Localidad[] | null;
   errorLocalidades: string | null;
   onReintentarLocalidades: () => void;
   onMover: (vista: VistaMapa) => void;
+  // Daño cuyo detalle está abierto en el panel (spec 002-rediseno-mapa): se resalta en el mapa.
+  seleccionado: string | null;
+  onSeleccionar: (punto: DanoCercano) => void;
 };
 
 // Igual que el selector de ubicación: no deja alejarse de Bogotá.
@@ -165,19 +164,63 @@ function CapaLocalidades({
   });
 }
 
-function CapaPuntos({ puntos, catalogo }: { puntos: DanoCercano[]; catalogo: CategoriaCatalogo[] }) {
-  return puntos.map((punto) => (
-    <CircleMarker
-      key={punto.reportId}
-      center={[punto.coordinate.lat, punto.coordinate.lon]}
-      radius={7}
-      pathOptions={{ color: "#ffffff", weight: 2, fillColor: "#dc2626", fillOpacity: 1 }}
-    >
-      <Popup minWidth={256} maxWidth={256}>
-        <DetalleDano reportId={punto.reportId} coordenada={punto.coordinate} catalogo={catalogo} />
-      </Popup>
-    </CircleMarker>
-  ));
+// Pulsar un punto abre su detalle en el panel lateral (ya no hay popup). El seleccionado se dibuja más
+// grande, en azul y al final, para que quede encima de los demás (el mapa usa canvas).
+function CapaPuntos({
+  puntos,
+  seleccionado,
+  onSeleccionar,
+}: {
+  puntos: DanoCercano[];
+  seleccionado: string | null;
+  onSeleccionar: (punto: DanoCercano) => void;
+}) {
+  const ordenados = useMemo(
+    () => [...puntos.filter((p) => p.reportId !== seleccionado), ...puntos.filter((p) => p.reportId === seleccionado)],
+    [puntos, seleccionado]
+  );
+  return ordenados.map((punto) => {
+    const activo = punto.reportId === seleccionado;
+    return (
+      <CircleMarker
+        key={punto.reportId}
+        center={[punto.coordinate.lat, punto.coordinate.lon]}
+        radius={activo ? 10 : 7}
+        pathOptions={{ color: "#ffffff", weight: activo ? 3 : 2, fillColor: activo ? "#2563eb" : "#dc2626", fillOpacity: 1 }}
+        eventHandlers={{ click: () => onSeleccionar(punto) }}
+      />
+    );
+  });
+}
+
+// Leaflet calcula su tamaño al crearse: al abrir o cerrar el panel, o al redimensionar la ventana, cambia el
+// contenedor y hay que avisarle (si no, quedan teselas grises). Si el punto seleccionado queda fuera de la
+// vista (p. ej. tapado por el panel al abrirse), el mapa se desplaza hasta él.
+function AjustarTamano({ seleccionado }: { seleccionado: Coordenada | null }) {
+  const map = useMap();
+  const actual = useRef(seleccionado);
+
+  useEffect(() => {
+    function mostrarSeleccionado() {
+      const punto = actual.current;
+      if (punto && !map.getBounds().contains([punto.lat, punto.lon])) map.panTo([punto.lat, punto.lon]);
+    }
+    const observador = new ResizeObserver(() => {
+      map.invalidateSize();
+      mostrarSeleccionado();
+    });
+    observador.observe(map.getContainer());
+    return () => observador.disconnect();
+  }, [map]);
+
+  useEffect(() => {
+    actual.current = seleccionado;
+    if (seleccionado && !map.getBounds().contains([seleccionado.lat, seleccionado.lon])) {
+      map.panTo([seleccionado.lat, seleccionado.lon]);
+    }
+  }, [map, seleccionado]);
+
+  return null;
 }
 
 function Aviso({ texto, onReintentar }: { texto: string; onReintentar: () => void }) {
@@ -234,11 +277,12 @@ function Estado({
 
 export default function MapaDanos({
   vistaInicial,
-  catalogo,
   localidades,
   errorLocalidades,
   onReintentarLocalidades,
   onMover,
+  seleccionado,
+  onSeleccionar,
 }: Props) {
   const [vista, setVista] = useState<(VistaDatos & VistaMapa) | null>(null);
   const zoom = vista?.zoom ?? vistaInicial.zoom;
@@ -253,6 +297,11 @@ export default function MapaDanos({
   );
   const areas = useMemo(() => localidadesVisibles.map((l) => l.limites), [localidadesVisibles]);
   const { puntos, cargando, celdasFallidas, reintentar, estadoDe } = useDanosVisibles(vista, areas);
+
+  const coordenadaSeleccionada = useMemo(
+    () => puntos.find((p) => p.reportId === seleccionado)?.coordinate ?? null,
+    [puntos, seleccionado]
+  );
 
   // Solo los puntos dentro de la vista cuentan para el total.
   const enVista = useMemo(() => {
@@ -298,8 +347,10 @@ export default function MapaDanos({
             />
           )
         ) : (
-          <CapaPuntos puntos={puntos} catalogo={catalogo} />
+          <CapaPuntos puntos={puntos} seleccionado={seleccionado} onSeleccionar={onSeleccionar} />
         )}
+
+        <AjustarTamano seleccionado={coordenadaSeleccionada} />
       </MapContainer>
 
       {vista && (
