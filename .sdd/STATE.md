@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T013
-estado_tarea: en_progreso
+tarea_actual: T014
+estado_tarea: hecha
 
 ## Siguiente paso
 
-T013: verificación en navegador hecha (ver journal); falta publicar con permiso.
+T014 (HU-6): VolverAlMapa compartido, barra con «Volver al inicio» en el layout de /historial, «Histórico» en la barra principal. Después T015 (navegador) y publicar T013+T015 con permiso. HU-5 (T011–T012) commiteada y verificada en navegador.
 
 ## Contexto de trabajo
 

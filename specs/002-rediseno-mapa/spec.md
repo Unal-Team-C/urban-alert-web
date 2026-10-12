@@ -69,6 +69,15 @@ Como usuario quiero que el mapa abra centrado en Teusaquillo, moverlo sin límit
 3. Dado el mapa, entonces veo un botón «Reiniciar mapa» junto a los controles de zoom; al pulsarlo, el mapa vuelve a la vista inicial (Teusaquillo, zoom de ciudad). Si hay un daño abierto en el panel, sigue abierto.
 4. Dada una vista fuera de Bogotá en la URL (al recargar o compartir), entonces el mapa abre en esa vista.
 
+### HU-6: Navegar entre el mapa y el histórico (Prioridad: P2, enmienda 2026-10-13)
+
+Como administrador quiero pasar del mapa al histórico y volver al inicio desde el histórico y desde el detalle de un reporte.
+
+**Criterios de aceptación**
+1. Dada la página principal, entonces la barra superior tiene un enlace «Histórico» que lleva a `/historial`, además de «Crear reporte».
+2. Dado `/historial`, entonces veo la barra superior con un botón «Volver al inicio» que abre el mapa en su última vista.
+3. Dado el detalle de un reporte, entonces veo la misma barra con «Volver al inicio», además del enlace «← Volver al histórico» que ya tiene.
+
 ### Casos borde
 
 - Pulsar un punto cuyo reporte no existe (datos de prueba de Geoespacial): mensaje de «no hay reporte» en el panel (HU-2.6).
@@ -97,6 +106,8 @@ Como usuario quiero que el mapa abra centrado en Teusaquillo, moverlo sin límit
 - **RF-015**: La vista inicial del mapa DEBE estar centrada en Teusaquillo (punto de su etiqueta en las localidades) con el zoom de ciudad _(fuente: usuario, 2026-10-13)_.
 - **RF-016**: El mapa principal NO DEBE limitar el paneo a Bogotá; las consultas a Geoespacial DEBEN seguir limitadas al rango de Bogotá. El selector de ubicación del formulario conserva sus límites _(fuente: usuario)_.
 - **RF-017**: El mapa DEBE tener un botón «Reiniciar mapa» junto a los controles de zoom que vuelva a la vista inicial sin cerrar el panel _(fuente: usuario)_.
+- **RF-019**: La barra superior de la página principal DEBE incluir un enlace «Histórico» a `/historial` _(fuente: usuario, 2026-10-13)_.
+- **RF-020**: `/historial` y su detalle DEBEN mostrar la barra superior con «Volver al inicio», que abre el mapa en su última vista (como RF-012) _(fuente: usuario)_.
 - **RF-018**: Una vista válida (latitud y longitud dentro de sus rangos) en la URL DEBE respetarse aunque esté fuera de Bogotá.
 
 ## 6. Requisitos no funcionales
@@ -112,7 +123,7 @@ No hay entidades nuevas: se usan el reporte (Reportes), el usuario que lo creó 
 
 ## 8. Fuera de alcance
 
-- Cambiar `/historial` y su detalle (siguen como están, sin la barra superior).
+- Cambiar el contenido de `/historial` y su detalle (solo ganan la barra superior con «Volver al inicio», HU-6).
 - Título de la pestaña, idioma del documento e icono del sitio: spec `003-identidad-sitio`.
 - Que la URL refleje el daño seleccionado (abrir `/` con un daño ya abierto).
 - Filtros en el mapa, búsqueda de direcciones, actualizaciones o comentarios sobre un daño (lo que FixMyStreet ofrece debajo del detalle).
@@ -141,6 +152,7 @@ No hay entidades nuevas: se usan el reporte (Reportes), el usuario que lo creó 
 
 ### Sesión 2026-10-13
 - P: (usuario) «Center the map with teusaquillo as the center and let me pan it freely. Add a button that says reiniciar mapa that resets the view» → R: HU-5, RF-015–RF-018 (enmienda aprobada por la propia petición). Zoom inicial sin cambios (ciudad); el botón no cierra el panel; vistas fuera de Bogotá en la URL se respetan (sustituye la regla de US-M05 de `specs/mapa-functional-spec.md`).
+- P: (usuario) «En historial dame un botón para volver al inicio, en el detalle de un reporte dame igualmente un botón para volver al inicio. En la barra del inicio de mapas agrega un modo en la barra superior para ir a historial» → R: HU-6, RF-019–RF-020 (aprobada por la propia petición). «Volver al inicio» usa la última vista del mapa; se pone en el layout de `/historial`, que comparte el detalle.
 
 ---
 

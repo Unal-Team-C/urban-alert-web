@@ -30,6 +30,9 @@ export default function PantallaMapa() {
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-gray-100 text-gray-900">
       <BarraSuperior>
+        <Link href="/historial" className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+          Histórico
+        </Link>
         <Link
           href="/reportes/nuevo"
           className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"

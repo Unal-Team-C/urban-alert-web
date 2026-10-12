@@ -202,3 +202,9 @@
 
 ## 2026-10-13 · 002-rediseno-mapa · HU-5 verificada en navegador (next dev + gateway)
 - / abre en ?lat=4.63868&lon=-74.08289&zoom=12 (Teusaquillo al centro), 19 burbujas, 26 daños. Arrastrado hasta lon -79.4 (Pacífico) sin rebote: «No hay daños reportados en esta zona», 0 peticiones fallidas, sin avisos. «Reiniciar mapa» bajo el zoom → vuelve a Teusaquillo zoom 12; con el panel abierto, el panel sigue («Grietas en la vía»). Gotcha: con el panel del navegador oculto el viewport mide 0×0 y el mapa calcula mal su vista: usar tabs_select antes de verificar.
+
+## 2026-10-13 · 002-rediseno-mapa · enmienda HU-6
+- Usuario (mientras se verificaba HU-5): botón para volver al inicio en historial y en el detalle, y acceso a historial en la barra del mapa. HU-6, RF-019–020, D-008, T014–T015.
+
+## 2026-10-12 · 002-rediseno-mapa · T014 hecha
+- VolverAlMapa (useSyncExternalStore + hrefUltimaVista) usado por el formulario y por la barra del layout de /historial («← Volver al inicio», también en el detalle); «Histórico» en la barra principal. Pruebas: VolverAlMapa (2), layout del histórico (1), page.test (+1). 134 tests, lint y build OK.

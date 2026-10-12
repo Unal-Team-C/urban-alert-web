@@ -102,6 +102,10 @@ specs/mapa-functional-spec.md                 # nota: US-M04 y US-M06 sustituida
 - **Alternativas**: botón en la barra superior (lejos de los controles del mapa); superponer un botón con posición fija (se descuadra con los controles de Leaflet).
 - **Riesgo**: fuera de Bogotá el aviso dice «No hay daños reportados en esta zona», que es cierto.
 
+### D-008: Barra en el histórico y enlace «Histórico» (enmienda 2026-10-13)
+- **Decisión**: componente de cliente `VolverAlMapa` (enlace con `hrefUltimaVista` vía `useSyncExternalStore`, texto configurable) que usan el formulario («← Volver al mapa») y la barra del layout de `/historial` («← Volver al inicio»); al estar en el layout, el detalle también la tiene. La barra de la página principal añade «Histórico» (estilo secundario) antes de «Crear reporte».
+- **Motivo**: un solo sitio para la lógica de la última vista; el layout cubre las dos páginas del histórico sin tocarlas.
+
 ## 9. Estrategia de pruebas
 
 - **Vitest**: `BarraSuperior` (logo enlaza a `/`, alt, hijos a la derecha); `PanelDano` (cargando, 404, error y reintento, campos con nombre del usuario y fallback, enlace al histórico, imagen, botón y Esc llaman a `onCerrar`, foco al abrir); `vistaMapa` (guardar/leer, valor inválido o sin almacenamiento → `/`); `/` (barra con «Crear reporte», sin iframe); formulario («Volver al mapa» con la última vista); `ReporteCreadoModal` (enlace «Volver al mapa»). Las pruebas de `useDanosVisibles`, histórico y demás siguen.

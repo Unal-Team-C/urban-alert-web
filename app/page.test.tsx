@@ -15,6 +15,11 @@ describe("página principal", () => {
     expect(screen.getByRole("link", { name: "Crear reporte" })).toHaveAttribute("href", "/reportes/nuevo");
   });
 
+  it("lleva al histórico desde la barra superior", () => {
+    render(<Inicio />);
+    expect(screen.getByRole("link", { name: "Histórico" })).toHaveAttribute("href", "/historial");
+  });
+
   it("muestra el mapa directamente, sin iframe", () => {
     const { container } = render(<Inicio />);
     expect(container.querySelector("iframe")).toBeNull();

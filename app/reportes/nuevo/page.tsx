@@ -1,16 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import BarraSuperior from "../../components/BarraSuperior";
 import { IconoCamara, IconoMapa, IconoUbicacion, IconoUsuario } from "../../components/Iconos";
 import ReporteCreadoModal from "../../components/ReporteCreadoModal";
 import SeleccionUbicacionModal from "../../components/SeleccionUbicacionModal";
 import UsuarioModal from "../../components/UsuarioModal";
+import VolverAlMapa from "../../components/VolverAlMapa";
 import { urlApi } from "../../lib/api";
 import { TIPOS_IMAGEN, formatearTamano, validarImagen } from "../../lib/imagen";
-import { hrefUltimaVista } from "../../lib/vistaMapa";
 import {
   dentroDeBogota,
   formatearCoordenada,
@@ -52,9 +51,6 @@ async function leerError(response: Response): Promise<string> {
   return error?.message ?? detalle ?? error?.title ?? `Error inesperado (HTTP ${response.status}).`;
 }
 
-// La última vista solo cambia en otra pantalla (el mapa): no hace falta suscribirse a cambios.
-const sinSuscripcion = () => () => {};
-
 export default function Home() {
   const [form, setForm] = useState(FORMULARIO_VACIO);
 
@@ -83,9 +79,6 @@ export default function Home() {
   const [usuarioError, setUsuarioError] = useState("");
   const [usuarioModalOpen, setUsuarioModalOpen] = useState(false);
 
-  // «Volver al mapa» abre la última vista del mapa (spec 002, RF-012). El HTML exportado se genera sin
-  // navegador y lleva "/"; en el navegador se lee la vista guardada.
-  const volverAlMapa = useSyncExternalStore(sinSuscripcion, hrefUltimaVista, () => "/");
 
   useEffect(() => {
     fetch(urlApi("/api/v1/reportes/catalogo"))
@@ -297,12 +290,7 @@ export default function Home() {
   return (
     <div className="flex min-h-dvh flex-col bg-gray-100">
       <BarraSuperior>
-        <Link
-          href={volverAlMapa}
-          className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-        >
-          ← Volver al mapa
-        </Link>
+        <VolverAlMapa texto="← Volver al mapa" />
         <button
           type="button"
           onClick={() => setUsuarioModalOpen(true)}
