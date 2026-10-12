@@ -211,3 +211,6 @@
 
 ## 2026-10-13 · 002-rediseno-mapa · HU-6 verificada en navegador
 - Barra principal: «Histórico» → /historial («Histórico de reportes · UrbanAlert», barra con «← Volver al inicio» a la última vista). «Ver detalle» → detalle («Detalle del reporte · UrbanAlert») con la barra y el enlace «← Volver al histórico» existente. «Volver al inicio» → mapa en esa vista. 375 px: logo, Histórico y Crear reporte caben (sin scroll horizontal). El histórico ya tiene 5 reportes (creados por el equipo).
+
+## 2026-10-13 · 002-rediseno-mapa · push autorizado (HU-5 y HU-6)
+- Usuario: «push it».
