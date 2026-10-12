@@ -214,3 +214,9 @@
 
 ## 2026-10-13 · 002-rediseno-mapa · push autorizado (HU-5 y HU-6)
 - Usuario: «push it».
+
+## 2026-10-12 · 002-rediseno-mapa · T013 hecha
+- HU-5 publicada (run 38320897768, 0 cambios de infraestructura, smoke OK): en el sitio / abre en Teusaquillo zoom 12 (26 daños) con «Reiniciar mapa» bajo el zoom.
+
+## 2026-10-12 · 002-rediseno-mapa · T015 hecha
+- HU-6 publicada: barra con Histórico y Crear reporte; /historial/ y su detalle con «← Volver al inicio» a la última vista; títulos correctos.

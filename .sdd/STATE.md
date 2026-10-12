@@ -6,13 +6,13 @@
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
 feature_activa: 002-rediseno-mapa
-fase: implement
-tarea_actual: T014
-estado_tarea: hecha
+fase: done
+tarea_actual: -
+estado_tarea: -
 
 ## Siguiente paso
 
-HU-5 (T011–T012) y HU-6 (T014) implementadas y verificadas en navegador. Falta publicar: push con permiso del usuario; después cerrar T013 y T015 comprobando en https://dfa8690dowmry.cloudfront.net (Teusaquillo, paneo libre, Reiniciar mapa, Histórico, Volver al inicio).
+Sin trabajo en curso. 002 (con HU-5 y HU-6) y 003 implementadas y publicadas en https://dfa8690dowmry.cloudfront.net. Opcionales: /sdd-verify de 001–003; 001 T015 solo con autorización expresa.
 
 ## Contexto de trabajo
 

@@ -32,12 +32,12 @@ Verificación de cada tarea: `npm run lint && npm test && npm run build` además
 
 - [x] T011 Vista inicial en Teusaquillo y vistas de la URL fuera de Bogotá — archivos: app/lib/vistaMapa.ts, app/lib/vistaMapa.test.ts — cubre: RF-015, RF-018 — verifica: pruebas de leerVista y VISTA_INICIAL
 - [x] T012 Paneo libre y botón «Reiniciar mapa» como control de Leaflet — archivos: app/mapa/components/MapaDanos.tsx — cubre: RF-016, RF-017 — verifica: lint/test/build; navegador
-- [~] T013 Verificar en navegador (vista inicial, arrastrar fuera de Bogotá sin errores, reiniciar con el panel abierto) y publicar con permiso — cubre: HU-5 — verifica: capturas y notas en el journal
+- [x] T013 Verificar en navegador (vista inicial, arrastrar fuera de Bogotá sin errores, reiniciar con el panel abierto) y publicar con permiso — cubre: HU-5 — verifica: capturas y notas en el journal
 
 ## Fase 6: Enmienda HU-6 (2026-10-13)
 
 - [x] T014 `VolverAlMapa` compartido (formulario y layout del histórico), barra con «Volver al inicio» en `/historial` y su detalle, «Histórico» en la barra principal; pruebas — archivos: app/components/VolverAlMapa.tsx (+ .test), app/historial/layout.tsx (+ .test), app/components/VistaPrincipal.tsx, app/page.test.tsx, app/reportes/nuevo/page.tsx — cubre: RF-019, RF-020 — verifica: lint/test/build
-- [~] T015 Verificar en navegador la navegación mapa ↔ histórico ↔ detalle y publicar (junto con T013) con permiso — cubre: HU-6 — verifica: notas en el journal
+- [x] T015 Verificar en navegador la navegación mapa ↔ histórico ↔ detalle y publicar (junto con T013) con permiso — cubre: HU-6 — verifica: notas en el journal
 
 ## Correcciones de verificación
 
