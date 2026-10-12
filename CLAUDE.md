@@ -29,6 +29,7 @@ AWS (cuenta 348364742283): `infra/web` (S3 privado + CloudFront con OAC y funci�
 - `node --test <carpeta>` funciona en Node 26 pero en Node 24 (CI) trata la carpeta como un módulo: pasar el archivo `.test.mjs`.
 - Una function URL pública necesita dos permisos: `lambda:InvokeFunctionUrl` y `lambda:InvokeFunction` con `invoked_via_function_url = true`.
 - El rol de GitHub solo puede adjuntar políticas gestionadas de ECS: los roles de este repo usan políticas en línea.
+- Node 25+ (local: 26) trae un `localStorage` global vacío que tapa al de jsdom en Vitest: las pruebas lo sustituyen con `vi.stubGlobal` (ver `app/lib/vistaMapa.test.ts`).
 - macOS trae bash 3.2: los scripts no usan funciones de bash 4.
 
 ## Desarrollo guiado por especificaciones (SDD)

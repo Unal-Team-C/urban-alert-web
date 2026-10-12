@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T002
+tarea_actual: T003
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T002: app/lib/vistaMapa.ts guardarUltimaVista(vista) y hrefUltimaVista() con localStorage (clave urbanalert.vistaMapa, validada con leerVista; try/catch) + pruebas.
+T003: PanelDano (sustituye DetalleDano): aside con título, botón «Cerrar detalle», Esc, foco al abrir; campos + Reportado por (usuarios, nombreDeUsuario) + Ver en el histórico (/historial/detalle?id=) + imagen ancha; estados cargando/404/error. Pruebas migradas de DetalleDano.test y ampliadas; borrar DetalleDano.*
 
 ## Contexto de trabajo
 

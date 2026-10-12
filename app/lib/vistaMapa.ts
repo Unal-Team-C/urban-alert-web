@@ -28,3 +28,28 @@ export function leerVista(parametros: URLSearchParams): VistaMapa {
 export function escribirVista({ lat, lon, zoom }: VistaMapa): string {
   return new URLSearchParams({ lat: lat.toFixed(5), lon: lon.toFixed(5), zoom: String(zoom) }).toString();
 }
+
+// Última vista del mapa en este navegador, para «Volver al mapa» (spec 002-rediseno-mapa, RF-012).
+// Se guarda con el mismo formato que la URL; sin almacenamiento (modo privado, bloqueado) no pasa nada.
+const CLAVE_ULTIMA_VISTA = "urbanalert.vistaMapa";
+
+export function guardarUltimaVista(vista: VistaMapa) {
+  try {
+    localStorage.setItem(CLAVE_ULTIMA_VISTA, escribirVista(vista));
+  } catch {
+    // Sin almacenamiento: «Volver al mapa» abrirá la vista por defecto.
+  }
+}
+
+// "/?lat&lon&zoom" con la última vista guardada, o "/" si no hay una válida.
+export function hrefUltimaVista(): string {
+  let guardada: string | null = null;
+  try {
+    guardada = localStorage.getItem(CLAVE_ULTIMA_VISTA);
+  } catch {
+    return "/";
+  }
+  if (!guardada) return "/";
+  const vista = leerVista(new URLSearchParams(guardada));
+  return vista === VISTA_INICIAL ? "/" : `/?${escribirVista(vista)}`;
+}

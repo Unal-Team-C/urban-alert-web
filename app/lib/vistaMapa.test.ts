@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { VISTA_INICIAL, escribirVista, leerVista } from "./vistaMapa";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { VISTA_INICIAL, escribirVista, guardarUltimaVista, hrefUltimaVista, leerVista } from "./vistaMapa";
 
 const leer = (query: string) => leerVista(new URLSearchParams(query));
 
@@ -31,5 +31,51 @@ describe("escribirVista", () => {
     const query = escribirVista({ lat: 4.6512345, lon: -74.0561234, zoom: 15 });
     expect(query).toBe("lat=4.65123&lon=-74.05612&zoom=15");
     expect(leer(query)).toEqual({ lat: 4.65123, lon: -74.05612, zoom: 15 });
+  });
+});
+
+// Almacenamiento en memoria: Node 25+ trae su propio localStorage global (vacío sin --localstorage-file)
+// que tapa al de jsdom, así que las pruebas no dependen de la versión de Node.
+function almacenamientoEnMemoria(): Storage {
+  const datos = new Map<string, string>();
+  return {
+    get length() {
+      return datos.size;
+    },
+    clear: () => datos.clear(),
+    getItem: (clave) => datos.get(clave) ?? null,
+    key: (i) => [...datos.keys()][i] ?? null,
+    removeItem: (clave) => void datos.delete(clave),
+    setItem: (clave, valor) => void datos.set(clave, String(valor)),
+  };
+}
+
+describe("última vista del mapa", () => {
+  beforeEach(() => vi.stubGlobal("localStorage", almacenamientoEnMemoria()));
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("sin vista guardada vuelve a la página principal", () => {
+    expect(hrefUltimaVista()).toBe("/");
+  });
+
+  it("vuelve a la última vista guardada", () => {
+    guardarUltimaVista({ lat: 4.677191, lon: -74.071712, zoom: 16 });
+    expect(hrefUltimaVista()).toBe("/?lat=4.67719&lon=-74.07171&zoom=16");
+  });
+
+  it("ignora una vista guardada inválida o fuera de Bogotá", () => {
+    localStorage.setItem("urbanalert.vistaMapa", "lat=40&lon=-3&zoom=10");
+    expect(hrefUltimaVista()).toBe("/");
+    localStorage.setItem("urbanalert.vistaMapa", "basura");
+    expect(hrefUltimaVista()).toBe("/");
+  });
+
+  it("funciona sin almacenamiento disponible", () => {
+    const bloqueado = () => {
+      throw new Error("bloqueado");
+    };
+    vi.stubGlobal("localStorage", { ...almacenamientoEnMemoria(), getItem: bloqueado, setItem: bloqueado });
+    expect(() => guardarUltimaVista({ lat: 4.7, lon: -74.07, zoom: 14 })).not.toThrow();
+    expect(hrefUltimaVista()).toBe("/");
   });
 });

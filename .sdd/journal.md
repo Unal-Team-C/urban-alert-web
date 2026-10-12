@@ -154,3 +154,6 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T001 hecha
 - public/logo-urbanalert.png y BarraSuperior (header 64 px blanco, logo 48 px enlazado a / con aria-label, acciones a la derecha); 2 pruebas; 111 tests en total.
+
+## 2026-10-12 · 002-rediseno-mapa · T002 hecha
+- guardarUltimaVista/hrefUltimaVista en app/lib/vistaMapa.ts (clave urbanalert.vistaMapa, formato de URL, validada con leerVista, tolerante a fallos); 4 pruebas con almacenamiento en memoria (gotcha Node 25+ localStorage en CLAUDE.md). 115 tests.
