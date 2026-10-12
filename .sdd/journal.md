@@ -196,3 +196,9 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T011 hecha
 - VISTA_INICIAL = CENTRO_TEUSAQUILLO (4.63868, -74.08289) con ZOOM_MIN; leerVista acepta lat [-90, 90] y lon [-180, 180]; pruebas ajustadas y nuevas (130). CENTRO_BOGOTA intacto para el selector del formulario.
+
+## 2026-10-12 · 002-rediseno-mapa · T012 hecha
+- MapaDanos sin maxBounds; BotonReiniciar como L.Control topleft bajo el zoom. 130 tests, lint y build OK.
+
+## 2026-10-13 · 002-rediseno-mapa · HU-5 verificada en navegador (next dev + gateway)
+- / abre en ?lat=4.63868&lon=-74.08289&zoom=12 (Teusaquillo al centro), 19 burbujas, 26 daños. Arrastrado hasta lon -79.4 (Pacífico) sin rebote: «No hay daños reportados en esta zona», 0 peticiones fallidas, sin avisos. «Reiniciar mapa» bajo el zoom → vuelve a Teusaquillo zoom 12; con el panel abierto, el panel sigue («Grietas en la vía»). Gotcha: con el panel del navegador oculto el viewport mide 0×0 y el mapa calcula mal su vista: usar tabs_select antes de verificar.

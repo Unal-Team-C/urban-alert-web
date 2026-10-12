@@ -25,8 +25,15 @@ import {
   seIntersecan,
   type Localidad,
 } from "../../lib/localidades";
-import { LIMITES_BOGOTA, type Coordenada } from "../../lib/ubicacion";
-import { ZOOM_MAX, ZOOM_MIN, ZOOM_PUNTOS, desplazamientoParaVer, type VistaMapa } from "../../lib/vistaMapa";
+import type { Coordenada } from "../../lib/ubicacion";
+import {
+  VISTA_INICIAL,
+  ZOOM_MAX,
+  ZOOM_MIN,
+  ZOOM_PUNTOS,
+  desplazamientoParaVer,
+  type VistaMapa,
+} from "../../lib/vistaMapa";
 import { useDanosVisibles, type EstadoArea, type VistaDatos } from "../useDanosVisibles";
 
 type Props = {
@@ -40,12 +47,6 @@ type Props = {
   seleccionado: string | null;
   onSeleccionar: (punto: DanoCercano) => void;
 };
-
-// Igual que el selector de ubicación: no deja alejarse de Bogotá.
-const LIMITES_MAPA: [[number, number], [number, number]] = [
-  [LIMITES_BOGOTA.latMin - 0.1, LIMITES_BOGOTA.lonMin - 0.1],
-  [LIMITES_BOGOTA.latMax + 0.1, LIMITES_BOGOTA.lonMax + 0.1],
-];
 
 // Espera tras terminar de mover el mapa antes de pedir datos.
 const ESPERA_MOVIMIENTO_MS = 250;
@@ -229,6 +230,35 @@ function AjustarTamano({ seleccionado }: { seleccionado: Coordenada | null }) {
   return null;
 }
 
+// «Reiniciar mapa» (spec 002, RF-017): control nativo de Leaflet bajo los botones de zoom que vuelve a la vista
+// inicial (Teusaquillo). No toca la selección: si hay un daño abierto en el panel, sigue abierto. El mapa se mueve
+// libremente (sin maxBounds, RF-016); las consultas a Geoespacial ya se recortan a Bogotá (lib/celdas.ts).
+function BotonReiniciar() {
+  const map = useMap();
+
+  useEffect(() => {
+    const control = new L.Control({ position: "topleft" });
+    control.onAdd = () => {
+      const boton = L.DomUtil.create(
+        "button",
+        "leaflet-bar rounded-md bg-white px-2.5 py-1.5 text-xs font-medium text-gray-800 hover:bg-gray-100"
+      );
+      boton.type = "button";
+      boton.textContent = "Reiniciar mapa";
+      boton.title = "Volver a la vista inicial del mapa";
+      L.DomEvent.disableClickPropagation(boton);
+      L.DomEvent.on(boton, "click", () => map.setView([VISTA_INICIAL.lat, VISTA_INICIAL.lon], VISTA_INICIAL.zoom));
+      return boton;
+    };
+    control.addTo(map);
+    return () => {
+      control.remove();
+    };
+  }, [map]);
+
+  return null;
+}
+
 function Aviso({ texto, onReintentar }: { texto: string; onReintentar: () => void }) {
   return (
     <div role="alert" className="pointer-events-auto rounded-lg border border-red-200 bg-red-50 p-3 text-red-800 shadow">
@@ -325,8 +355,6 @@ export default function MapaDanos({
         zoom={vistaInicial.zoom}
         minZoom={ZOOM_MIN}
         maxZoom={ZOOM_MAX}
-        maxBounds={LIMITES_MAPA}
-        maxBoundsViscosity={1}
         preferCanvas
         className="h-full w-full"
       >
@@ -357,6 +385,7 @@ export default function MapaDanos({
         )}
 
         <AjustarTamano seleccionado={coordenadaSeleccionada} />
+        <BotonReiniciar />
       </MapContainer>
 
       {vista && (

@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T012
+tarea_actual: T013
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T012: MapaDanos sin maxBounds/maxBoundsViscosity (LIMITES_MAPA fuera); control BotonReiniciar (L.Control topleft, botón «Reiniciar mapa», disableClickPropagation, setView(VISTA_INICIAL)).
+T013: verificación en navegador hecha (ver journal); falta publicar con permiso.
 
 ## Contexto de trabajo
 

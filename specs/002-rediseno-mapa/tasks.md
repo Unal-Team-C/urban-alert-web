@@ -31,8 +31,8 @@ Verificación de cada tarea: `npm run lint && npm test && npm run build` además
 ## Fase 5: Enmienda HU-5 (2026-10-13)
 
 - [x] T011 Vista inicial en Teusaquillo y vistas de la URL fuera de Bogotá — archivos: app/lib/vistaMapa.ts, app/lib/vistaMapa.test.ts — cubre: RF-015, RF-018 — verifica: pruebas de leerVista y VISTA_INICIAL
-- [~] T012 Paneo libre y botón «Reiniciar mapa» como control de Leaflet — archivos: app/mapa/components/MapaDanos.tsx — cubre: RF-016, RF-017 — verifica: lint/test/build; navegador
-- [ ] T013 Verificar en navegador (vista inicial, arrastrar fuera de Bogotá sin errores, reiniciar con el panel abierto) y publicar con permiso — cubre: HU-5 — verifica: capturas y notas en el journal
+- [x] T012 Paneo libre y botón «Reiniciar mapa» como control de Leaflet — archivos: app/mapa/components/MapaDanos.tsx — cubre: RF-016, RF-017 — verifica: lint/test/build; navegador
+- [~] T013 Verificar en navegador (vista inicial, arrastrar fuera de Bogotá sin errores, reiniciar con el panel abierto) y publicar con permiso — cubre: HU-5 — verifica: capturas y notas en el journal
 
 ## Correcciones de verificación
 
