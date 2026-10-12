@@ -178,3 +178,6 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T008 hecha
 - Nota en specs/mapa-functional-spec.md (US-M04 y US-M06 sustituidas por 002) y README (pantalla principal, panel, volver al mapa, enlaces a specs 002 y 003).
+
+## 2026-10-12 · 002/003 · push autorizado
+- Usuario: «push it». Push de 002 (T001–T008, T010) y 003 (T001–T004).
