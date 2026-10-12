@@ -212,9 +212,13 @@ run "resource_names_keep_the_project_prefix" {
   expect_failures = [var.nombre]
 }
 
-# Lambda origin while CloudFront is blocked (plan D-012): the default in terraform.tfvars.
+# Lambda origin, for when CloudFront is unavailable to the account (plan D-012).
 run "lambda_origin_replaces_cloudfront" {
   command = apply
+
+  variables {
+    cdn_habilitado = false
+  }
 
   assert {
     condition     = length(aws_cloudfront_distribution.sitio) == 0 && length(aws_cloudfront_origin_access_control.sitio) == 0 && length(aws_cloudfront_function.indice) == 0
@@ -234,6 +238,10 @@ run "lambda_origin_replaces_cloudfront" {
 
 run "lambda_origin_is_https_read_only_and_least_privilege" {
   command = apply
+
+  variables {
+    cdn_habilitado = false
+  }
 
   assert {
     condition     = aws_lambda_function_url.origen[0].authorization_type == "NONE" && aws_lambda_function_url.origen[0].invoke_mode == "BUFFERED"

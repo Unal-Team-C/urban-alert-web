@@ -27,9 +27,9 @@ variable "price_class" {
 }
 
 variable "cdn_habilitado" {
-  description = "true: CloudFront serves the site (plan D-006). false: a Lambda function URL serves it while CloudFront is blocked for the account (plan D-012)."
+  description = "true: CloudFront serves the site (plan D-006). false: a Lambda function URL serves it, for when CloudFront is unavailable to the account (plan D-012)."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "concurrencia_reservada" {

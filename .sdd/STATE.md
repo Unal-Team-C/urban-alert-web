@@ -6,13 +6,13 @@
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
 feature_activa: 001-migracion-aws
-fase: verify
-tarea_actual: -
-estado_tarea: -
+fase: implement
+tarea_actual: T021
+estado_tarea: en_progreso
 
 ## Siguiente paso
 
-Sitio en línea: https://etucvhblj4uubyhdwctdaqx3ye0kzriq.lambda-url.us-east-2.on.aws (origen Lambda, D-012). MS-001, MS-002 y MS-003 verificados (journal). Pendiente: /sdd-verify para el informe verify.md; T015 (Deprovision + Provision) solo con autorización expresa; cuando AWS Support verifique la cuenta, cdn_habilitado = true en un commit (la URL cambia).
+T021: cdn_habilitado = true (cuenta verificada para CloudFront, dicho por el usuario 2026-10-12); runs de la Lambda en web.tftest.hcl con cdn_habilitado = false explícito; docs. Commit local; push solo con permiso (cambia la URL). Después: /sdd-new 002 (rediseño UI: mapa a pantalla completa, barra superior con logo y Crear reporte, panel lateral derecho con el detalle, botón volver al mapa en el formulario).
 
 ## Contexto de trabajo
 
@@ -23,5 +23,4 @@ Sitio en línea: https://etucvhblj4uubyhdwctdaqx3ye0kzriq.lambda-url.us-east-2.o
 
 ## Bloqueos / preguntas abiertas
 
-- CloudFront: caso en AWS Support (verificación de cuenta). Al resolverse: cdn_habilitado = true.
 - T015 (Deprovision + Provision) solo con autorización expresa.

@@ -105,3 +105,9 @@
 ## 2026-10-11 · 001-migracion-aws · MS-002 verificado
 - Con Multimedia de nuevo en línea (el usuario había apagado su DocumentDB), POST /api/v1/reportes por el gateway → 201, reporte 01a12d63-bfea-7d70-bf04-053bd5c41f32 (test-user, Grietas en la vía, 4.67719,-74.07171, imagen en urban-alert-multimedia-images). La descripción quedó cortada en el «;»: lo interpreta curl -F como separador de parámetros (fallo de la prueba, no de la app).
 - En site_url: el histórico lista el reporte con enlace /historial/detalle/?id=…; el detalle abre directamente y muestra datos, usuario, mapa (Geoespacial coordinates 200), imagen de S3, línea de tiempo (Auditoría 200) e integridad «Válida». MS-001 y MS-002 cumplidos.
+
+## 2026-10-12 · general · arnés restaurado
+- .claude/ y .sdd/ desaparecieron del disco sin commit (git log/reflog/stash sin rastro; posible iCloud o borrado manual). Restaurados con git checkout por indicación del usuario.
+
+## 2026-10-12 · 001-migracion-aws · T021 iniciada
+- Usuario: la cuenta ya puede usar CloudFront. Se vuelve a cdn_habilitado = true (D-006/D-012).

@@ -55,6 +55,8 @@ Aprobada por el usuario el 2026-10-11 («Let's use the lambda only»).
 - [x] T018 Añadir `cdn_habilitado` y los recursos de la Lambda (rol, logs, función, URL, permisos) a `infra/web`, salidas comunes y pruebas de ambas variantes; lock con el proveedor archive — archivos: infra/web/*.tf, infra/web/terraform.tfvars, infra/web/tests/web.tftest.hcl, infra/web/.terraform.lock.hcl — cubre: RF-005, RF-006, RF-007 — verifica: `$TF fmt -check`, `validate`, `test` — depende: T017
 - [x] T019 Invalidación opcional en `publicar-sitio.sh`, pruebas del origen en el job test y documentación (README, CLAUDE.md, bootstrap, costes) — archivos: scripts/publicar-sitio.sh, .github/workflows/provision.yml, README.md, CLAUDE.md, infra/bootstrap/README.md — cubre: RF-008, RF-014 — verifica: shellcheck, actionlint, enlaces — depende: T018
 
+- [~] T021 Volver a CloudFront ahora que la cuenta está verificada (usuario, 2026-10-12): `cdn_habilitado = true` en tfvars y por defecto, pruebas de la Lambda con la variable explícita, documentación — archivos: infra/web/terraform.tfvars, infra/web/variables.tf, infra/web/tests/web.tftest.hcl, README.md, CLAUDE.md, infra/bootstrap/README.md — cubre: RF-005, RF-006, RNF-001 (D-006) — verifica: `$TF test`; tras el push (con permiso): Provision crea la distribución, elimina la Lambda y el smoke pasa en la URL de CloudFront
+
 ## Correcciones de verificación
 
 <!-- /sdd-verify añade aquí tareas si detecta fallos -->

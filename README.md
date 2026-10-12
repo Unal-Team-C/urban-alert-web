@@ -4,9 +4,9 @@ Portal web de UrbanAlert: creación de reportes, mapa de daños e histórico par
 
 En AWS se publica como **sitio estático** en un bucket S3 privado (cuenta `348364742283`). Spec, plan y decisiones en [specs/001-migracion-aws](specs/001-migracion-aws/).
 
-> **Estado actual: origen temporal con Lambda.** AWS no deja crear distribuciones de CloudFront hasta verificar la cuenta (caso abierto en AWS Support). Mientras tanto el sitio lo sirve una función Lambda con URL HTTPS que lee el bucket privado (`cdn_habilitado = false` en [`infra/web/terraform.tfvars`](infra/web/terraform.tfvars), plan D-012). Cuando la cuenta esté verificada: poner `cdn_habilitado = true` en un commit a `main`; Provision crea CloudFront y elimina la Lambda. La URL del sitio cambia.
+> **Origen**: CloudFront (`cdn_habilitado = true` en [`infra/web/terraform.tfvars`](infra/web/terraform.tfvars)). Mientras AWS no dejó crear distribuciones (cuenta sin verificar, octubre de 2026) el sitio lo sirvió una función Lambda con URL HTTPS sobre el mismo bucket (plan D-012); queda como alternativa con `cdn_habilitado = false`. Cambiar de origen cambia la URL del sitio.
 
-### Origen temporal (Lambda function URL)
+### Origen alternativo (Lambda function URL, `cdn_habilitado = false`)
 
 ```text
  Navegador ──HTTPS──► Lambda function URL (https://<id>.lambda-url.us-east-2.on.aws)
@@ -19,7 +19,7 @@ En AWS se publica como **sitio estático** en un bucket S3 privado (cuenta `3483
 
 Sin caché de borde ni WAF (AWS WAF no admite function URLs). Código y pruebas: [`infra/web/origen/`](infra/web/origen/), [`infra/web/lambda.tf`](infra/web/lambda.tf).
 
-## Arquitectura en AWS (con CloudFront, `cdn_habilitado = true`)
+## Arquitectura en AWS (CloudFront, `cdn_habilitado = true`)
 
 ```text
  Navegador ──HTTPS──► CloudFront (https://<id>.cloudfront.net)
@@ -39,7 +39,7 @@ Sin caché de borde ni WAF (AWS WAF no admite function URLs). Código y pruebas:
 | Pieza | Dónde |
 |---|---|
 | Bucket privado, política solo para la distribución | [`infra/web/main.tf`](infra/web/main.tf) |
-| Origen temporal Lambda (plan D-012) | [`infra/web/lambda.tf`](infra/web/lambda.tf), [`infra/web/origen/index.mjs`](infra/web/origen/index.mjs) |
+| Origen alternativo Lambda (plan D-012) | [`infra/web/lambda.tf`](infra/web/lambda.tf), [`infra/web/origen/index.mjs`](infra/web/origen/index.mjs) |
 | CloudFront, OAC, función de índices | [`infra/web/cloudfront.tf`](infra/web/cloudfront.tf), [`infra/web/funciones/indice.js`](infra/web/funciones/indice.js) |
 | Pruebas de Terraform (`mock_provider`) | [`infra/web/tests/web.tftest.hcl`](infra/web/tests/web.tftest.hcl) |
 | URL del gateway en las llamadas | `urlApi()` en [`app/lib/api.ts`](app/lib/api.ts) |
@@ -65,11 +65,11 @@ Estimación mensual con tráfico de un proyecto académico:
 | Recurso | Precio | Mes |
 |---|---|---|
 | S3 (≈ 2 MB por publicación) | 0,023 USD/GB-mes + peticiones | ~0 |
-| Lambda + function URL (origen temporal) | Capa gratuita: 1 M peticiones y 400.000 GB-s al mes; la URL no tiene coste propio | 0 |
-| CloudWatch Logs del origen (30 días) | 0,50 USD/GB ingerido | ~0 |
-| CloudFront (cuando se habilite) | Capa gratuita permanente: 1 TB de salida y 10 M peticiones al mes | 0 |
-| CloudFront Functions (cuando se habilite) | Capa gratuita: 2 M invocaciones al mes | 0 |
-| Invalidaciones (cuando se habilite) | 1.000 rutas al mes gratis (cada publicación usa 1: `/*`) | 0 |
+| Lambda + function URL (solo con `cdn_habilitado = false`) | Capa gratuita: 1 M peticiones y 400.000 GB-s al mes; la URL no tiene coste propio | 0 |
+| CloudWatch Logs del origen Lambda (30 días) | 0,50 USD/GB ingerido | ~0 |
+| CloudFront | Capa gratuita permanente: 1 TB de salida y 10 M peticiones al mes | 0 |
+| CloudFront Functions | Capa gratuita: 2 M invocaciones al mes | 0 |
+| Invalidaciones | 1.000 rutas al mes gratis (cada publicación usa 1: `/*`) | 0 |
 | **Total** | | **~0 USD** |
 
 No hay recursos con coste por hora. Los recursos de `_next/static/` de publicaciones anteriores se acumulan en el bucket (unos MB por publicación); un Deprovision los elimina.
@@ -110,8 +110,8 @@ podman run --rm -v "$PWD":/mnt -w /mnt docker.io/koalaman/shellcheck:v0.10.0 scr
 
 - **Crear usuarios** desde el portal responde 403 en AWS: el gateway exige firma de AWS en `POST /api/v1/usuarios` (decisión de la spec 001 de `urban-alert-usuarios`). El portal muestra el error.
 - **CORS**: el gateway admite cualquier origen (`cors_origenes = ["*"]` en `urban-alert-plataforma`). Se recomienda restringirlo a la URL del sitio desde ese repo.
-- Sin dominio propio: se usa la URL de la function URL (o `*.cloudfront.net` cuando se habilite CloudFront).
-- Mientras dure el origen Lambda: sin caché de borde, sin WAF y un arranque en frío de unos cientos de ms en la primera petición.
+- Sin dominio propio: se usa la URL `*.cloudfront.net`.
+- Con el origen alternativo Lambda: sin caché de borde, sin WAF y un arranque en frío de unos cientos de ms en la primera petición.
 
 ## Desarrollo con SDD
 
