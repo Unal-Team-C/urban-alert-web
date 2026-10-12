@@ -123,3 +123,6 @@
 
 ## 2026-10-12 · 001-migracion-aws · T022 implementada en local
 - waf.tf (web ACL CLOUDFRONT en us-east-1 vía proveedor aws.us_east_1; límite 1000/5 min por IP; IpReputation, CommonRuleSet, KnownBadInputs; bloqueo o monitor), web_acl_id en la distribución, 3 runs nuevos (11 en total) en verde, README con coste ~9 USD/mes. Pendiente de push junto con T021.
+
+## 2026-10-12 · 001-migracion-aws · WAF desactivado y push de CloudFront
+- Análisis de riesgo para un prototipo de una semana: el riesgo principal (Reportes acepta escrituras públicas sin autenticación) no lo resuelve ni el WAF ni restringir el gateway a CloudFront. Usuario: «only cloudfront without waf». waf_habilitado = false (código y pruebas conservados, 12 runs en verde). T022 cerrada. Push de T021.

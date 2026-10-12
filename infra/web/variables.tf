@@ -46,7 +46,7 @@ variable "concurrencia_reservada" {
 variable "waf_habilitado" {
   description = "Attach the basic AWS WAF web ACL to the distribution (plan D-013; ~9 USD/month). Only with cdn_habilitado = true."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "waf_solo_monitor" {

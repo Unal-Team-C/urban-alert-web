@@ -149,6 +149,7 @@ No aplica.
 - **Alternativas consideradas**: Bot Control o reglas de pago (coste por petición mayor); WAF en el gateway (no admite HTTP APIs, ver conversación de D-012); sin WAF (decisión previa del usuario, revertida ahora).
 - **Permisos**: `wafv2:*` ya está en `github-actions-urban-alertPolicy` (bloque `Waf`); CloudFront `UpdateDistribution` en la política de la web.
 - **Coste** (P5): 5 USD/mes por web ACL + 1 USD/mes por regla (4) + 0,60 USD por millón de peticiones ≈ **9 USD/mes**.
+- **Actualización 2026-10-12**: tras revisar el riesgo de un prototipo de una semana (el riesgo principal, escrituras sin autenticación en Reportes, no lo resuelve un WAF), el usuario decide no activarlo: `waf_habilitado = false` (por defecto y en tfvars). El código y sus pruebas se conservan para activarlo con una línea.
 
 ## 9. Estrategia de pruebas
 

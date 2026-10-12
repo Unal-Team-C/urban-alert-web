@@ -22,9 +22,7 @@ Sin caché de borde ni WAF (AWS WAF no admite function URLs). Código y pruebas:
 ## Arquitectura en AWS (CloudFront, `cdn_habilitado = true`)
 
 ```text
- Navegador ──HTTPS──► AWS WAF (us-east-1): límite por IP, reputación de IP, reglas comunes, entradas maliciosas
-                     ▼
-                    CloudFront (https://<id>.cloudfront.net)
+ Navegador ──HTTPS──► CloudFront (https://<id>.cloudfront.net)   [AWS WAF opcional: waf_habilitado]
    │                    · función viewer-request: /mapa/ → /mapa/index.html
    │                    · cabeceras de seguridad (política gestionada)
    │                    · 403/404 de S3 → /404.html con estado 404
@@ -42,7 +40,7 @@ Sin caché de borde ni WAF (AWS WAF no admite function URLs). Código y pruebas:
 |---|---|
 | Bucket privado, política solo para la distribución | [`infra/web/main.tf`](infra/web/main.tf) |
 | Origen alternativo Lambda (plan D-012) | [`infra/web/lambda.tf`](infra/web/lambda.tf), [`infra/web/origen/index.mjs`](infra/web/origen/index.mjs) |
-| AWS WAF básico (plan D-013) | [`infra/web/waf.tf`](infra/web/waf.tf) |
+| AWS WAF básico, desactivado (plan D-013) | [`infra/web/waf.tf`](infra/web/waf.tf) |
 | CloudFront, OAC, función de índices | [`infra/web/cloudfront.tf`](infra/web/cloudfront.tf), [`infra/web/funciones/indice.js`](infra/web/funciones/indice.js) |
 | Pruebas de Terraform (`mock_provider`) | [`infra/web/tests/web.tftest.hcl`](infra/web/tests/web.tftest.hcl) |
 | URL del gateway en las llamadas | `urlApi()` en [`app/lib/api.ts`](app/lib/api.ts) |
@@ -59,7 +57,7 @@ La URL pública del sitio aparece en el resumen de cada ejecución de Provision 
 
 Comparten el grupo de `concurrency` `urban-alert-web-aws`: nunca se ejecutan a la vez. Desaprovisionar el frontend no afecta a la plataforma ni a los microservicios.
 
-**WAF** ([`infra/web/waf.tf`](infra/web/waf.tf)): bloquea a una IP que supere 1.000 peticiones en 5 minutos (`waf_limite_peticiones`) y aplica los grupos gestionados de AWS sin suscripción (`AmazonIpReputationList`, `CommonRuleSet`, `KnownBadInputsRuleSet`). Con `waf_solo_monitor = true` las reglas solo cuentan. Métricas y muestras en la consola de WAF (región `us-east-1`).
+**WAF** ([`infra/web/waf.tf`](infra/web/waf.tf)), **desactivado** para el prototipo de una semana (`waf_habilitado = false`, decisión del 2026-10-12). Con `true`, bloquea a una IP que supere 1.000 peticiones en 5 minutos (`waf_limite_peticiones`) y aplica los grupos gestionados de AWS sin suscripción (`AmazonIpReputationList`, `CommonRuleSet`, `KnownBadInputsRuleSet`). Con `waf_solo_monitor = true` las reglas solo cuentan. Métricas y muestras en la consola de WAF (región `us-east-1`).
 
 **Caché**: los archivos de `_next/static/` (con hash en el nombre) se sirven con `max-age=31536000, immutable` y no se borran al publicar, para no romper pestañas abiertas; el HTML y el resto se revalidan en cada visita (`max-age=0`). Con CloudFront, cada publicación invalida `/*`.
 
@@ -75,10 +73,10 @@ Estimación mensual con tráfico de un proyecto académico:
 | CloudFront | Capa gratuita permanente: 1 TB de salida y 10 M peticiones al mes | 0 |
 | CloudFront Functions | Capa gratuita: 2 M invocaciones al mes | 0 |
 | Invalidaciones | 1.000 rutas al mes gratis (cada publicación usa 1: `/*`) | 0 |
-| AWS WAF: web ACL + 4 reglas | 5 USD/mes + 1 USD/mes por regla + 0,60 USD por millón de peticiones | ~9 USD |
-| **Total** | | **~9 USD** |
+| AWS WAF (solo con `waf_habilitado = true`): web ACL + 4 reglas | 5 USD/mes + 1 USD/mes por regla + 0,60 USD por millón de peticiones | 0 (desactivado; ~9 USD si se activa) |
+| **Total** | | **~0 USD** |
 
-El único coste fijo es el WAF (`waf_habilitado = false` en `terraform.tfvars` lo quita). No hay recursos con coste por hora. Los recursos de `_next/static/` de publicaciones anteriores se acumulan en el bucket (unos MB por publicación); un Deprovision los elimina.
+Sin el WAF no hay costes fijos ni recursos con coste por hora. Los recursos de `_next/static/` de publicaciones anteriores se acumulan en el bucket (unos MB por publicación); un Deprovision los elimina.
 
 ## Arranque (una sola vez)
 
@@ -115,7 +113,7 @@ podman run --rm -v "$PWD":/mnt -w /mnt docker.io/koalaman/shellcheck:v0.10.0 scr
 ## Limitaciones conocidas
 
 - **Crear usuarios** desde el portal responde 403 en AWS: el gateway exige firma de AWS en `POST /api/v1/usuarios` (decisión de la spec 001 de `urban-alert-usuarios`). El portal muestra el error.
-- **El WAF protege solo el sitio**: las llamadas del navegador al API Gateway van directas, sin WAF (AWS WAF no admite HTTP APIs).
+- **Sin WAF** en el sitio (desactivado) ni en el API Gateway (AWS WAF no admite HTTP APIs). El gateway solo tiene su límite de tasa (50 peticiones/s); las rutas públicas de Reportes permiten escribir sin autenticación.
 - **CORS**: el gateway admite cualquier origen (`cors_origenes = ["*"]` en `urban-alert-plataforma`). Se recomienda restringirlo a la URL del sitio desde ese repo.
 - Sin dominio propio: se usa la URL `*.cloudfront.net`.
 - Con el origen alternativo Lambda: sin caché de borde, sin WAF y un arranque en frío de unos cientos de ms en la primera petición.

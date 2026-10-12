@@ -308,6 +308,10 @@ run "reserved_concurrency_is_unreserved_or_positive" {
 run "basic_waf_protects_the_distribution" {
   command = apply
 
+  variables {
+    waf_habilitado = true
+  }
+
   assert {
     condition     = aws_cloudfront_distribution.sitio[0].web_acl_id == aws_wafv2_web_acl.sitio[0].arn && aws_wafv2_web_acl.sitio[0].scope == "CLOUDFRONT"
     error_message = "The distribution must use the CLOUDFRONT-scoped web ACL (plan D-013)."
@@ -343,6 +347,7 @@ run "waf_monitor_mode_only_counts" {
   command = apply
 
   variables {
+    waf_habilitado   = true
     waf_solo_monitor = true
   }
 
@@ -355,11 +360,21 @@ run "waf_monitor_mode_only_counts" {
   }
 }
 
+run "waf_is_off_by_default" {
+  command = plan
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.sitio) == 0 && aws_cloudfront_distribution.sitio[0].web_acl_id == null
+    error_message = "The WAF is off unless waf_habilitado = true (user decision 2026-10-12)."
+  }
+}
+
 run "no_waf_without_cloudfront" {
   command = plan
 
   variables {
     cdn_habilitado = false
+    waf_habilitado = true
   }
 
   assert {

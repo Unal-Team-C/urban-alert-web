@@ -12,7 +12,7 @@ estado_tarea: -
 
 ## Siguiente paso
 
-Esperando al usuario: (a) aprobación de specs/002-rediseno-mapa y specs/003-identidad-sitio; (b) permiso de push para 001 T021 (CloudFront) + T022 (WAF básico D-013, ~9 USD/mes), ambas implementadas y probadas en local (11 runs de terraform test). Tras el push: Provision crea WAF + distribución, elimina la Lambda; verificar smoke, web ACL asociada y el sitio en la nueva URL.
+001 T021: push autorizado («let's keep going with only cloudfront without waf»); Provision crea la distribución (sin WAF) y elimina la Lambda. Revisar log/smoke y el sitio en la nueva site_url (*.cloudfront.net). Después: esperar aprobación de specs 002 y 003.
 
 ## Contexto de trabajo
 
