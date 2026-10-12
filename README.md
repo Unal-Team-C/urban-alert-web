@@ -1,6 +1,6 @@
 # UrbanAlert — Frontend web
 
-Portal web de UrbanAlert: creación de reportes, mapa de daños e histórico para el administrador. Next.js 16 (App Router), React 19, Tailwind 4 y Leaflet. Toda la aplicación se ejecuta en el navegador y llama a los microservicios a través del API Gateway compartido.
+Portal web de UrbanAlert: creación de reportes, mapa de daños e histórico para el administrador. La página principal es el mapa a pantalla completa bajo una barra con el logo y «Crear reporte»; al pulsar un daño, su detalle se abre en un panel a la derecha (abajo en móvil). El formulario tiene «Volver al mapa» (última vista del mapa en el navegador). Specs: [002-rediseno-mapa](specs/002-rediseno-mapa/), [003-identidad-sitio](specs/003-identidad-sitio/). Next.js 16 (App Router), React 19, Tailwind 4 y Leaflet. Toda la aplicación se ejecuta en el navegador y llama a los microservicios a través del API Gateway compartido.
 
 En AWS se publica como **sitio estático** en un bucket S3 privado (cuenta `348364742283`). Spec, plan y decisiones en [specs/001-migracion-aws](specs/001-migracion-aws/).
 

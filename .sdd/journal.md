@@ -172,3 +172,9 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T007 hecha
 - Navegador (next dev + gateway real). 1440×900: barra 64 px, mapa 1440×836, sin scroll; clic en el reporte 01a12d63 → panel 400 px (x 1041–1440), mapa 1040 px, 25 teselas cargadas, punto azul centrado, foco en el panel; Esc → sin panel, mapa 1440, foco en el mapa. 1100×700: captura con panel (título, Reportado por test-user, imagen, campos, Ver en el histórico) → /historial/detalle con título correcto. 375×812: barra y mapa sin scroll, hoja inferior 449 px (60 %) con scroll propio; fallo: tapaba el punto → T010. Formulario: «← Volver al mapa» con la última vista y vuelve a ella. Gotcha: los clics del panel del navegador usan otro marco que la captura con viewports emulados mayores que el panel.
+
+## 2026-10-12 · 002-rediseno-mapa · nota sobre el commit de T007
+- El build de ese comando falló con «Failed to open database» (caché .next bloqueada por el next dev recién parado). Con .next limpio: build, lint y 128 tests en verde; el commit es válido.
+
+## 2026-10-12 · 002-rediseno-mapa · T008 hecha
+- Nota en specs/mapa-functional-spec.md (US-M04 y US-M06 sustituidas por 002) y README (pantalla principal, panel, volver al mapa, enlaces a specs 002 y 003).

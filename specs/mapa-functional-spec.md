@@ -6,6 +6,10 @@
 **Status:** Draft — pending review
 **Owner:** Fabian ("Map views", per *Contratos UrbanAlert*)
 
+> **Update (2026-10-12):** the welcome page with the embedded map (US-M06) and the popup (US-M04) were replaced by
+> spec [`002-rediseno-mapa`](002-rediseno-mapa/spec.md): `/` is now the map at full screen under a top bar, and a
+> damage's information opens in a side panel. The rest of this document (bubbles, points, URL view) still applies.
+
 ---
 
 ## 1. Overview

@@ -7,12 +7,12 @@
 
 feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T008
+tarea_actual: T009
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T008: nota en specs/mapa-functional-spec.md (US-M04 y US-M06 sustituidas por la spec 002) y README (pantalla principal, panel, volver al mapa).
+T009 (y 003 T005): push con permiso del usuario; Provision en verde; en https://dfa8690dowmry.cloudfront.net verificar barra, panel con el reporte 01a12d63, volver al mapa, títulos e icono.
 
 ## Contexto de trabajo
 
