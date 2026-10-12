@@ -12,7 +12,7 @@ estado_tarea: hecha
 
 ## Siguiente paso
 
-T014 (HU-6): VolverAlMapa compartido, barra con «Volver al inicio» en el layout de /historial, «Histórico» en la barra principal. Después T015 (navegador) y publicar T013+T015 con permiso. HU-5 (T011–T012) commiteada y verificada en navegador.
+HU-5 (T011–T012) y HU-6 (T014) implementadas y verificadas en navegador. Falta publicar: push con permiso del usuario; después cerrar T013 y T015 comprobando en https://dfa8690dowmry.cloudfront.net (Teusaquillo, paneo libre, Reiniciar mapa, Histórico, Volver al inicio).
 
 ## Contexto de trabajo
 

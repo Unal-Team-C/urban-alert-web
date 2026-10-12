@@ -208,3 +208,6 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T014 hecha
 - VolverAlMapa (useSyncExternalStore + hrefUltimaVista) usado por el formulario y por la barra del layout de /historial («← Volver al inicio», también en el detalle); «Histórico» en la barra principal. Pruebas: VolverAlMapa (2), layout del histórico (1), page.test (+1). 134 tests, lint y build OK.
+
+## 2026-10-13 · 002-rediseno-mapa · HU-6 verificada en navegador
+- Barra principal: «Histórico» → /historial («Histórico de reportes · UrbanAlert», barra con «← Volver al inicio» a la última vista). «Ver detalle» → detalle («Detalle del reporte · UrbanAlert») con la barra y el enlace «← Volver al histórico» existente. «Volver al inicio» → mapa en esa vista. 375 px: logo, Histórico y Crear reporte caben (sin scroll horizontal). El histórico ya tiene 5 reportes (creados por el equipo).
