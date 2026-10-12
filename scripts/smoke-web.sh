@@ -2,6 +2,7 @@
 # Read-only smoke test of the published site (spec RF-009, RNF-001).
 # - Every page answers 200 (folder index), a missing route answers 404.
 # - The JavaScript of the site calls the gateway URL read from SSM (RF-003).
+# - The home page has the UrbanAlert title and nothing from the Next.js template (spec 003).
 # - HTML is revalidated on every visit and content-hashed assets are immutable (skipped with --sin-cabeceras,
 #   for a local server that does not set Cache-Control).
 # A new distribution may take a few minutes to answer: the first request is retried for up to 5 minutes.
@@ -44,6 +45,11 @@ done
 
 code=$(status "$SITE/no-existe-smoke/")
 if [[ "$code" == "404" ]]; then ok "GET /no-existe-smoke/ → 404"; else fail "GET /no-existe-smoke/ → $code (esperado 404)"; fi
+
+# Site identity (spec 003-identidad-sitio): own title, no leftovers of the Next.js template.
+home=$(curl -s "$SITE/")
+if [[ "$home" == *"<title>UrbanAlert</title>"* ]]; then ok "título UrbanAlert"; else fail "/ no tiene <title>UrbanAlert</title>"; fi
+if grep -qi "create next app" <<<"$home"; then fail "/ contiene texto de la plantilla de Next.js"; else ok "sin texto de la plantilla"; fi
 
 # The gateway URL is inlined in the chunks of the pages that call the API.
 found=false

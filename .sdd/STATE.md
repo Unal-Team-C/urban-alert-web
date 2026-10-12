@@ -5,14 +5,14 @@
      fase: constitution | specify | clarify | plan | tasks | implement | verify | done
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
-feature_activa: 003-identidad-sitio
+feature_activa: 002-rediseno-mapa
 fase: implement
-tarea_actual: T004
+tarea_actual: T001
 estado_tarea: en_progreso
 
 ## Siguiente paso
 
-T004: smoke-web.sh comprueba <title>UrbanAlert</title> en / y que no aparezca «Create Next App». Verifica: shellcheck y smoke local contra out/.
+002 T001: copiar el logo a public/logo-urbanalert.png y crear app/components/BarraSuperior.tsx (+ test: logo enlazado a /, alt UrbanAlert, hijos a la derecha). 003: solo falta T005 (publicar), con el push conjunto (specs/003-identidad-sitio/notes.md).
 
 ## Contexto de trabajo
 

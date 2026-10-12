@@ -148,3 +148,6 @@
 
 ## 2026-10-12 · 003-identidad-sitio · T003 hecha
 - Iconos del pin (recorte 228 px con sips): app/icon.png 192, app/apple-icon.png 180 opaco sobre blanco, app/favicon.ico 32; SVG de la plantilla borrados. out/index.html con los 3 <link>; ningún archivo de out/ contiene «create next app». Plan D-002 anotado (192 en vez de 512).
+
+## 2026-10-12 · 003-identidad-sitio · T004 hecha
+- smoke-web.sh comprueba <title>UrbanAlert</title> y que no haya texto de la plantilla; smoke local contra out/ (emulador de CloudFront) en verde; shellcheck OK. T005 (publicar) se hará con el push conjunto de 002 y 003, con permiso.
