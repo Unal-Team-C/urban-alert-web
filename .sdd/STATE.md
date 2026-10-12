@@ -5,14 +5,14 @@
      fase: constitution | specify | clarify | plan | tasks | implement | verify | done
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
-feature_activa: 002-rediseno-mapa
-fase: tasks
-tarea_actual: -
-estado_tarea: -
+feature_activa: 003-identidad-sitio
+fase: implement
+tarea_actual: T002
+estado_tarea: en_progreso
 
 ## Siguiente paso
 
-Plan y tareas en borrador de 003 (5 tareas) y 002 (9 tareas): esperar aprobación; implementar 003 primero. Sitio en CloudFront: https://dfa8690dowmry.cloudfront.net (001 T021 hecha).
+T002: app/not-found.tsx en español con metadata title «Página no encontrada» y enlace a inicio + prueba. Verifica: out/404.html con «Página no encontrada · UrbanAlert».
 
 ## Contexto de trabajo
 

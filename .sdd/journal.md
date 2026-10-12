@@ -136,3 +136,9 @@
 
 ## 2026-10-12 · 001-migracion-aws · T021 hecha (CloudFront)
 - Run 38315937000 en verde: distribución E30PXSSQODNQGQ creada en 2 m 38 s (sin WAF), 7 recursos de la Lambda eliminados, invalidación y smoke completos. site_url https://dfa8690dowmry.cloudfront.net. En el navegador el detalle del reporte real carga (Reportes, catálogo, usuarios, Geoespacial 200; imagen de Multimedia).
+
+## 2026-10-12 · 003-identidad-sitio · planes aprobados, implementación
+- Usuario: «Approved both plans, go ahead». Planes y tareas de 002 y 003 aprobados. Feature activa 003 (002 aparcada en su notes.md). T001 en curso.
+
+## 2026-10-12 · 003-identidad-sitio · T001 hecha
+- Metadata raíz (default UrbanAlert, template «%s · UrbanAlert», descripción), lang es, títulos por layout de sección. Gotcha: un title de texto en historial/layout cortaba la plantilla para historial/detalle: historial lleva {default, template}. out/: títulos correctos en /, nuevo, historial, detalle, mapa. 107 tests.

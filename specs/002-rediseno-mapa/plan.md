@@ -1,7 +1,7 @@
 # Plan técnico: Rediseño del mapa como vista principal
 
 - **Spec**: ./spec.md
-- **Estado**: borrador <!-- borrador | aprobado -->
+- **Estado**: aprobado <!-- borrador | aprobado -->
 - **Fecha**: 2026-10-12
 
 ## 1. Resumen técnico
