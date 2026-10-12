@@ -133,3 +133,6 @@
 ## 2026-10-12 · 002/003 · planes y tareas en borrador
 - 003: metadatos por layout de sección, lang es, not-found propia, iconos del pin con sips, borrar SVG de la plantilla, smoke con título.
 - 002: VistaPrincipal compartida por / y /mapa, BarraSuperior, PanelDano (sustituye DetalleDano/Popup), selección y ResizeObserver en MapaDanos, última vista en localStorage, Volver al mapa en formulario y confirmación.
+
+## 2026-10-12 · 001-migracion-aws · T021 hecha (CloudFront)
+- Run 38315937000 en verde: distribución E30PXSSQODNQGQ creada en 2 m 38 s (sin WAF), 7 recursos de la Lambda eliminados, invalidación y smoke completos. site_url https://dfa8690dowmry.cloudfront.net. En el navegador el detalle del reporte real carga (Reportes, catálogo, usuarios, Geoespacial 200; imagen de Multimedia).

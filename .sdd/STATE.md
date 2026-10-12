@@ -12,7 +12,7 @@ estado_tarea: -
 
 ## Siguiente paso
 
-Plan y tareas en borrador de 003 (5 tareas) y 002 (9 tareas). Esperar aprobación; orden de implementación: 003 primero, luego 002. 001 T021 desplegándose (run 38315937000).
+Plan y tareas en borrador de 003 (5 tareas) y 002 (9 tareas): esperar aprobación; implementar 003 primero. Sitio en CloudFront: https://dfa8690dowmry.cloudfront.net (001 T021 hecha).
 
 ## Contexto de trabajo
 

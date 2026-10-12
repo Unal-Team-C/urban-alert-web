@@ -13,3 +13,6 @@
 ### Bloqueos
 
 - T015 (Deprovision + Provision) solo con autorización expresa.
+
+## 2026-10-12
+- T021 hecha: run 38315937000, distribución E30PXSSQODNQGQ, site_url https://dfa8690dowmry.cloudfront.net; Lambda y su rol/logs/URL eliminados.
