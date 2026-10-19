@@ -5,14 +5,14 @@
      fase: constitution | specify | clarify | plan | tasks | implement | verify | done
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
-feature_activa: 002-rediseno-mapa
-fase: done
+feature_activa: 004-captcha-reporte
+fase: implement
 tarea_actual: -
 estado_tarea: -
 
 ## Siguiente paso
 
-Sin trabajo en curso. 002 (con HU-5 y HU-6) y 003 implementadas y publicadas en https://dfa8690dowmry.cloudfront.net. Opcionales: /sdd-verify de 001–003; 001 T015 solo con autorización expresa.
+Redactar specs/004-captcha-reporte/spec.md: widget de Cloudflare Turnstile en el formulario de nuevo reporte; el token viaja como campo captchaToken del multipart; lo valida Reportes (feature 003-captcha-creacion de urban-alert-reportes). Desactivado si no hay sitekey en el build.
 
 ## Contexto de trabajo
 

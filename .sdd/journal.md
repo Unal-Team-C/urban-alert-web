@@ -220,3 +220,12 @@
 
 ## 2026-10-12 · 002-rediseno-mapa · T015 hecha
 - HU-6 publicada: barra con Histórico y Crear reporte; /historial/ y su detalle con «← Volver al inicio» a la última vista; títulos correctos.
+
+## 2026-10-19 · 004-captcha-reporte · Creada spec desde descripción
+- Captcha (Cloudflare Turnstile) en el formulario de nuevo reporte; diseño acordado con el usuario: token en el cuerpo (captchaToken), validado por Reportes (003); desactivado sin sitekey. Sin [NEEDS CLARIFICATION].
+
+## 2026-10-19 · 004-captcha-reporte · Spec aprobada; plan.md y tasks.md generados
+- D-001 componente propio sin dependencias; D-002 clave pública en vars.TURNSTILE_SITE_KEY; D-003 reiniciar el widget tras cualquier error. 7 tareas.
+
+## 2026-10-19 · 004-captcha-reporte · Plan y tareas aprobados
+- El usuario aprueba plan.md y tasks.md (junto con la otra feature del captcha); empieza la implementación.
