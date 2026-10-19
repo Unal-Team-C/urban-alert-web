@@ -18,7 +18,7 @@ Leyenda: `[ ]` pendiente · `[~]` en progreso · `[x]` hecha · `[!]` bloqueada 
 
 ## Fase 3: Pulido
 
-- [ ] T006 Documentar: activación (crear el widget en Cloudflare con los dominios, variable `TURNSTILE_SITE_KEY`, orden respecto a Reportes), desarrollo local con la clave de prueba — archivos: README.md, CLAUDE.md — cubre: D-002 — verifica: revisión cruzada con el workflow y el código
+- [x] T006 Documentar: activación (crear el widget en Cloudflare con los dominios, variable `TURNSTILE_SITE_KEY`, orden respecto a Reportes), desarrollo local con la clave de prueba — archivos: README.md, CLAUDE.md — cubre: D-002 — verifica: revisión cruzada con el workflow y el código
 - [ ] T007 Comprobación completa: lint, test, build y actionlint; diff sin `infra/` — cubre: P6 — verifica: todo en verde
 
 ## Correcciones de verificación

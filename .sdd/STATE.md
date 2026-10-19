@@ -7,12 +7,12 @@
 
 feature_activa: 004-captcha-reporte
 fase: implement
-tarea_actual: T006
+tarea_actual: T007
 estado_tarea: -
 
 ## Siguiente paso
 
-T006: documentar activación y desarrollo local en README y CLAUDE.md.
+T007: comprobación completa: lint, test, build, actionlint, diff sin infra/.
 
 ## Contexto de trabajo
 

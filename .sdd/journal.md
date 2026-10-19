@@ -252,3 +252,7 @@
 - Hallazgos corregidos (plan D-004): theme auto salía oscuro sobre el formulario claro → theme light; en 375 px el widget de 300 px quedaba recortado → size compact si el contenedor < 300 px (verificado: 263 px, sin recorte). Prueba nueva del tamaño.
 - Las claves de prueba de Cloudflare devuelven hostname example.com y sin action: en local, HostnamesPermitidos y Accion vacíos (corregir el README de Reportes).
 - lint limpio; npm test 149/149.
+
+## 2026-10-19 · 004-captcha-reporte · T006 hecha
+- README: sección Verificación humana (comportamiento, activación en 3 pasos con el orden respecto a Reportes, clave de prueba en local) y limitación (solo creación; bloqueadores). CLAUDE.md: componente, variable del build, E2E local sin tocar AWS y gotcha de iCloud en .next.
+- Revisión cruzada: TURNSTILE_SITE_KEY/NEXT_PUBLIC_TURNSTILE_SITE_KEY coinciden en README, workflow y código.

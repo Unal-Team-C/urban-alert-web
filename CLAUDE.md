@@ -32,6 +32,8 @@ AWS (cuenta 348364742283): `infra/web` (S3 privado + CloudFront con OAC y funci�
 - Node 25+ (local: 26) trae un `localStorage` global vacío que tapa al de jsdom en Vitest: las pruebas lo sustituyen con `vi.stubGlobal` (ver `app/lib/vistaMapa.test.ts`).
 - La carpeta está en `Documents` (iCloud Drive): aparecen copias «archivo 2.ext» (vistas en `.next`, ignoradas en `.gitignore`) y el 2026-10-12 desaparecieron `.sdd/` y `.claude/` sin commit. Si falta algo versionado: `git status` y `git checkout -- <ruta>`.
 - macOS trae bash 3.2: los scripts no usan funciones de bash 4.
+- Captcha (spec 004): `VerificacionHumana` + `app/lib/turnstile.ts`, sin dependencias de npm. La clave pública es `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (en Provision, `vars.TURNSTILE_SITE_KEY`). Para probar contra Reportes local sin crear nada en AWS: `NEXT_PUBLIC_API_URL= NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npx next dev -p 3930` (vacío para que `.env.local` no apunte al gateway).
+- iCloud deja copias "* 3" en `.next/cache/turbopack` que rompen `next build`: moverlas fuera (es caché).
 
 ## Desarrollo guiado por especificaciones (SDD)
 
