@@ -7,12 +7,12 @@
 
 feature_activa: 004-captcha-reporte
 fase: implement
-tarea_actual: T004
+tarea_actual: T005
 estado_tarea: -
 
 ## Siguiente paso
 
-T004: NEXT_PUBLIC_TURNSTILE_SITE_KEY desde vars.TURNSTILE_SITE_KEY en el build de Provision; actionlint.
+T005: prueba en el navegador.
 
 ## Contexto de trabajo
 

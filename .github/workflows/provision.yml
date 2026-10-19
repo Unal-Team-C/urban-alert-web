@@ -115,6 +115,8 @@ jobs:
       - name: Build the site with the gateway URL (RF-003)
         env:
           NEXT_PUBLIC_API_URL: ${{ steps.platform.outputs.api_url }}
+          # Public Turnstile site key (spec 004-captcha-reporte). Unset repository variable: no human verification.
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
         run: |
           npm ci --no-audit --no-fund
           npm run build

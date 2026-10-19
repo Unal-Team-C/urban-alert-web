@@ -242,3 +242,6 @@
 - page.tsx: claveSitioTurnstile(); estado captchaToken; VerificacionHumana sobre el botón con texto role=status aria-live; botón deshabilitado sin prueba; captchaToken en el FormData; reiniciar() en finally (tras éxito y tras error: la prueba es de un solo uso); sin clave, nada cambia.
 - leerError usa primero el mensaje del servicio (antes todo 503 decía 'registrar la ubicación', engañoso para Multimedia y captcha); el texto genérico queda de respaldo.
 - 4 pruebas nuevas en page.test.tsx (sin clave, con clave y token, 400 con reinicio y datos conservados, 503 con mensaje). npm run lint limpio; npm test 148/148; build con y sin clave (la clave solo aparece en el bundle si se define). Gotcha iCloud en .next/cache.
+
+## 2026-10-19 · 004-captcha-reporte · T004 hecha
+- provision.yml: NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }} en el paso de build (sin variable → sitio sin verificación). actionlint limpio.
