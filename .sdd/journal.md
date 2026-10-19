@@ -259,3 +259,6 @@
 
 ## 2026-10-19 · 004-captcha-reporte · T007 hecha
 - npm run lint limpio; npm test 149/149; build sin clave OK; actionlint limpio; git diff main -- infra: 0 líneas.
+
+## 2026-10-19 · 004-captcha-reporte · Verificación ✅
+- verify.md con la matriz de requisitos; spec → implementada; fase done. Push, CI y activación pendientes del usuario.

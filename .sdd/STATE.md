@@ -6,13 +6,13 @@
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
 feature_activa: 004-captcha-reporte
-fase: implement
+fase: done
 tarea_actual: -
-estado_tarea: hecha
+estado_tarea: -
 
 ## Siguiente paso
 
-Escribir verify.md de 004 (y de 003 en Reportes) y cerrar ambas.
+004-captcha-reporte cerrada en local (verify.md ✅). Pendiente del usuario: push y PR; activación con las claves reales de Cloudflare en el orden documentado (portal primero).
 
 ## Contexto de trabajo
 

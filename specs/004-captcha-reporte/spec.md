@@ -1,7 +1,7 @@
 # Especificación: Verificación humana (captcha) en el formulario de nuevo reporte
 
 - **ID**: 004-captcha-reporte
-- **Estado**: aprobada <!-- borrador | aclarada | aprobada | implementada -->
+- **Estado**: implementada <!-- borrador | aclarada | aprobada | implementada -->
 - **Creada**: 2026-10-19
 - **Entrada original**: "Para el frontend quiero agregar una validación pequeña, un captcha para verificar que quien crea el reporte sea humano" + "Aplícalo", con el diseño acordado: Cloudflare Turnstile en el formulario; el token viaja en el cuerpo de la creación y lo valida el servicio de Reportes (feature `003-captcha-creacion` de `urban-alert-reportes`).
 
