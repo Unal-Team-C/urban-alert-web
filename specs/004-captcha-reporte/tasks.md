@@ -9,7 +9,7 @@ Leyenda: `[ ]` pendiente · `[~]` en progreso · `[x]` hecha · `[!]` bloqueada 
 
 - [x] T001 `app/lib/turnstile.ts` (carga única del script, tipos mínimos de la API explícita y clave del build) con pruebas — archivos: app/lib/turnstile.ts, app/lib/turnstile.test.ts — cubre: RF-007, RNF-001 — verifica: `npm test` en verde
 - [x] T002 Componente `VerificacionHumana` (render explícito con acción crear-reporte y tema auto, callbacks de token, vencimiento y error, `reiniciar()` por ref, estado de error de carga) con pruebas — archivos: app/components/VerificacionHumana.tsx, app/components/VerificacionHumana.test.tsx — depende: T001 — cubre: RF-001, RF-005, RF-006, RNF-003 — verifica: `npm test` en verde
-- [ ] T003 Integrar en el formulario: token en el estado, botón deshabilitado con texto aria-live, `captchaToken` en el FormData, reinicio tras error conservando los datos y sin cambios si no hay clave; pruebas del formulario — archivos: app/reportes/nuevo/page.tsx, app/reportes/nuevo/page.test.tsx — depende: T002 — cubre: RF-002, RF-003, RF-004, RF-007 — verifica: `npm run lint && npm test && npm run build` en verde
+- [x] T003 Integrar en el formulario: token en el estado, botón deshabilitado con texto aria-live, `captchaToken` en el FormData, reinicio tras error conservando los datos y sin cambios si no hay clave; pruebas del formulario — archivos: app/reportes/nuevo/page.tsx, app/reportes/nuevo/page.test.tsx — depende: T002 — cubre: RF-002, RF-003, RF-004, RF-007 — verifica: `npm run lint && npm test && npm run build` en verde
 
 ## Fase 2: Integración
 

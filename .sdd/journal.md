@@ -237,3 +237,8 @@
 ## 2026-10-19 · 004-captcha-reporte · T002 hecha
 - app/components/VerificacionHumana.tsx: render explícito (sitekey, action crear-reporte, theme auto), callback/expired/error → onToken, reiniciar() por ref (React 19 ref como prop), remove al desmontar, estados cargando/error (role=alert).
 - 5 pruebas con un window.turnstile falso en verde; eslint limpio.
+
+## 2026-10-19 · 004-captcha-reporte · T003 hecha
+- page.tsx: claveSitioTurnstile(); estado captchaToken; VerificacionHumana sobre el botón con texto role=status aria-live; botón deshabilitado sin prueba; captchaToken en el FormData; reiniciar() en finally (tras éxito y tras error: la prueba es de un solo uso); sin clave, nada cambia.
+- leerError usa primero el mensaje del servicio (antes todo 503 decía 'registrar la ubicación', engañoso para Multimedia y captcha); el texto genérico queda de respaldo.
+- 4 pruebas nuevas en page.test.tsx (sin clave, con clave y token, 400 con reinicio y datos conservados, 503 con mensaje). npm run lint limpio; npm test 148/148; build con y sin clave (la clave solo aparece en el bundle si se define). Gotcha iCloud en .next/cache.

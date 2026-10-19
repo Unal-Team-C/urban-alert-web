@@ -7,9 +7,11 @@ import { IconoCamara, IconoMapa, IconoUbicacion, IconoUsuario } from "../../comp
 import ReporteCreadoModal from "../../components/ReporteCreadoModal";
 import SeleccionUbicacionModal from "../../components/SeleccionUbicacionModal";
 import UsuarioModal from "../../components/UsuarioModal";
+import VerificacionHumana, { type ControlVerificacion } from "../../components/VerificacionHumana";
 import VolverAlMapa from "../../components/VolverAlMapa";
 import { urlApi } from "../../lib/api";
 import { TIPOS_IMAGEN, formatearTamano, validarImagen } from "../../lib/imagen";
+import { claveSitioTurnstile } from "../../lib/turnstile";
 import {
   dentroDeBogota,
   formatearCoordenada,
@@ -41,14 +43,16 @@ const FORMULARIO_VACIO = {
   description: "",
 };
 
+// El 503 puede venir de Geoespacial, Multimedia o la verificación humana (spec 004): se usa el mensaje del servicio y,
+// si no lo trae, el texto genérico de antes.
 async function leerError(response: Response): Promise<string> {
-  if (response.status === 503) {
-    return "No fue posible registrar la ubicación del reporte. Intente nuevamente más tarde.";
-  }
-
   const error = (await response.json().catch(() => null)) as ErrorApi | null;
   const detalle = error?.errors ? Object.values(error.errors).flat()[0] : undefined;
-  return error?.message ?? detalle ?? error?.title ?? `Error inesperado (HTTP ${response.status}).`;
+  const mensaje = error?.message ?? detalle ?? error?.title;
+  if (mensaje) return mensaje;
+  return response.status === 503
+    ? "No fue posible registrar la ubicación del reporte. Intente nuevamente más tarde."
+    : `Error inesperado (HTTP ${response.status}).`;
 }
 
 export default function Home() {
@@ -57,6 +61,12 @@ export default function Home() {
   const [createdId, setCreatedId] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // Verificación humana (spec 004): solo si el build trae la clave pública del widget.
+  const claveSitio = claveSitioTurnstile();
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const verificacionRef = useRef<ControlVerificacion>(null);
+  const faltaVerificacion = claveSitio !== "" && !captchaToken;
 
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -230,6 +240,8 @@ export default function Home() {
       return;
     }
 
+    if (faltaVerificacion) return;
+
     setSubmitting(true);
     setSubmitError("");
 
@@ -243,6 +255,7 @@ export default function Home() {
     reportData.append("longitud", String(location.lon));
     if (usuario) reportData.append("idUsuario", usuario.id);
     reportData.append("imagen", image);
+    if (claveSitio && captchaToken) reportData.append("captchaToken", captchaToken);
 
     try {
       const response = await fetch(urlApi("/api/v1/reportes"), {
@@ -264,6 +277,8 @@ export default function Home() {
     } catch {
       setSubmitError("No fue posible conectar con el servicio de Reportes.");
     } finally {
+      // La prueba es de un solo uso: Reportes la consume aunque la creación falle después (spec 004 RF-004).
+      verificacionRef.current?.reiniciar();
       setSubmitting(false);
     }
   }
@@ -523,10 +538,19 @@ export default function Home() {
               )}
             </div>
 
+            {claveSitio && (
+              <div>
+                <VerificacionHumana claveSitio={claveSitio} onToken={setCaptchaToken} ref={verificacionRef} />
+                <p role="status" aria-live="polite" className="mt-1 text-xs text-gray-500">
+                  {faltaVerificacion ? "Complete la verificación de seguridad para enviar el reporte." : ""}
+                </p>
+              </div>
+            )}
+
             {/* Botón */}
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting || faltaVerificacion}
               className="w-full rounded-lg bg-black py-3 font-medium text-white hover:bg-gray-800 disabled:bg-gray-400"
             >
               {submitting ? "Enviando..." : "Enviar reporte"}

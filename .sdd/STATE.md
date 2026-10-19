@@ -7,18 +7,20 @@
 
 feature_activa: 004-captcha-reporte
 fase: implement
-tarea_actual: T003
+tarea_actual: T004
 estado_tarea: -
 
 ## Siguiente paso
 
-T003: integrar la verificación en app/reportes/nuevo/page.tsx con pruebas.
+T004: NEXT_PUBLIC_TURNSTILE_SITE_KEY desde vars.TURNSTILE_SITE_KEY en el build de Provision; actionlint.
 
 ## Contexto de trabajo
 
 - Sitio: https://dfa8690dowmry.cloudfront.net (CloudFront E30PXSSQODNQGQ, sin WAF). Gateway en SSM /urban-alert/plataforma/api-endpoint.
 - Desarrollo local contra el gateway: `.env.local` con NEXT_PUBLIC_API_URL (ignorado) y `npx next dev -p 3930`.
 - Panel del navegador: con viewports emulados mayores que el panel, los clics usan otro marco que la captura; usar el tamaño nativo o calcular la posición con JS.
+
+- iCloud deja copias "* 3" en .next/cache/turbopack que rompen el build: moverlas al scratchpad (duplicados-icloud-web).
 
 ## Bloqueos / preguntas abiertas
 
