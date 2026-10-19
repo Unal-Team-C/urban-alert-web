@@ -233,3 +233,7 @@
 ## 2026-10-19 · 004-captcha-reporte · T001 hecha
 - app/lib/turnstile.ts: cargarTurnstile (un solo script render=explicit, memoizado; si falla se puede reintentar), tipos mínimos de window.turnstile, claveSitioTurnstile (NEXT_PUBLIC_TURNSTILE_SITE_KEY literal), olvidarCargaTurnstile para pruebas.
 - 5 pruebas en turnstile.test.ts en verde; eslint limpio.
+
+## 2026-10-19 · 004-captcha-reporte · T002 hecha
+- app/components/VerificacionHumana.tsx: render explícito (sitekey, action crear-reporte, theme auto), callback/expired/error → onToken, reiniciar() por ref (React 19 ref como prop), remove al desmontar, estados cargando/error (role=alert).
+- 5 pruebas con un window.turnstile falso en verde; eslint limpio.

@@ -7,12 +7,12 @@
 
 feature_activa: 004-captcha-reporte
 fase: implement
-tarea_actual: T002
+tarea_actual: T003
 estado_tarea: -
 
 ## Siguiente paso
 
-T002: componente VerificacionHumana con pruebas.
+T003: integrar la verificación en app/reportes/nuevo/page.tsx con pruebas.
 
 ## Contexto de trabajo
 
