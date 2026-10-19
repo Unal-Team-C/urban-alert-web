@@ -19,7 +19,9 @@ type Props = {
 };
 
 // Widget de Cloudflare Turnstile (spec 004-captcha-reporte). Normalmente se resuelve solo; a veces pide un clic.
-// Sigue el tema del sistema (theme "auto"), igual que el sitio.
+// Tema claro, como el formulario (con "auto" salía oscuro sobre el formulario claro en sistemas con modo oscuro).
+// El tamaño normal mide 300 px: en pantallas más angostas se usa el compacto (150×140) para no recortarlo.
+export const ANCHO_WIDGET_NORMAL = 300;
 export default function VerificacionHumana({ claveSitio, onToken, ref }: Props) {
   const contenedorRef = useRef<HTMLDivElement>(null);
   const idWidgetRef = useRef<string | null>(null);
@@ -39,7 +41,8 @@ export default function VerificacionHumana({ claveSitio, onToken, ref }: Props) 
         idWidgetRef.current = turnstile.render(contenedorRef.current, {
           sitekey: claveSitio,
           action: ACCION_CREAR_REPORTE,
-          theme: "auto",
+          theme: "light",
+          size: contenedorRef.current.clientWidth < ANCHO_WIDGET_NORMAL ? "compact" : "normal",
           callback: (token) => onTokenRef.current(token),
           "expired-callback": () => onTokenRef.current(null),
           "error-callback": () => onTokenRef.current(null),

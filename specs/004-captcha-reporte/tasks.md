@@ -14,7 +14,7 @@ Leyenda: `[ ]` pendiente · `[~]` en progreso · `[x]` hecha · `[!]` bloqueada 
 ## Fase 2: Integración
 
 - [x] T004 Workflow: `NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}` en el build de Provision — archivos: .github/workflows/provision.yml — cubre: RNF-002, D-002 — verifica: actionlint limpio
-- [ ] T005 Comprobación en el navegador con `next dev` y la clave de prueba: widget visible y en tema claro y oscuro, botón deshabilitado hasta tener token, envío con token y, contra Reportes local con la 003 activa y el secreto de prueba, reporte creado (201) — archivos: — — depende: T003 — cubre: MS-001, RNF-003 — verifica: capturas en el journal y respuesta 201 en las peticiones de red
+- [x] T005 Comprobación en el navegador con `next dev` y la clave de prueba: widget visible y en tema claro y oscuro, botón deshabilitado hasta tener token, envío con token y, contra Reportes local con la 003 activa y el secreto de prueba, reporte creado (201) — archivos: — — depende: T003 — cubre: MS-001, RNF-003 — verifica: capturas en el journal y respuesta 201 en las peticiones de red
 
 ## Fase 3: Pulido
 

@@ -6,7 +6,7 @@
 
 ## 1. Resumen técnico
 
-Un componente cliente propio, `VerificacionHumana`, que no añade dependencias de npm. Carga una sola vez el script `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit` y renderiza el widget con `turnstile.render(contenedor, { sitekey, action: "crear-reporte", theme: "auto", callback, "expired-callback", "error-callback" })`. Expone `reiniciar()` mediante una ref.
+Un componente cliente propio, `VerificacionHumana`, que no añade dependencias de npm. Carga una sola vez el script `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit` y renderiza el widget con `turnstile.render(contenedor, { sitekey, action: "crear-reporte", theme: "light", size: "normal" | "compact" (según el ancho), callback, "expired-callback", "error-callback" })`. Expone `reiniciar()` mediante una ref.
 
 El formulario guarda el token en su estado, deshabilita el botón mientras no haya token, añade `captchaToken` al `FormData` y reinicia el widget tras cualquier respuesta que no sea 2xx o tras un error de red.
 
@@ -83,6 +83,10 @@ Sin cambios.
 
 ### D-002: Clave pública en una variable de repositorio de GitHub
 - **Motivo**: se puede activar o cambiar sin commit. Si la variable no existe, el build sale sin captcha y el formulario queda como hoy (RF-007).
+
+### D-004: Tema claro y tamaño compacto en pantallas angostas (ajuste en T005, 2026-10-19)
+- **Hallazgo en el navegador**: con `theme: "auto"` y el sistema en modo oscuro, el widget salía oscuro sobre el formulario claro (el formulario usa colores claros fijos). En 375 px, el widget normal (300 px) quedaba recortado.
+- **Decisión**: `theme: "light"`, y `size: "compact"` cuando el contenedor mide menos de 300 px.
 
 ### D-003: Reiniciar tras cualquier error
 - **Motivo**: el token es de un solo uso y Reportes lo consume al verificarlo, aunque la creación falle después.

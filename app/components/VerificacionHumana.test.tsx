@@ -28,12 +28,25 @@ afterEach(() => {
 });
 
 describe("VerificacionHumana", () => {
-  it("renderiza el widget con la clave, la acción crear-reporte y el tema del sistema", async () => {
+  it("renderiza el widget con la clave, la acción crear-reporte y el tema claro del formulario", async () => {
     render(<VerificacionHumana claveSitio="1x00000000000000000000AA" onToken={vi.fn()} />);
 
     await waitFor(() => expect(turnstile.render).toHaveBeenCalledTimes(1));
     expect(turnstile.render.mock.calls[0][0]).toBe(screen.getByTestId("widget-turnstile"));
-    expect(opciones).toMatchObject({ sitekey: "1x00000000000000000000AA", action: "crear-reporte", theme: "auto" });
+    expect(opciones).toMatchObject({ sitekey: "1x00000000000000000000AA", action: "crear-reporte", theme: "light" });
+  });
+
+  it("usa el tamaño compacto si el contenedor mide menos de 300 px y el normal si no", async () => {
+    const ancho = vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(263);
+    const { unmount } = render(<VerificacionHumana claveSitio="clave" onToken={vi.fn()} />);
+    await waitFor(() => expect(opciones?.size).toBe("compact"));
+    unmount();
+
+    opciones = undefined;
+    ancho.mockReturnValue(320);
+    render(<VerificacionHumana claveSitio="clave" onToken={vi.fn()} />);
+    await waitFor(() => expect(opciones?.size).toBe("normal"));
+    ancho.mockRestore();
   });
 
   it("entrega la prueba y la descarta al vencer o fallar el desafío", async () => {

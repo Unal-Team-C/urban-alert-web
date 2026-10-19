@@ -245,3 +245,10 @@
 
 ## 2026-10-19 · 004-captcha-reporte · T004 hecha
 - provision.yml: NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }} en el paso de build (sin variable → sitio sin verificación). actionlint limpio.
+
+## 2026-10-19 · 004-captcha-reporte · T005 hecha
+- E2E local en el panel del navegador: next dev :3930 con sitekey de prueba 1x…AA y NEXT_PUBLIC_API_URL vacío (rewrites a Reportes local); Reportes en contenedor con Captcha activo y secreto de prueba real (siteverify real de Cloudflare); Geoespacial/Multimedia simulados en :8099.
+- Resultado: widget visible ('¡Operación exitosa!', 'Solo para pruebas'), botón habilitado tras la prueba; reporte enviado → POST /api/v1/reportes 201 y modal 'Reporte creado'; logs de Reportes: siteverify 200 (74 ms) antes de Multimedia y Geoespacial. curl directo: sin token 400, token de prueba 201.
+- Hallazgos corregidos (plan D-004): theme auto salía oscuro sobre el formulario claro → theme light; en 375 px el widget de 300 px quedaba recortado → size compact si el contenedor < 300 px (verificado: 263 px, sin recorte). Prueba nueva del tamaño.
+- Las claves de prueba de Cloudflare devuelven hostname example.com y sin action: en local, HostnamesPermitidos y Accion vacíos (corregir el README de Reportes).
+- lint limpio; npm test 149/149.
