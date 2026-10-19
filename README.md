@@ -82,6 +82,18 @@ Sin el WAF no hay costes fijos ni recursos con coste por hora. Los recursos de `
 
 El rol de GitHub necesita una política nueva para CloudFront, que aplica un administrador (el origen Lambda usa políticas que ya existen), y el repo necesita el secreto `AWS_ROLE_ARN` y la variable `AWS_REGION`. Pasos en **[infra/bootstrap/README.md](infra/bootstrap/README.md)**. Estado de Terraform: `s3://urban-alert-tfstate-348364742283/web/terraform.tfstate`.
 
+## Verificación humana (captcha, spec 004)
+
+El formulario de nuevo reporte muestra el widget de **Cloudflare Turnstile** si el build trae `NEXT_PUBLIC_TURNSTILE_SITE_KEY`. El widget normalmente se resuelve solo. Sin prueba vigente no se puede enviar, la prueba viaja como campo `captchaToken`, y tras cada envío el widget se reinicia, porque la prueba es de un solo uso. La valida el servicio de Reportes (`urban-alert-reportes`, spec 003). Sin la clave, el formulario funciona como antes.
+
+**Activación**, en este orden:
+
+1. En Cloudflare, en **Turnstile → Add widget**: dominios `dfa8690dowmry.cloudfront.net` y `localhost`, modo *Managed*. Copia la *site key* (pública) y entrega la *secret key* a Reportes (su `infra/bootstrap/README.md §5`).
+2. Aquí: `gh variable set TURNSTILE_SITE_KEY --repo Unal-Team-C/urban-alert-web --body <site key>` y un Provision (o el siguiente push a `main`). La *site key* no es secreta.
+3. En Reportes: `captcha_habilitado = true` y el dominio de CloudFront en `captcha_hostnames`. Si se activa Reportes antes que el portal, todas las creaciones del portal responden 400.
+
+En local se usa la clave de prueba de Cloudflare `1x00000000000000000000AA`, que siempre pasa (`2x00000000000000000000AB` siempre falla): `NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run dev`. El script del widget se carga solo en `/reportes/nuevo`.
+
 ## Desarrollo local
 
 ```bash
@@ -116,6 +128,7 @@ podman run --rm -v "$PWD":/mnt -w /mnt docker.io/koalaman/shellcheck:v0.10.0 scr
 - **Sin WAF** en el sitio (desactivado) ni en el API Gateway (AWS WAF no admite HTTP APIs). El gateway solo tiene su límite de tasa (50 peticiones/s); las rutas públicas de Reportes permiten escribir sin autenticación.
 - **CORS**: el gateway admite cualquier origen (`cors_origenes = ["*"]` en `urban-alert-plataforma`). Se recomienda restringirlo a la URL del sitio desde ese repo.
 - Sin dominio propio: se usa la URL `*.cloudfront.net`.
+- La verificación humana (Turnstile) solo protege la **creación** de reportes. Si un bloqueador impide cargar el script de Cloudflare, el formulario lo indica y no permite enviar.
 - Con el origen alternativo Lambda: sin caché de borde, sin WAF y un arranque en frío de unos cientos de ms en la primera petición.
 
 ## Desarrollo con SDD

@@ -5,20 +5,22 @@
      fase: constitution | specify | clarify | plan | tasks | implement | verify | done
      estado_tarea: en_progreso | en_progreso | hecha | bloqueada -->
 
-feature_activa: 002-rediseno-mapa
-fase: implement
-tarea_actual: T014
-estado_tarea: hecha
+feature_activa: 004-captcha-reporte
+fase: done
+tarea_actual: -
+estado_tarea: -
 
 ## Siguiente paso
 
-HU-5 (T011–T012) y HU-6 (T014) implementadas y verificadas en navegador. Falta publicar: push con permiso del usuario; después cerrar T013 y T015 comprobando en https://dfa8690dowmry.cloudfront.net (Teusaquillo, paneo libre, Reiniciar mapa, Histórico, Volver al inicio).
+004-captcha-reporte cerrada en local (verify.md ✅). Pendiente del usuario: push y PR; activación con las claves reales de Cloudflare en el orden documentado (portal primero).
 
 ## Contexto de trabajo
 
 - Sitio: https://dfa8690dowmry.cloudfront.net (CloudFront E30PXSSQODNQGQ, sin WAF). Gateway en SSM /urban-alert/plataforma/api-endpoint.
 - Desarrollo local contra el gateway: `.env.local` con NEXT_PUBLIC_API_URL (ignorado) y `npx next dev -p 3930`.
 - Panel del navegador: con viewports emulados mayores que el panel, los clics usan otro marco que la captura; usar el tamaño nativo o calcular la posición con JS.
+
+- iCloud deja copias "* 3" en .next/cache/turbopack que rompen el build: moverlas al scratchpad (duplicados-icloud-web).
 
 ## Bloqueos / preguntas abiertas
 

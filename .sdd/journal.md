@@ -214,3 +214,54 @@
 
 ## 2026-10-13 · 002-rediseno-mapa · push autorizado (HU-5 y HU-6)
 - Usuario: «push it».
+
+## 2026-10-12 · 002-rediseno-mapa · T013 hecha
+- HU-5 publicada (run 38320897768, 0 cambios de infraestructura, smoke OK): en el sitio / abre en Teusaquillo zoom 12 (26 daños) con «Reiniciar mapa» bajo el zoom.
+
+## 2026-10-12 · 002-rediseno-mapa · T015 hecha
+- HU-6 publicada: barra con Histórico y Crear reporte; /historial/ y su detalle con «← Volver al inicio» a la última vista; títulos correctos.
+
+## 2026-10-19 · 004-captcha-reporte · Creada spec desde descripción
+- Captcha (Cloudflare Turnstile) en el formulario de nuevo reporte; diseño acordado con el usuario: token en el cuerpo (captchaToken), validado por Reportes (003); desactivado sin sitekey. Sin [NEEDS CLARIFICATION].
+
+## 2026-10-19 · 004-captcha-reporte · Spec aprobada; plan.md y tasks.md generados
+- D-001 componente propio sin dependencias; D-002 clave pública en vars.TURNSTILE_SITE_KEY; D-003 reiniciar el widget tras cualquier error. 7 tareas.
+
+## 2026-10-19 · 004-captcha-reporte · Plan y tareas aprobados
+- El usuario aprueba plan.md y tasks.md (junto con la otra feature del captcha); empieza la implementación.
+
+## 2026-10-19 · 004-captcha-reporte · T001 hecha
+- app/lib/turnstile.ts: cargarTurnstile (un solo script render=explicit, memoizado; si falla se puede reintentar), tipos mínimos de window.turnstile, claveSitioTurnstile (NEXT_PUBLIC_TURNSTILE_SITE_KEY literal), olvidarCargaTurnstile para pruebas.
+- 5 pruebas en turnstile.test.ts en verde; eslint limpio.
+
+## 2026-10-19 · 004-captcha-reporte · T002 hecha
+- app/components/VerificacionHumana.tsx: render explícito (sitekey, action crear-reporte, theme auto), callback/expired/error → onToken, reiniciar() por ref (React 19 ref como prop), remove al desmontar, estados cargando/error (role=alert).
+- 5 pruebas con un window.turnstile falso en verde; eslint limpio.
+
+## 2026-10-19 · 004-captcha-reporte · T003 hecha
+- page.tsx: claveSitioTurnstile(); estado captchaToken; VerificacionHumana sobre el botón con texto role=status aria-live; botón deshabilitado sin prueba; captchaToken en el FormData; reiniciar() en finally (tras éxito y tras error: la prueba es de un solo uso); sin clave, nada cambia.
+- leerError usa primero el mensaje del servicio (antes todo 503 decía 'registrar la ubicación', engañoso para Multimedia y captcha); el texto genérico queda de respaldo.
+- 4 pruebas nuevas en page.test.tsx (sin clave, con clave y token, 400 con reinicio y datos conservados, 503 con mensaje). npm run lint limpio; npm test 148/148; build con y sin clave (la clave solo aparece en el bundle si se define). Gotcha iCloud en .next/cache.
+
+## 2026-10-19 · 004-captcha-reporte · T004 hecha
+- provision.yml: NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }} en el paso de build (sin variable → sitio sin verificación). actionlint limpio.
+
+## 2026-10-19 · 004-captcha-reporte · T005 hecha
+- E2E local en el panel del navegador: next dev :3930 con sitekey de prueba 1x…AA y NEXT_PUBLIC_API_URL vacío (rewrites a Reportes local); Reportes en contenedor con Captcha activo y secreto de prueba real (siteverify real de Cloudflare); Geoespacial/Multimedia simulados en :8099.
+- Resultado: widget visible ('¡Operación exitosa!', 'Solo para pruebas'), botón habilitado tras la prueba; reporte enviado → POST /api/v1/reportes 201 y modal 'Reporte creado'; logs de Reportes: siteverify 200 (74 ms) antes de Multimedia y Geoespacial. curl directo: sin token 400, token de prueba 201.
+- Hallazgos corregidos (plan D-004): theme auto salía oscuro sobre el formulario claro → theme light; en 375 px el widget de 300 px quedaba recortado → size compact si el contenedor < 300 px (verificado: 263 px, sin recorte). Prueba nueva del tamaño.
+- Las claves de prueba de Cloudflare devuelven hostname example.com y sin action: en local, HostnamesPermitidos y Accion vacíos (corregir el README de Reportes).
+- lint limpio; npm test 149/149.
+
+## 2026-10-19 · 004-captcha-reporte · T006 hecha
+- README: sección Verificación humana (comportamiento, activación en 3 pasos con el orden respecto a Reportes, clave de prueba en local) y limitación (solo creación; bloqueadores). CLAUDE.md: componente, variable del build, E2E local sin tocar AWS y gotcha de iCloud en .next.
+- Revisión cruzada: TURNSTILE_SITE_KEY/NEXT_PUBLIC_TURNSTILE_SITE_KEY coinciden en README, workflow y código.
+
+## 2026-10-19 · 004-captcha-reporte · T007 hecha
+- npm run lint limpio; npm test 149/149; build sin clave OK; actionlint limpio; git diff main -- infra: 0 líneas.
+
+## 2026-10-19 · 004-captcha-reporte · Verificación ✅
+- verify.md con la matriz de requisitos; spec → implementada; fase done. Push, CI y activación pendientes del usuario.
+
+## 2026-10-19 · 004-captcha-reporte · Ajuste: widget centrado (pedido del usuario)
+- VerificacionHumana: contenedor w-full con flex justify-center (sigue midiendo el ancho para elegir normal/compacto); texto de estado centrado. Navegador: márgenes 106/106 px en escritorio y 57/57 px en móvil. lint limpio; npm test 149/149.

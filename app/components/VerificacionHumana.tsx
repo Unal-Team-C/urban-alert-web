@@ -1,0 +1,88 @@
+"use client";
+
+import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
+
+import { cargarTurnstile } from "../lib/turnstile";
+
+export const ACCION_CREAR_REPORTE = "crear-reporte";
+
+export type ControlVerificacion = {
+  // Descarta la prueba actual y pide una nueva (la prueba es de un solo uso; spec 004 RF-004).
+  reiniciar: () => void;
+};
+
+type Props = {
+  claveSitio: string;
+  // Prueba vigente, o null cuando todavía no hay, venció o el desafío falló.
+  onToken: (token: string | null) => void;
+  ref?: Ref<ControlVerificacion>;
+};
+
+// Widget de Cloudflare Turnstile (spec 004-captcha-reporte). Normalmente se resuelve solo; a veces pide un clic.
+// Tema claro, como el formulario (con "auto" salía oscuro sobre el formulario claro en sistemas con modo oscuro).
+// El tamaño normal mide 300 px: en pantallas más angostas se usa el compacto (150×140) para no recortarlo.
+export const ANCHO_WIDGET_NORMAL = 300;
+export default function VerificacionHumana({ claveSitio, onToken, ref }: Props) {
+  const contenedorRef = useRef<HTMLDivElement>(null);
+  const idWidgetRef = useRef<string | null>(null);
+  const onTokenRef = useRef(onToken);
+  const [estado, setEstado] = useState<"cargando" | "listo" | "error">("cargando");
+
+  useEffect(() => {
+    onTokenRef.current = onToken;
+  }, [onToken]);
+
+  useEffect(() => {
+    let cancelado = false;
+
+    cargarTurnstile()
+      .then((turnstile) => {
+        if (cancelado || !contenedorRef.current) return;
+        idWidgetRef.current = turnstile.render(contenedorRef.current, {
+          sitekey: claveSitio,
+          action: ACCION_CREAR_REPORTE,
+          theme: "light",
+          size: contenedorRef.current.clientWidth < ANCHO_WIDGET_NORMAL ? "compact" : "normal",
+          callback: (token) => onTokenRef.current(token),
+          "expired-callback": () => onTokenRef.current(null),
+          "error-callback": () => onTokenRef.current(null),
+        });
+        setEstado("listo");
+      })
+      .catch(() => {
+        if (!cancelado) setEstado("error");
+      });
+
+    return () => {
+      cancelado = true;
+      if (idWidgetRef.current) window.turnstile?.remove(idWidgetRef.current);
+      idWidgetRef.current = null;
+    };
+  }, [claveSitio]);
+
+  useImperativeHandle(ref, () => ({
+    reiniciar() {
+      if (idWidgetRef.current) window.turnstile?.reset(idWidgetRef.current);
+      onTokenRef.current(null);
+    },
+  }));
+
+  return (
+    // Centrado (pedido del usuario, 2026-10-19). El contenedor ocupa todo el ancho para medirlo y elegir el tamaño;
+    // flex centra dentro de él el widget que inyecta Turnstile.
+    <div className="text-center">
+      <div
+        ref={contenedorRef}
+        data-testid="widget-turnstile"
+        className="flex min-h-[65px] w-full max-w-full justify-center overflow-hidden"
+      />
+      {estado === "cargando" && <p className="text-xs text-gray-500">Cargando la verificación…</p>}
+      {estado === "error" && (
+        <p role="alert" className="text-sm text-red-600">
+          No se pudo cargar la verificación de seguridad. Revise su conexión o desactive el bloqueador de contenido y
+          recargue la página.
+        </p>
+      )}
+    </div>
+  );
+}
