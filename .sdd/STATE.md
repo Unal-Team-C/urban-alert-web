@@ -7,12 +7,12 @@
 
 feature_activa: 004-captcha-reporte
 fase: implement
-tarea_actual: T007
-estado_tarea: -
+tarea_actual: -
+estado_tarea: hecha
 
 ## Siguiente paso
 
-T007: comprobación completa: lint, test, build, actionlint, diff sin infra/.
+Escribir verify.md de 004 (y de 003 en Reportes) y cerrar ambas.
 
 ## Contexto de trabajo
 

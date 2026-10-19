@@ -256,3 +256,6 @@
 ## 2026-10-19 · 004-captcha-reporte · T006 hecha
 - README: sección Verificación humana (comportamiento, activación en 3 pasos con el orden respecto a Reportes, clave de prueba en local) y limitación (solo creación; bloqueadores). CLAUDE.md: componente, variable del build, E2E local sin tocar AWS y gotcha de iCloud en .next.
 - Revisión cruzada: TURNSTILE_SITE_KEY/NEXT_PUBLIC_TURNSTILE_SITE_KEY coinciden en README, workflow y código.
+
+## 2026-10-19 · 004-captcha-reporte · T007 hecha
+- npm run lint limpio; npm test 149/149; build sin clave OK; actionlint limpio; git diff main -- infra: 0 líneas.
