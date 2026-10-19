@@ -229,3 +229,7 @@
 
 ## 2026-10-19 · 004-captcha-reporte · Plan y tareas aprobados
 - El usuario aprueba plan.md y tasks.md (junto con la otra feature del captcha); empieza la implementación.
+
+## 2026-10-19 · 004-captcha-reporte · T001 hecha
+- app/lib/turnstile.ts: cargarTurnstile (un solo script render=explicit, memoizado; si falla se puede reintentar), tipos mínimos de window.turnstile, claveSitioTurnstile (NEXT_PUBLIC_TURNSTILE_SITE_KEY literal), olvidarCargaTurnstile para pruebas.
+- 5 pruebas en turnstile.test.ts en verde; eslint limpio.

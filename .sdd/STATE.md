@@ -7,12 +7,12 @@
 
 feature_activa: 004-captcha-reporte
 fase: implement
-tarea_actual: -
+tarea_actual: T002
 estado_tarea: -
 
 ## Siguiente paso
 
-Redactar specs/004-captcha-reporte/spec.md: widget de Cloudflare Turnstile en el formulario de nuevo reporte; el token viaja como campo captchaToken del multipart; lo valida Reportes (feature 003-captcha-creacion de urban-alert-reportes). Desactivado si no hay sitekey en el build.
+T002: componente VerificacionHumana con pruebas.
 
 ## Contexto de trabajo
 
