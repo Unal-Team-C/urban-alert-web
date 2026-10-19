@@ -262,3 +262,6 @@
 
 ## 2026-10-19 · 004-captcha-reporte · Verificación ✅
 - verify.md con la matriz de requisitos; spec → implementada; fase done. Push, CI y activación pendientes del usuario.
+
+## 2026-10-19 · 004-captcha-reporte · Ajuste: widget centrado (pedido del usuario)
+- VerificacionHumana: contenedor w-full con flex justify-center (sigue midiendo el ancho para elegir normal/compacto); texto de estado centrado. Navegador: márgenes 106/106 px en escritorio y 57/57 px en móvil. lint limpio; npm test 149/149.

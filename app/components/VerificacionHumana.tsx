@@ -68,8 +68,14 @@ export default function VerificacionHumana({ claveSitio, onToken, ref }: Props) 
   }));
 
   return (
-    <div>
-      <div ref={contenedorRef} data-testid="widget-turnstile" className="min-h-[65px] max-w-full overflow-hidden" />
+    // Centrado (pedido del usuario, 2026-10-19). El contenedor ocupa todo el ancho para medirlo y elegir el tamaño;
+    // flex centra dentro de él el widget que inyecta Turnstile.
+    <div className="text-center">
+      <div
+        ref={contenedorRef}
+        data-testid="widget-turnstile"
+        className="flex min-h-[65px] w-full max-w-full justify-center overflow-hidden"
+      />
       {estado === "cargando" && <p className="text-xs text-gray-500">Cargando la verificación…</p>}
       {estado === "error" && (
         <p role="alert" className="text-sm text-red-600">

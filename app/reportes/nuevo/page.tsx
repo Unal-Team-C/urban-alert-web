@@ -541,7 +541,7 @@ export default function Home() {
             {claveSitio && (
               <div>
                 <VerificacionHumana claveSitio={claveSitio} onToken={setCaptchaToken} ref={verificacionRef} />
-                <p role="status" aria-live="polite" className="mt-1 text-xs text-gray-500">
+                <p role="status" aria-live="polite" className="mt-1 text-center text-xs text-gray-500">
                   {faltaVerificacion ? "Complete la verificación de seguridad para enviar el reporte." : ""}
                 </p>
               </div>
